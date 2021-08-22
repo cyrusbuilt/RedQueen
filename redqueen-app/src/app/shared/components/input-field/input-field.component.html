@@ -1,0 +1,13 @@
+<label>
+  <i *ngIf="icon && iconPosition === 'pre'" class="icon prefix" [ngClass]="icon"></i>
+  <span>
+    {{ label }}
+    <input [type]="type"
+           [placeholder]="placeholder"
+           [value]="value"
+           (input)="onChange($any($event.target).value)"
+           (blur)="onTouched()"
+           class="class" />
+  </span>
+  <i *ngIf="icon && iconPosition === 'post'" class="icon postfix" [ngClass]="icon"></i>
+</label>

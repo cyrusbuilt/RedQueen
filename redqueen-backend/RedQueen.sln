@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedQueen", "RedQueen\RedQueen.csproj", "{61F2D630-291A-40ED-9465-3BDD0EEE996B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedQueenAPI", "RedQueenAPI\RedQueenAPI.csproj", "{1CF30883-5BD5-4EED-BC05-7FB63C12F652}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedQueenData", "RedQueenData\RedQueenData.csproj", "{B23650E7-92EB-4ABE-ACE2-1EDBB891E221}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61F2D630-291A-40ED-9465-3BDD0EEE996B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61F2D630-291A-40ED-9465-3BDD0EEE996B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61F2D630-291A-40ED-9465-3BDD0EEE996B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61F2D630-291A-40ED-9465-3BDD0EEE996B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CF30883-5BD5-4EED-BC05-7FB63C12F652}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CF30883-5BD5-4EED-BC05-7FB63C12F652}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CF30883-5BD5-4EED-BC05-7FB63C12F652}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CF30883-5BD5-4EED-BC05-7FB63C12F652}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B23650E7-92EB-4ABE-ACE2-1EDBB891E221}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B23650E7-92EB-4ABE-ACE2-1EDBB891E221}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B23650E7-92EB-4ABE-ACE2-1EDBB891E221}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B23650E7-92EB-4ABE-ACE2-1EDBB891E221}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

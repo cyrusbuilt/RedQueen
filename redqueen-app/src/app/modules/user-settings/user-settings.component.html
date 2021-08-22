@@ -1,0 +1,9 @@
+<div>
+  <h3>Current User: {{ authService.username }}</h3>
+  <div *ngIf="authService.username">
+    <p>ID: {{ user && user.id }}</p>
+    <p>Email: {{ user && user.email }}</p>
+    <p>Phone: {{ user && user.phoneNumber }}</p>
+    <button class="btn btn-danger" (click)="resetPassword()">Reset Password</button>
+  </div>
+</div>

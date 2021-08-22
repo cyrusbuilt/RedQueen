@@ -1,0 +1,54 @@
+@use "sass:math";
+
+@import 'src/assets/scss/_vars';
+
+#toast {
+  $width: 100%;
+  $height: math.div(100, 15) * 1rem;
+  box-sizing: border-box;
+  $transition-time: 0.5s;
+  width: $width;
+  position: fixed;
+  margin: auto;
+  padding: math.div(10, 20) * 1rem;
+  top: -$height;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 10;
+  background-color: white;
+  color: purple;
+  transition: 0s;
+
+  &.error {
+    background-color: $error-color-dark;
+  }
+
+  &.success {
+    background-color: $success-color;
+  }
+
+  &.error, &.success {
+    transition: 1s;
+    color: white;
+  }
+
+  &.open {
+    animation-duration: 5s;
+    animation-name: dropdown;
+  }
+
+  @keyframes dropdown {
+    0%, 100% {
+      top: -$height;
+    }
+
+    10% {
+      top: 10px;
+    }
+
+    20%, 80% {
+      top: 0;
+    }
+  }
+}

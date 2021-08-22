@@ -1,0 +1,30 @@
+{
+  "description": "CyLights Status Message",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string"
+    },
+    "systemState": {
+      "type": "number"
+    },
+    "firmwareVersion": {
+      "type": "string"
+    },
+    "light1State": {
+      "type": "number"
+    },
+    "light2State": {
+      "type": "number"
+    },
+    "light3State": {
+      "type": "number"
+    },
+    "light4State": {
+      "type": "number"
+    },
+    "light5State": {
+      "type": "number"
+    }
+  }
+}

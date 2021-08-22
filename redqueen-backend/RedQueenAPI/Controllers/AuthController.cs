@@ -1,0 +1,197 @@
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using RedQueenAPI.Authentication;
+using RedQueen.Data.Models.Db;
+using RedQueenAPI.Models;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
+
+namespace RedQueenAPI.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
+    {
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IConfiguration _configuration;
+
+        public AuthController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager,
+            IConfiguration configuration)
+        {
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _configuration = configuration;
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<IActionResult> Login([FromBody] UserLogin login)
+        {
+            var user = await _userManager.FindByNameAsync(login.Username);
+            if (user != null && await _userManager.CheckPasswordAsync(user, login.Password))
+            {
+                var userRoles = await _userManager.GetRolesAsync(user);
+
+                var authClaims = new List<Claim>
+                {
+                    new(ClaimTypes.Name, login.Username),
+                    new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                };
+                
+                authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
+
+                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+
+                var token = new JwtSecurityToken(
+                    issuer: _configuration["JWT:ValidIssuer"],
+                    audience: _configuration["JWT:ValidAudience"],
+                    expires: DateTime.Now.AddHours(3),
+                    claims: authClaims,
+                    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                );
+                
+                return Ok(new TokenResponse
+                {
+                    UserId = user.Id,
+                    Token = new JwtSecurityTokenHandler().WriteToken(token),
+                    Expiration = token.ValidTo
+                });
+            }
+
+            return Unauthorized();
+        }
+
+        [HttpPost]
+        [Route("register")]
+        public async Task<IActionResult> Register([FromBody] UserRegistration registration)
+        {
+            var existingUser = await _userManager.FindByNameAsync(registration.Username);
+            if (existingUser != null)
+            {
+                return BadRequest(new AuthenticationResponse
+                {
+                    Status = "Error",
+                    Message = "User already exists!"
+                });
+            }
+
+            var user = new ApplicationUser
+            {
+                Email = registration.Email,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = registration.Username
+            };
+
+            var result = await _userManager.CreateAsync(user, registration.Password);
+            if (!result.Succeeded)
+            {
+                return BadRequest(new AuthenticationResponse
+                {
+                    Status = "Error",
+                    Message = "Failed to create user! Check user details and try again."
+                });
+            }
+
+            return Ok(new AuthenticationResponse
+            {
+                Status = "Success",
+                Message = "User created successfully."
+            });
+        }
+
+        [HttpPost]
+        [Route("register-admin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] UserRegistration registration)
+        {
+            var existingUser = await _userManager.FindByNameAsync(registration.Username);
+            if (existingUser != null)
+            {
+                return BadRequest(new AuthenticationResponse
+                {
+                    Status = "Error",
+                    Message = "User already exists!"
+                });
+            }
+            
+            var user = new ApplicationUser
+            {
+                Email = registration.Email,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = registration.Username
+            };
+            
+            var result = await _userManager.CreateAsync(user, registration.Password);
+            if (!result.Succeeded)
+            {
+                return BadRequest(new AuthenticationResponse
+                {
+                    Status = "Error",
+                    Message = "Failed to create user! Check user details and try again."
+                });
+            }
+
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+            }
+
+            if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+            }
+
+            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+                await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+            }
+
+            return Ok(new AuthenticationResponse
+            {
+                Status = "Success",
+                Message = "Admin user created successfully."
+            });
+        }
+
+        [HttpPut]
+        [Route("password-reset")]
+        public async Task<IActionResult> ResetPassword([FromBody] PasswordResetRequest request)
+        {
+            var user = await _userManager.FindByIdAsync(request.UserId);
+            if (user == null)
+            {
+                return BadRequest(new AuthenticationResponse
+                {
+                    Status = "Error",
+                    Message = "User not found."
+                });
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
+            if (!result.Succeeded)
+            {
+                foreach (var err in result.Errors)
+                {
+                    // TODO What to do with these errors? Tally them up and return error response?
+                }
+            }
+
+            var login = new UserLogin
+            {
+                Username = user.UserName,
+                Password = request.NewPassword
+            };
+
+            return await Login(login);
+        }
+    }
+}

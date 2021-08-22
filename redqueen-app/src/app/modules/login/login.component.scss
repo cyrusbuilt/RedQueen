@@ -1,0 +1,82 @@
+@import "src/assets/scss/_mixins.scss";
+
+:host {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  color: $text-color-lighter;
+
+  .splash, .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+  }
+
+  .splash {
+    background-image: url(../../../assets/images/background.png);
+
+    img {
+      height: 300px;
+      width: 300px;
+      max-width: 50%;
+    }
+  }
+
+  .content {
+    flex-direction: column;
+    align-content: center;
+
+    .container {
+      width: 40%;
+      padding: 2rem;
+      text-align: center;
+
+      .product-logo {
+        margin-bottom: 10vh;
+      }
+
+      h1, h2 {
+        margin: 0;
+      }
+
+      h1 {
+        margin-bottom: 1vh;
+      }
+
+      form {
+        margin-top: 4vh;
+
+        .ng-invalid:not(.ng-untouched) {
+          border: none;
+        }
+
+        // .fields {
+        //   @include rounded(.5rem);
+        //   @include box-shadow(0, 2px, 16px, lighten($text-color-lighter, 50%));
+
+        //   app-input-field {
+        //     width: auto;
+        //     padding: .25rem;
+
+        //     &:not(:last-child) {
+        //       border-bottom: 1px solid lighten($text-color-lighter, 60%);
+        //     }
+        //   }
+        // }
+
+        .btn {
+          width: 100%;
+          margin-top: 4vh;
+        }
+      }
+    }
+  }
+
+  .lower-buttons {
+    button {
+      margin-top: 1rem;
+      width: 100%;
+    }
+  }
+}

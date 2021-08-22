@@ -1,0 +1,45 @@
+<app-toast-message></app-toast-message>
+<div class="main">
+  <ng-container *ngIf="authService.isLoggedIn | async; else loggedOut">
+    <div class="left-side">
+      <div class="nav-settings">
+        <ul class="nav justify-content-center">
+          <li class="nav-item">
+            <a class="nav-link" (click)="openUserSettings()"><fa-icon [icon]="faCog" class="fa-lg" [fixedWidth]="true"></fa-icon></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><fa-icon [icon]="faSearch" class="fa-lg" [fixedWidth]="true"></fa-icon></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><fa-icon [icon]="faEnvelope" class="fa-lg" [fixedWidth]="true"></fa-icon></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><fa-icon [icon]="faBell" class="fa-lg" [fixedWidth]="true"></fa-icon></a>
+          </li>
+        </ul>
+        <div *ngIf="authService.username" class="text-center user-name">
+          <em>{{ authService.username }}</em><br />
+        </div>
+      </div>
+
+      <ul class="nav left-nav flex-column my-4">
+        <li class="nav-item my-1">
+          <a class="nav-link" routerLink="/" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><fa-icon [icon]="faHome" [fixedWidth]="true"></fa-icon> Home</a>
+        </li>
+        <li class="nav-item my-1">
+          <a class="nav-link" (click)="goToLogin()"><fa-icon [icon]="faCaretRight" [fixedWidth]="true"></fa-icon> Login</a>
+        </li>
+      </ul>
+      <div id="logo">
+        <img src="assets/images/umbrella.png" class="logo" alt="redqueen logo">
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </ng-container>
+  <ng-template #loggedOut>
+    <router-outlet></router-outlet>
+    <div class="component-body">
+      <em>Please login to continue</em>
+    </div>
+  </ng-template>
+</div>

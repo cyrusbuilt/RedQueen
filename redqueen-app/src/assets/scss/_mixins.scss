@@ -1,0 +1,157 @@
+@import "src/assets/scss/_vars";
+
+@mixin box-shadow($top, $left, $blur, $color, $inset: false) {
+  @if $inset {
+    box-shadow: inset $top $left $blur $color;
+  } @else {
+    box-shadow: $top $left $blur $color;
+  }
+}
+
+@mixin input-field {
+  display: flex;
+  align-items: center;
+  outline: none;
+  padding: 1rem;
+  color: $text-color-lighter;
+  @include rounded(.5rem);
+
+  .icon {
+    width: 20px;
+    height: 20px;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    &.prefix {
+      margin-right: 1rem;
+    }
+
+    &.postfix {
+      margin-left: 1rem;
+    }
+
+    &.user {
+      background-image: url('../images/icons/user.svg');
+    }
+
+    &.password {
+      background-image: url('../images/icons/password.svg');
+    }
+  }
+
+  span {
+    display: flex;
+    flex-basis: 100%;
+    flex-direction: column;
+    text-align: left;
+    color: lighten($text-color-lighter, 40%);
+    text-transform: uppercase;
+    font-size: .85rem;
+    font-weight: 500;
+
+    input {
+      width: 100%;
+      margin-top: .5rem;
+      outline: none;
+      border: none;
+      font-size: 1rem;
+
+      &::placeholder {
+        color: lighten($text-color-lighter, 40%);
+      }
+    }
+  }
+}
+
+@mixin button($color: $btn-color-secondary, $text-color: white) {
+  display: inline-block;
+  min-width: 100px;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: .75rem;
+  line-height: 2.25;
+  padding: .5rem;
+  color: $text_color !important;
+  background: $color;
+  border: none;
+  white-space: nowrap;
+  @include rounded();
+  @include box-shadow(0, 2px, 8px, lighten($color, 15%));
+
+  &:hover,
+  &:active {
+    text-decoration: none;
+    background: lighten($color, 5%);
+  }
+
+  &:after {
+    @include button-arrow($color);
+  }
+
+  &[disabled] {
+    background: $btn-color-disabled;
+    cursor: not-allowed;
+    @include box-shadow(0, 2px, 8px, lighten($btn-color-disabled, 15%));
+
+
+    &:after {
+      @include button-arrow($btn-color-disabled);
+    }
+  }
+
+  &.reverse {
+    padding-right: 16px;
+
+    &:before {
+      @include button-arrow($color);
+
+      float: left;
+      transform: rotate(180deg);
+      margin-right: 8px;
+      margin-left: 0;
+    }
+
+    &[disabled]:before {
+      @include button-arrow($btn-color-disabled);
+
+      float: left;
+      transform: rotate(180deg);
+      margin-right: 8px;
+      margin-left: 0;
+    }
+
+    &:after {
+      content: '';
+      width: 0;
+      height: 0;
+    }
+  }
+
+}
+
+@mixin rounded($radius: 1.6rem) {
+  border-radius: $radius;
+}
+
+@mixin gradient($from, $to) {
+  background: linear-gradient(linear, left top, left bottom, from($from), to($to));
+}
+
+@mixin button-arrow($color) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: right;
+  font-family: innstock, sans-serif;
+  content: '\e903';
+  width: 25px;
+  height: 25px;
+  background-color: white;
+  color: $color;
+  border-radius: 20px;
+  margin-left: 8px;
+}
