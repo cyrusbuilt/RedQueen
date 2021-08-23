@@ -36,6 +36,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'broker-management/add',
+    loadChildren: () => import('./modules/add-broker/add-broker.module').then(m => m.AddBrokerModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]

@@ -3,7 +3,7 @@
   <em>Create and manage MQTT brokers</em>
 </div>
 <div class="component-body">
-  <button class="btn btn-primary float-right">+ Add Broker</button>
+  <button class="btn btn-primary float-right" (click)="addBroker()">+ Add Broker</button>
   <ng-container *ngIf="brokers">
     <table class="table table-hover table-light">
       <thead class="thead-primary">

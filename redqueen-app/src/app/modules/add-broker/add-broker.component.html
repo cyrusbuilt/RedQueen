@@ -1,0 +1,78 @@
+<div class="component-header">
+  <h2>Broker Management</h2>
+  <em>Create and manage MQTT brokers</em>
+</div>
+<div class="component-body">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h4>Add New Broker</h4>
+    <h5>New Broker</h5>
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <input type="text" name="host" formControlName="host" class="form-control" />
+          <label class="form-label required mt-2" for="host">Host</label>
+        </div>
+      </div>
+      <app-field-error-display
+        [displayError]="isFieldValid('host')"
+        errorMsg="Host name/IP required">
+      </app-field-error-display>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <input type="number" name="port" formControlName="port" class="form-control" />
+          <label class="form-label required mt-2" for="port">Port</label>
+        </div>
+      </div>
+      <app-field-error-display
+        [displayError]="isFieldValid('port')"
+        errorMsg="Port require">
+      </app-field-error-display>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <input type="text" name="username" formControlName="username" class="form-control" />
+          <label class="form-label mt-2" for="username">Username</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <input type="password" name="password" formControlName="password" class="form-control" />
+          <label class="form-label mt-2" for="password">Password</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <input type="checkbox" formControlName="useTls" [checked]="shouldUseTls" value="shouldUseTls" (change)="shouldUseTls = !shouldUseTls"><br />
+          <label class="form-label mt-2" for="useTls">Use TLS</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <input type="number" name="keepAliveSeconds" formControlName="keepAliveSeconds" class="form-control" />
+          <label class="form-label mt-2" for="keepAliveSeconds">Keep Alive Seconds</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <button *ngIf="!submitted && !brokerAdded" type="submit" class="btn create mr-2">Create</button>
+        <button *ngIf="!submitted" type="button" class="btn btn-danger" (click)="onBackClick()">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>
