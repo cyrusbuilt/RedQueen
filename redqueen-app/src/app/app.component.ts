@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
 import { CoreComponent } from './shared/components/core/core.component';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

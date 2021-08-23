@@ -14,6 +14,8 @@ namespace RedQueen.Data
         public DbSet<MqttMessage> Messages { get; set; }
         
         public DbSet<LoginHistory> LoginHistories { get; set; }
+        
+        public DbSet<Device> Devices { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +35,11 @@ namespace RedQueen.Data
             });
 
             modelBuilder.Entity<LoginHistory>(entity =>
+            {
+                entity.HasIndex(t => t.Id).IsUnique();
+            });
+
+            modelBuilder.Entity<Device>(entity =>
             {
                 entity.HasIndex(t => t.Id).IsUnique();
             });

@@ -78,7 +78,7 @@ namespace RedQueenAPI.Controllers
             var existingUser = await _userManager.FindByNameAsync(registration.Username);
             if (existingUser != null)
             {
-                return BadRequest(new AuthenticationResponse
+                return BadRequest(new GeneralResponse
                 {
                     Status = "Error",
                     Message = "User already exists!"
@@ -95,14 +95,14 @@ namespace RedQueenAPI.Controllers
             var result = await _userManager.CreateAsync(user, registration.Password);
             if (!result.Succeeded)
             {
-                return BadRequest(new AuthenticationResponse
+                return BadRequest(new GeneralResponse
                 {
                     Status = "Error",
                     Message = "Failed to create user! Check user details and try again."
                 });
             }
 
-            return Ok(new AuthenticationResponse
+            return Ok(new GeneralResponse
             {
                 Status = "Success",
                 Message = "User created successfully."
@@ -116,7 +116,7 @@ namespace RedQueenAPI.Controllers
             var existingUser = await _userManager.FindByNameAsync(registration.Username);
             if (existingUser != null)
             {
-                return BadRequest(new AuthenticationResponse
+                return BadRequest(new GeneralResponse
                 {
                     Status = "Error",
                     Message = "User already exists!"
@@ -133,7 +133,7 @@ namespace RedQueenAPI.Controllers
             var result = await _userManager.CreateAsync(user, registration.Password);
             if (!result.Succeeded)
             {
-                return BadRequest(new AuthenticationResponse
+                return BadRequest(new GeneralResponse
                 {
                     Status = "Error",
                     Message = "Failed to create user! Check user details and try again."
@@ -155,7 +155,7 @@ namespace RedQueenAPI.Controllers
                 await _userManager.AddToRoleAsync(user, UserRoles.Admin);
             }
 
-            return Ok(new AuthenticationResponse
+            return Ok(new GeneralResponse
             {
                 Status = "Success",
                 Message = "Admin user created successfully."
@@ -169,7 +169,7 @@ namespace RedQueenAPI.Controllers
             var user = await _userManager.FindByIdAsync(request.UserId);
             if (user == null)
             {
-                return BadRequest(new AuthenticationResponse
+                return BadRequest(new GeneralResponse
                 {
                     Status = "Error",
                     Message = "User not found."

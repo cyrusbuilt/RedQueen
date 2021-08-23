@@ -1,6 +1,6 @@
 namespace RedQueenAPI.Models
 {
-    public class AuthenticationResponse
+    public class GeneralResponse
     {
         public string Status { get; set; }
         

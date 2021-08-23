@@ -29,6 +29,9 @@
         <li class="nav-item my-1">
           <a class="nav-link" (click)="goToLogin()"><fa-icon [icon]="faCaretRight" [fixedWidth]="true"></fa-icon> Login</a>
         </li>
+        <li class="nav-item my-1">
+          <a class="nav-link" routerLink="/device-management" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><fa-icon [icon]="faCog" [fixedWidth]="true"></fa-icon> Device Management</a>
+        </li>
       </ul>
       <div id="logo">
         <img src="assets/images/umbrella.png" class="logo" alt="redqueen logo">

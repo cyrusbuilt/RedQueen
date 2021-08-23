@@ -27,7 +27,7 @@ namespace RedQueenAPI.Controllers
                 return Ok(result);
             }
 
-            return BadRequest(new AuthenticationResponse
+            return BadRequest(new GeneralResponse
             {
                 Status = "Error",
                 Message = "User not found."

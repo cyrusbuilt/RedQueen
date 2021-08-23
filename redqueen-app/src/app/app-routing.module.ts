@@ -26,6 +26,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'device-management',
+    loadChildren: () => import('./modules/device-management/device-management.module').then(m => m.DeviceManagementModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]
