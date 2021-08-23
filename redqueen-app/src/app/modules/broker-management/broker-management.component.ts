@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MqttBroker } from 'src/app/core/interfaces/mqtt-broker';
 import { TelemetryService } from 'src/app/core/services/telemetry.service';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -13,7 +14,8 @@ export class BrokerManagementComponent implements OnInit {
 
   constructor(
     private _telemService: TelemetryService,
-    private _toastService: ToastService
+    private _toastService: ToastService,
+    private _router: Router
   ) {
     this.brokers = [];
   }
@@ -40,5 +42,9 @@ export class BrokerManagementComponent implements OnInit {
         }
       }
     });
+  }
+
+  addBroker(): void {
+    this._router.navigate(['/broker-management/add']);
   }
 }
