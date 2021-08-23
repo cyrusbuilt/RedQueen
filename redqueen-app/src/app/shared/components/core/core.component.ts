@@ -4,6 +4,7 @@ import {
   faChartBar,
   faClipboardList,
   faCog,
+  faCogs,
   faEdit,
   faEnvelope,
   faHome,
@@ -11,6 +12,7 @@ import {
   faUserCog,
   faCaretLeft,
   faCaretRight,
+  faBroadcastTower,
   IconDefinition
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -21,6 +23,7 @@ import {
 })
 export class CoreComponent implements OnInit {
   faCog: IconDefinition = faCog;
+  faCogs: IconDefinition = faCogs;
   faSearch: IconDefinition = faSearch;
   faEnvelope: IconDefinition = faEnvelope;
   faBell: IconDefinition = faBell;
@@ -31,6 +34,7 @@ export class CoreComponent implements OnInit {
   faPencil: IconDefinition = faEdit;
   faCaretLeft: IconDefinition = faCaretLeft;
   faCaretRight: IconDefinition = faCaretRight;
+  faBroadcastTower: IconDefinition = faBroadcastTower;
 
   constructor() { }
 

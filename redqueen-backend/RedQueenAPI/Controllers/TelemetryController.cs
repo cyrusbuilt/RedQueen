@@ -24,7 +24,7 @@ namespace RedQueenAPI.Controllers
         [Route("brokers")]
         public async Task<IActionResult> GetBrokers()
         {
-            var brokers = await _redQueenDataService.GetMqttBrokers();
+            var brokers = await _redQueenDataService.GetMqttBrokers(false);
             return Ok(brokers);
         }
 

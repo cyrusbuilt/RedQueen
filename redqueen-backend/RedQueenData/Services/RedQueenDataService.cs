@@ -11,7 +11,7 @@ namespace RedQueen.Data.Services
 {
     public interface IRedQueenDataService
     {
-        Task<List<MqttBroker>> GetMqttBrokers();
+        Task<List<MqttBroker>> GetMqttBrokers(bool activeOnly = true);
         Task<MqttBroker> GetBrokerByHost(string host);
         Task<bool> TopicExists(string topic);
         Task<MqttTopic> GetTopic(string topic);
@@ -20,6 +20,7 @@ namespace RedQueen.Data.Services
         Task<List<Device>> GetDevices();
         Task<MqttBroker> SaveBroker(MqttBrokerDto broker);
         Task<MqttBroker> UpdateBroker(int id, MqttBrokerDto broker);
+        
     }
     
     public class RedQueenDataService : IRedQueenDataService
@@ -32,12 +33,11 @@ namespace RedQueen.Data.Services
             _context = scope.ServiceProvider.GetRequiredService<RedQueenContext>();
         }
 
-        public async Task<List<MqttBroker>> GetMqttBrokers()
+        public async Task<List<MqttBroker>> GetMqttBrokers(bool activeOnly)
         {
-            var query = from x in _context.Brokers
-                where x.IsActive
-                select x;
-            var brokers = await query.ToListAsync();
+            var brokers = activeOnly
+                ? await _context.Brokers.Where(b => b.IsActive).ToListAsync()
+                : await _context.Brokers.ToListAsync();
             
             foreach (var b in brokers)
             {
