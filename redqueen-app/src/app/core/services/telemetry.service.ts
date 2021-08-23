@@ -15,14 +15,14 @@ export class TelemetryService {
   }
 
   getBrokers(): Observable<MqttBroker[]> {
-    return this.http.get<MqttBroker[]>(`${this.rootUrl}/api/brokers`);
+    return this.http.get<MqttBroker[]>(`${this.rootUrl}/telemetry/brokers`);
   }
 
   addBroker(broker: MqttBroker): Observable<MqttBroker | null> {
-    return this.http.post<MqttBroker | null>(`${this.rootUrl}/api/telemetry/brokers/add`, broker);
+    return this.http.post<MqttBroker | null>(`${this.rootUrl}/telemetry/brokers/add`, broker);
   }
 
   updateBroker(id: number, broker: MqttBroker): Observable<MqttBroker | null> {
-    return this.http.put<MqttBroker | null>(`${this.rootUrl}/api/brokers/${id}`, broker);
+    return this.http.put<MqttBroker | null>(`${this.rootUrl}/telemetry/brokers/${id}`, broker);
   }
 }

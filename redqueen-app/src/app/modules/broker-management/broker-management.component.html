@@ -1,0 +1,40 @@
+<div class="component-header">
+  <h2>Broker Management</h2>
+  <em>Create and manage MQTT brokers</em>
+</div>
+<div class="component-body">
+  <button class="btn btn-primary float-right">+ Add Broker</button>
+  <ng-container *ngIf="brokers">
+    <table class="table table-hover table-light">
+      <thead class="thead-primary">
+        <tr>
+          <th scope="col">Host</th>
+          <th scope="col">Port</th>
+          <th scope="col">Username</th>
+          <th scope="col">Active</th>
+          <th scope="col">Created</th>
+          <th scope="col">Modified</th>
+          <th scope="col">Use TLS</th>
+          <th scope="col">Keepalive Seconds</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let b of brokers">
+          <td>{{ b.host }}</td>
+          <td>{{ b.port }}</td>
+          <td>{{ b.username }}</td>
+          <td>{{ b.isActive }}</td>
+          <td>{{ b.createdDate }}</td>
+          <td>{{ b.modifiedDate }}</td>
+          <td>{{ b.useTls }}</td>
+          <td>{{ b.keepAliveSeconds }}</td>
+          <td>
+            <button *ngIf="b.isActive" class="btn btn-danger" (click)="activateOrDeactivateBroker(b)">Deactivate</button>
+            <button *ngIf="!b.isActive" class="btn btn-success" (click)="activateOrDeactivateBroker(b)">Activate</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</div>

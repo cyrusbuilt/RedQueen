@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace RedQueen.Data.Models.Db
 {
@@ -21,8 +22,10 @@ namespace RedQueen.Data.Models.Db
         [Column("created_date")]
         public DateTime CreatedDate { get; set; }
         
+        [JsonIgnore]
         public MqttBroker Broker { get; set; }
         
+        [JsonIgnore]
         public ICollection<MqttMessage> Messages { get; set; }
     }
 }
