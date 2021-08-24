@@ -10,6 +10,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { LoginGuard } from './core/guards/login.guard';
 import { HomeComponent } from './modules/home/home.component';
 import { HttpAuthInterceptor } from './core/interceptors/http-auth.interceptor';
+import { ActiveBrokersPipe } from './core/pipes/active-brokers.pipe';
 
 @NgModule({
   declarations: [
