@@ -13,14 +13,16 @@ namespace RedQueen.Data.Services
     {
         Task<List<MqttBroker>> GetMqttBrokers(bool activeOnly = true);
         Task<MqttBroker> GetBrokerByHost(string host);
+        Task<MqttBroker> GetBrokerById(int id);
         Task<bool> TopicExists(string topic);
         Task<MqttTopic> GetTopic(string topic);
         Task<bool> SaveTopic(string topicName, int brokerId);
+        Task<MqttTopic> UpdateTopic(int id, MqttTopicDto topic);
         Task SaveMqttMessage(string message, int topicId, string clientId);
         Task<List<Device>> GetDevices();
         Task<MqttBroker> SaveBroker(MqttBrokerDto broker);
         Task<MqttBroker> UpdateBroker(int id, MqttBrokerDto broker);
-        
+        Task<List<MqttTopic>> GetTopics(bool activeOnly = true);
     }
     
     public class RedQueenDataService : IRedQueenDataService
@@ -75,7 +77,8 @@ namespace RedQueen.Data.Services
             {
                 Name = topicName,
                 CreatedDate = DateTime.Now,
-                BrokerId = brokerId
+                BrokerId = brokerId,
+                IsActive = true
             });
 
             await _context.SaveChangesAsync();
@@ -151,6 +154,38 @@ namespace RedQueen.Data.Services
             
             await _context.SaveChangesAsync();
             return existingBroker;
+        }
+
+        public async Task<MqttBroker> GetBrokerById(int id)
+        {
+            var result = await _context.Brokers.FirstOrDefaultAsync(b => b.Id == id);
+            return result;
+        }
+
+        public async Task<List<MqttTopic>> GetTopics(bool activeOnly)
+        {
+            var topics = activeOnly
+                ? await _context.Topics.Where(t => t.IsActive).ToListAsync()
+                : await _context.Topics.ToListAsync();
+
+            return topics;
+        }
+
+        public async Task<MqttTopic> UpdateTopic(int id, MqttTopicDto topic)
+        {
+            var existingTopic = await _context.Topics.FirstOrDefaultAsync(t => t.Id == id);
+            if (existingTopic == null)
+            {
+                return null;
+            }
+
+            existingTopic.Name = topic.Name;
+            existingTopic.BrokerId = topic.BrokerId;
+            existingTopic.IsActive = topic.IsActive;
+            existingTopic.ModifiedDate = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+            return existingTopic;
         }
     }
 }
