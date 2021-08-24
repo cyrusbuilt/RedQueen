@@ -68,6 +68,6 @@ export class TopicManagementComponent implements OnInit {
   }
 
   addTopic(): void {
-
+    this._router.navigate(['/topic-management/add']);
   }
 }

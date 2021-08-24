@@ -38,4 +38,8 @@ export class TelemetryService {
   updateTopic(id: number, topic: MqttTopic): Observable<MqttTopic | null> {
     return this.http.put<MqttTopic | null>(`${this.rootUrl}/telemetry/topics/${id}`, topic);
   }
+
+  addTopic(topic: MqttTopic): Observable<MqttTopic | null> {
+    return this.http.post<MqttTopic | null>(`${this.rootUrl}/telemetry/topics/add`, topic);
+  }
 }

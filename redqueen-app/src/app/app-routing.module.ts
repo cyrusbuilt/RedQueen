@@ -46,6 +46,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'topic-management/add',
+    loadChildren: () => import('./modules/add-topic/add-topic.module').then(m => m.AddTopicModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]

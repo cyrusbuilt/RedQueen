@@ -100,5 +100,36 @@ namespace RedQueenAPI.Controllers
                 });
             }
         }
+
+        [HttpPost]
+        [Route("topics/add")]
+        public async Task<IActionResult> AddTopic([FromBody] MqttTopicDto topic)
+        {
+            try
+            {
+                var success = await _redQueenDataService.SaveTopic(topic.Name, topic.BrokerId);
+                if (success)
+                {
+                    var savedTopic = await _redQueenDataService.GetTopic(topic.Name);
+                    return Ok(savedTopic);
+                }
+                else
+                {
+                    return BadRequest(new GeneralResponse
+                    {
+                        Status = "Error",
+                        Message = "Could not save topic! Make sure topic does not already exist."
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new GeneralResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                });
+            }
+        }
     }
 }
