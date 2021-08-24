@@ -13,6 +13,7 @@ import {
   faCaretLeft,
   faCaretRight,
   faBroadcastTower,
+  faNewspaper,
   IconDefinition
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -35,6 +36,7 @@ export class CoreComponent implements OnInit {
   faCaretLeft: IconDefinition = faCaretLeft;
   faCaretRight: IconDefinition = faCaretRight;
   faBroadcastTower: IconDefinition = faBroadcastTower;
+  faNewspaper: IconDefinition = faNewspaper;
 
   constructor() { }
 

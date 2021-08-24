@@ -1,0 +1,34 @@
+<div class="component-header">
+  <h2>Topic Management</h2>
+  <em>Create and manage device topics</em>
+</div>
+<div class="component-body">
+  <button class="btn btn-primary float-right" (click)="addTopic()">+ Add Topic</button>
+  <ng-container *ngIf="topics">
+    <table class="table table-hover table-light">
+      <thead class="thead-primary">
+        <tr>
+          <th scope="col">Broker</th>
+          <th scope="col">Name</th>
+          <th scope="col">Created</th>
+          <th scope="col">Modified</th>
+          <th scope="col">Active</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of topics">
+          <td>{{ getBrokerNameForTopic(t) }}</td>
+          <td>{{ t.name }}</td>
+          <td>{{ t.createdDate }}</td>
+          <td>{{ t.modifiedDate }}</td>
+          <td>{{ t.isActive }}</td>
+          <td>
+            <button *ngIf="t.isActive" class="btn btn-danger" (click)="activateOrDeactivateTopic(t)">Deactivate</button>
+            <button *ngIf="!t.isActive" class="btn btn-success" (click)="activateOrDeactivateTopic(t)">Activate</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</div>

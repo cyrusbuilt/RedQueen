@@ -3,4 +3,6 @@ export interface MqttTopic {
   name: string;
   brokerId: number;
   createdDate: Date;
+  modifiedDate: Date;
+  isActive: boolean;
 }

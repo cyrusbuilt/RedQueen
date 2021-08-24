@@ -65,5 +65,40 @@ namespace RedQueenAPI.Controllers
                 });
             }
         }
+
+        [HttpGet]
+        [Route("brokers/{id:int}")]
+        public async Task<IActionResult> GetBrokerById([FromRoute] int id)
+        {
+            var result = await _redQueenDataService.GetBrokerById(id);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("topics")]
+        public async Task<IActionResult> GetTopics()
+        {
+            var result = await _redQueenDataService.GetTopics(false);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("topics/{id:int}")]
+        public async Task<IActionResult> UpdateTopic([FromRoute] int id, [FromBody] MqttTopicDto topic)
+        {
+            try
+            {
+                var result = await _redQueenDataService.UpdateTopic(id, topic);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new GeneralResponse
+                {
+                    Status = "Error",
+                    Message = ex.Message
+                });
+            }
+        }
     }
 }
