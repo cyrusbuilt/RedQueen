@@ -4,6 +4,8 @@ import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { MqttBroker } from '../interfaces/mqtt-broker';
 import { MqttTopic } from '../interfaces/mqtt-topic';
+import { PaginatedList } from '../interfaces/paginated-list';
+import { MqttMessage } from '../interfaces/mqtt-message';
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +47,10 @@ export class TelemetryService {
 
   getTopicsForBroker(id: number): Observable<MqttTopic[]> {
     return this.http.get<MqttTopic[]>(`${this.rootUrl}/telemetry/brokers/${id}/topics`);
+  }
+
+  getMessages(pageSize: number, currentPage: number): Observable<PaginatedList<MqttMessage>> {
+    return this.http.get<PaginatedList<MqttMessage>>(`${this.rootUrl}/telemetry/messages`,
+      {params: {'pageSize': pageSize, 'currentPage': currentPage }});
   }
 }

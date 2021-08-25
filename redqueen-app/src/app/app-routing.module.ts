@@ -56,6 +56,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'messages',
+    loadChildren: () => import('./modules/message-list-view/message-list-view.module').then(m => m.MessageListViewModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]
