@@ -193,14 +193,20 @@ namespace RedQueen.Services
 
         public async Task SubscribeTopic(MqttTopic topic)
         {
-            await _clientSubscriber.SubscribeAsync(topic.Name);
+            if (topic.IsActive)
+            {
+                await _clientSubscriber.SubscribeAsync(topic.Name);
+            }
         }
 
         public async Task SubscribeAllTopics()
         {
             foreach (var topic in _broker.Topics)
             {
-                await SubscribeTopic(topic);
+                if (topic.IsActive)
+                {
+                    await SubscribeTopic(topic);
+                }
             }
         }
         

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ namespace RedQueen.Data.Services
     public interface IUserService
     {
         Task<ApplicationUser> GetUser(string userId);
+        Task<List<ApplicationUser>> GetUserList();
     }
     
     public class UserService : IUserService
@@ -22,6 +24,11 @@ namespace RedQueen.Data.Services
         public async Task<ApplicationUser> GetUser(string userId)
         {
             return await _dbContexts.ApplicationDbContext.Users.FirstOrDefaultAsync(u => u.Id.Equals(userId));
+        }
+
+        public async Task<List<ApplicationUser>> GetUserList()
+        {
+            return await _dbContexts.ApplicationDbContext.Users.ToListAsync();
         }
     }
 }

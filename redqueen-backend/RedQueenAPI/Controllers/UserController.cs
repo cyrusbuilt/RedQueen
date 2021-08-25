@@ -33,5 +33,13 @@ namespace RedQueenAPI.Controllers
                 Message = "User not found."
             });
         }
+
+        [HttpGet]
+        [Route("list")]
+        public async Task<IActionResult> GetUserList()
+        {
+            var result = await _userService.GetUserList();
+            return Ok(result);
+        }
     }
 }

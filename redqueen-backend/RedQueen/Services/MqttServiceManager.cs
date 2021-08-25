@@ -35,7 +35,7 @@ namespace RedQueen.Services
             Instances = new List<IMqttService>();
         }
 
-        private async void OnMessageReceived(object sender, MqttMessageReceivedEvent evt)
+        private void OnMessageReceived(object sender, MqttMessageReceivedEvent evt)
         {
             var payload = evt.EventData.ApplicationMessage.ConvertPayloadToString();
             var msg = $"Message received: Timestamp: {DateTime.Now} | Topic: {evt.EventData.ApplicationMessage.Topic}";
@@ -44,11 +44,11 @@ namespace RedQueen.Services
             
             _logger.LogInformation(msg);
 
-            var broker = await _dataService.GetBrokerByHost(evt.Host);
-            await _dataService.SaveTopic(evt.EventData.ApplicationMessage.Topic, broker.Id);
+            var broker = _dataService.GetBrokerByHost(evt.Host).Result;
+            _dataService.SaveTopic(evt.EventData.ApplicationMessage.Topic, broker.Id).Wait();
             
-            var topic = await _dataService.GetTopic(evt.EventData.ApplicationMessage.Topic);
-            await _dataService.SaveMqttMessage(payload, topic.Id, evt.EventData.ClientId);
+            var topic = _dataService.GetTopic(evt.EventData.ApplicationMessage.Topic).Result;
+            _dataService.SaveMqttMessage(payload, topic.Id, evt.EventData.ClientId).Wait();
         }
 
         public void AddService(IMqttService service)
