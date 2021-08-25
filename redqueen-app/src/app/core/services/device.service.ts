@@ -17,4 +17,12 @@ export class DeviceService {
   getDevices(): Observable<Device[]> {
     return this.http.get<Device[]>(`${this.rootUrl}/device/list`);
   }
+
+  updateDevice(id: number, device: Device): Observable<Device | null> {
+    return this.http.put<Device | null>(`${this.rootUrl}/device/${id}`, device);
+  }
+
+  saveDevice(device: Device): Observable<Device | null> {
+    return this.http.post<Device | null>(`${this.rootUrl}/device/add`, device);
+  }
 }

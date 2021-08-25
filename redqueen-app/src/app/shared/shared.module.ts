@@ -8,13 +8,17 @@ import { InputFieldComponent } from './components/input-field/input-field.compon
 import { CoreComponent } from './components/core/core.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FieldErrorDisplayComponent } from './components/field-error-display/field-error-display.component';
+import { ActiveBrokersPipe } from '../core/pipes/active-brokers.pipe';
+import { ActiveTopicsPipe } from '../core/pipes/active-topics.pipe';
 
 @NgModule({
   declarations: [
     ToastMessageComponent,
     InputFieldComponent,
     CoreComponent,
-    FieldErrorDisplayComponent
+    FieldErrorDisplayComponent,
+    ActiveBrokersPipe,
+    ActiveTopicsPipe
   ],
   imports: [
     CommonModule,
@@ -27,7 +31,9 @@ import { FieldErrorDisplayComponent } from './components/field-error-display/fie
   exports: [
     ToastMessageComponent,
     FontAwesomeModule,
-    FieldErrorDisplayComponent
+    FieldErrorDisplayComponent,
+    ActiveBrokersPipe,
+    ActiveTopicsPipe
   ],
   providers: []
 })

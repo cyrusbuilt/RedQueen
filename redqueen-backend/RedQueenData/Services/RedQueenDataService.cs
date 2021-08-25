@@ -16,13 +16,16 @@ namespace RedQueen.Data.Services
         Task<MqttBroker> GetBrokerById(int id);
         Task<bool> TopicExists(string topic);
         Task<MqttTopic> GetTopic(string topic);
+        Task<List<MqttTopic>> GetTopicsForBroker(int brokerId);
         Task<bool> SaveTopic(string topicName, int brokerId);
         Task<MqttTopic> UpdateTopic(int id, MqttTopicDto topic);
         Task SaveMqttMessage(string message, int topicId, string clientId);
-        Task<List<Device>> GetDevices();
+        Task<List<Device>> GetDevices(bool activeOnly = true);
         Task<MqttBroker> SaveBroker(MqttBrokerDto broker);
         Task<MqttBroker> UpdateBroker(int id, MqttBrokerDto broker);
         Task<List<MqttTopic>> GetTopics(bool activeOnly = true);
+        Task<Device> UpdateDevice(int id, DeviceDto device);
+        Task<Device> AddDevice(DeviceDto device);
     }
     
     public class RedQueenDataService : IRedQueenDataService
@@ -68,6 +71,11 @@ namespace RedQueen.Data.Services
             return await _context.Topics.Where(t => t.Name.Equals(topic)).FirstOrDefaultAsync();
         }
 
+        public async Task<List<MqttTopic>> GetTopicsForBroker(int brokerId)
+        {
+            return await _context.Topics.Where(t => t.BrokerId == brokerId).ToListAsync();
+        }
+
         public async Task<bool> SaveTopic(string topicName, int brokerId)
         {
             var exists = await TopicExists(topicName);
@@ -98,9 +106,12 @@ namespace RedQueen.Data.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Device>> GetDevices()
+        public async Task<List<Device>> GetDevices(bool activeOnly)
         {
-            var devices = await _context.Devices.Where(d => d.IsActive).ToListAsync();
+            var devices = activeOnly
+                ? await _context.Devices.Where(d => d.IsActive).ToListAsync()
+                : await _context.Devices.ToListAsync();
+            
             foreach (var device in devices)
             {
                 device.StatusTopic = await _context.Topics.FirstOrDefaultAsync(t => t.Id == device.StatusTopicId);
@@ -186,6 +197,46 @@ namespace RedQueen.Data.Services
 
             await _context.SaveChangesAsync();
             return existingTopic;
+        }
+
+        public async Task<Device> UpdateDevice(int id, DeviceDto device)
+        {
+            var existingDevice = await _context.Devices.FirstOrDefaultAsync(d => d.Id == id);
+            if (existingDevice == null)
+            {
+                return null;
+            }
+
+            existingDevice.Name = device.Name;
+            existingDevice.ControlTopicId = device.ControlTopicId;
+            existingDevice.StatusTopicId = device.StatusTopicId;
+            existingDevice.IsActive = device.IsActive;
+            existingDevice.ModifiedDate = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+            return existingDevice;
+        }
+
+        public async Task<Device> AddDevice(DeviceDto device)
+        {
+            var dev = await _context.Devices.FirstOrDefaultAsync(d => d.Name.ToLower().Equals(device.Name));
+            if (dev != null)
+            {
+                return null;
+            }
+
+            var newDevice = new Device
+            {
+                Name = device.Name,
+                StatusTopicId = device.StatusTopicId,
+                ControlTopicId = device.ControlTopicId,
+                CreatedDate = DateTime.Now,
+                IsActive = true
+            };
+
+            _context.Devices.Add(newDevice);
+            await _context.SaveChangesAsync();
+            return newDevice;
         }
     }
 }

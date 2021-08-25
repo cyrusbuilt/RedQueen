@@ -42,4 +42,8 @@ export class TelemetryService {
   addTopic(topic: MqttTopic): Observable<MqttTopic | null> {
     return this.http.post<MqttTopic | null>(`${this.rootUrl}/telemetry/topics/add`, topic);
   }
+
+  getTopicsForBroker(id: number): Observable<MqttTopic[]> {
+    return this.http.get<MqttTopic[]>(`${this.rootUrl}/telemetry/brokers/${id}/topics`);
+  }
 }

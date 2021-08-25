@@ -131,5 +131,13 @@ namespace RedQueenAPI.Controllers
                 });
             }
         }
+        
+        [HttpGet]
+        [Route("brokers/{brokerId:int}/topics")]
+        public async Task<IActionResult> GetTopicsForBroker([FromRoute] int brokerId)
+        {
+            var result = await _redQueenDataService.GetTopicsForBroker(brokerId);
+            return Ok(result);
+        }
     }
 }

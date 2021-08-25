@@ -87,7 +87,6 @@ export class AddTopicComponent implements OnInit {
       isActive: true
     } as MqttTopic;
 
-    console.log(`Topic: ${JSON.stringify(topic)}`);
     this._telemService.addTopic(topic)
       .pipe(take(1))
       .subscribe(value => {
@@ -108,7 +107,5 @@ export class AddTopicComponent implements OnInit {
     if (brkr) {
       this.selectedBroker = brkr.value as MqttBroker;
     }
-
-    console.log(`Selected broker: ${JSON.stringify(this.selectedBroker)}`);
   }
 }

@@ -31,6 +31,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'device-management/add',
+    loadChildren: () =>  import('./modules/add-device/add-device.module').then(m => m.AddDeviceModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'broker-management',
     loadChildren: () => import('./modules/broker-management/broker-management.module').then(m => m.BrokerManagementModule),
     canActivate: [AuthGuard]

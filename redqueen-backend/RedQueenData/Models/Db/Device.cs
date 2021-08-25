@@ -1,5 +1,7 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace RedQueen.Data.Models.Db
 {
@@ -21,6 +23,12 @@ namespace RedQueen.Data.Models.Db
         
         [Column("is_active")]
         public bool IsActive { get; set; }
+        
+        [Column("created_date")]
+        public DateTime CreatedDate { get; set; }
+        
+        [Column("modified_date")]
+        public DateTime? ModifiedDate { get; set; }
         
         public MqttTopic StatusTopic { get; set; }
         
