@@ -61,6 +61,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'user-management',
+    loadChildren: () => import('./modules/user-management/user-management.module').then(m => m.UserManagementModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]

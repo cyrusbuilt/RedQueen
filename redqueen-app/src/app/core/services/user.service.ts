@@ -15,4 +15,8 @@ export class UserService {
   getUser(userId: string): Observable<ApplicationUser> {
     return this.http.get<ApplicationUser>(`${this.rootUrl}/user`, {params: { 'userId': userId }});
   }
+
+  getUserList(): Observable<ApplicationUser[]> {
+    return this.http.get<ApplicationUser[]>(`${this.rootUrl}/user/list`);
+  }
 }

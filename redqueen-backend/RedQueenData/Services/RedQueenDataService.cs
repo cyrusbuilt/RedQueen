@@ -255,7 +255,7 @@ namespace RedQueen.Data.Services
                 group new { m.Id, m.ClientId, m.Content, m.Timestamp, t.Name } 
                     by new { m.Id, m.ClientId, m.Content, m.Timestamp, t.Name }
                 into g
-                orderby g.Key.Id
+                orderby g.Key.Id descending
                 select new MqttMessageDto
                 {
                     Id = g.Key.Id,

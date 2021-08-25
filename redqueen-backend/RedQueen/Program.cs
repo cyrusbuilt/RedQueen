@@ -31,7 +31,7 @@ namespace RedQueen
                     // Can't use services.AddDbContext<RedQueenContext>();
                     
                     var options = new DbContextOptionsBuilder<RedQueenContext>()
-                        .UseNpgsql(config.GetConnectionString("RedQueenContext")).Options;
+                        .UseNpgsql(config.GetConnectionString("RedQueenContext")).Options; 
                     services.AddSingleton(new RedQueenContext(options));
                     services.AddSingleton(settings);
                     services.AddSingleton<IRedQueenDataService, RedQueenDataService>();

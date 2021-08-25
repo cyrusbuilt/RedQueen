@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InputFieldComponent } from './input-field.component';
+import { UserManagementComponent } from './user-management.component';
 
-describe('InputFieldComponent', () => {
-  let component: InputFieldComponent;
-  let fixture: ComponentFixture<InputFieldComponent>;
+describe('UserManagementComponent', () => {
+  let component: UserManagementComponent;
+  let fixture: ComponentFixture<UserManagementComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InputFieldComponent ]
+      declarations: [ UserManagementComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InputFieldComponent);
+    fixture = TestBed.createComponent(UserManagementComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
