@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AddTopicRoutingModule } from './add-topic-routing.module';
-import { AddTopicComponent } from './add-topic.component';
+import { AddDeviceRoutingModule } from './add-device-routing.module';
+import { AddDeviceComponent } from './add-device.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AddTopicComponent
+    AddDeviceComponent
   ],
   imports: [
     CommonModule,
-    AddTopicRoutingModule,
+    AddDeviceRoutingModule,
     SharedModule,
     ReactiveFormsModule
   ]
 })
-export class AddTopicModule { }
+export class AddDeviceModule { }

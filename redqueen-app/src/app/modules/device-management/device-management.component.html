@@ -3,7 +3,7 @@
   <em>Create and manage devices</em>
 </div>
 <div class="component-body">
-  <button class="btn btn-primary float-right">+ Add Device</button>
+  <button class="btn btn-primary float-right" (click)="onAddDevice()">+ Add Device</button>
   <ng-container *ngIf="devices">
     <table class="table table-hover table-light">
       <thead class="thead-primary">
@@ -12,15 +12,19 @@
           <th scope="col">Status Topic</th>
           <th scope="col">Control Topic</th>
           <th scope="col">Active</th>
+          <th scope="col">Created</th>
+          <th scope="col">Modified</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let dev of devices">
           <td>{{ dev.name }}</td>
-          <td>{{ dev.statusTopic.name }}</td>
+          <td>{{ dev.statusTopic && dev.statusTopic.name }}</td>
           <td>{{ dev.controlTopic && dev.controlTopic.name }}</td>
           <td>{{ dev.isActive }}</td>
+          <td>{{ dev.createdDate }}</td>
+          <td>{{ dev.modifiedDate }}</td>
           <td>
             <button *ngIf="dev.isActive" class="btn btn-danger" (click)="activateOrDeactivateDevice(dev)">Deactivate</button>
             <button *ngIf="!dev.isActive" class="btn btn-success" (click)="activateOrDeactivateDevice(dev)">Activate</button>

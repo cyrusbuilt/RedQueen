@@ -6,6 +6,8 @@ export interface Device {
   isActive: boolean;
   statusTopicId: number;
   controlTopicId: number;
-  statusTopic: MqttTopic;
+  statusTopic?: MqttTopic;
   controlTopic?: MqttTopic;
+  createdDate: Date;
+  modifiedDate?: Date;
 }
