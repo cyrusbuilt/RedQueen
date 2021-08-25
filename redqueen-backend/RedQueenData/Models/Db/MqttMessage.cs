@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace RedQueen.Data.Models.Db
 {
@@ -23,6 +24,7 @@ namespace RedQueen.Data.Models.Db
         [Column("client_id")]
         public string ClientId { get; set; }
         
+        [JsonIgnore]
         public MqttTopic Topic { get; set; }
     }
 }

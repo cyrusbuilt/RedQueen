@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,8 @@ namespace RedQueen.Data.Services
         Task<List<MqttTopic>> GetTopics(bool activeOnly = true);
         Task<Device> UpdateDevice(int id, DeviceDto device);
         Task<Device> AddDevice(DeviceDto device);
+        Task<List<MqttMessage>> GetMessages();
+        IQueryable<MqttMessageDto> GetMessagesQueryable();
     }
     
     public class RedQueenDataService : IRedQueenDataService
@@ -237,6 +240,31 @@ namespace RedQueen.Data.Services
             _context.Devices.Add(newDevice);
             await _context.SaveChangesAsync();
             return newDevice;
+        }
+
+        public async Task<List<MqttMessage>> GetMessages()
+        {
+            return await _context.Messages.ToListAsync();
+        }
+
+        public IQueryable<MqttMessageDto> GetMessagesQueryable()
+        {
+            var query = from m in _context.Messages
+                join t in _context.Topics on m.TopicId equals t.Id
+                where t.IsActive
+                group new { m.Id, m.ClientId, m.Content, m.Timestamp, t.Name } 
+                    by new { m.Id, m.ClientId, m.Content, m.Timestamp, t.Name }
+                into g
+                orderby g.Key.Id
+                select new MqttMessageDto
+                {
+                    Id = g.Key.Id,
+                    ClientId = g.Key.ClientId,
+                    Content = g.Key.Content,
+                    Timestamp = g.Key.Timestamp,
+                    TopicName = g.Key.Name
+                };
+            return query;
         }
     }
 }

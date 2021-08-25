@@ -10,6 +10,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FieldErrorDisplayComponent } from './components/field-error-display/field-error-display.component';
 import { ActiveBrokersPipe } from '../core/pipes/active-brokers.pipe';
 import { ActiveTopicsPipe } from '../core/pipes/active-topics.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -26,14 +27,16 @@ import { ActiveTopicsPipe } from '../core/pipes/active-topics.pipe';
     RouterModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgxPaginationModule
   ],
   exports: [
     ToastMessageComponent,
     FontAwesomeModule,
     FieldErrorDisplayComponent,
     ActiveBrokersPipe,
-    ActiveTopicsPipe
+    ActiveTopicsPipe,
+    NgxPaginationModule
   ],
   providers: []
 })

@@ -1,10 +1,13 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RedQueen.Data.Models.Db;
 using RedQueen.Data.Services;
 using RedQueen.Data.Models.Dto;
+using RedQueenAPI.Collections;
 using RedQueenAPI.Models;
 
 namespace RedQueenAPI.Controllers
@@ -138,6 +141,15 @@ namespace RedQueenAPI.Controllers
         {
             var result = await _redQueenDataService.GetTopicsForBroker(brokerId);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("messages")]
+        public async Task<IActionResult> GetMessages([FromQuery] int pageSize, [FromQuery] int currentPage)
+        {
+            var messages = _redQueenDataService.GetMessagesQueryable();
+            var results = await PaginatedList<MqttMessageDto>.BuildPaginatedList(messages, pageSize, currentPage);
+            return Ok(results);
         }
     }
 }
