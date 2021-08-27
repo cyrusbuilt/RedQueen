@@ -66,6 +66,16 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'user-management/add',
+    loadChildren: () => import('./modules/add-user/add-user.module').then(m => m.AddUserModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'user-management/edit',
+    loadChildren: () => import('./modules/edit-user/edit-user.module').then(m => m.EditUserModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]

@@ -12,6 +12,8 @@
           <th scope="col">Username</th>
           <th scope="col">Email</th>
           <th scope="col">Phone</th>
+          <th scope="col">Locked Out</th>
+          <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -20,6 +22,10 @@
           <td>{{u.userName}}</td>
           <td>{{u.email}}</td>
           <td>{{u.phoneNumber}}</td>
+          <td>{{u.lockoutEnabled}}</td>
+          <td>
+            <button type="buton" class="btn mr-2" (click)="onManageClick(u)">Manage</button>
+          </td>
         </tr>
       </tbody>
     </table>

@@ -9,6 +9,7 @@ import { AuthenticationResponse } from '../interfaces/authentication-response';
 import { Router } from '@angular/router';
 import { PasswordResetRequest } from '../interfaces/password-reset-request';
 import { take } from 'rxjs/operators';
+import { ApplicationUser } from '../interfaces/application-user';
 
 @Injectable({
   providedIn: 'root'
@@ -87,6 +88,18 @@ export class AuthService {
   }
 
   resetPassword(request: PasswordResetRequest): Observable<TokenResponse> {
-    return this.http.put<TokenResponse>(`${this.rootUrl}/api/auth/password-reset`, request);
+    return this.http.put<TokenResponse>(`${this.rootUrl}/auth/password-reset`, request);
+  }
+
+  enableLockout(user: ApplicationUser): Observable<AuthenticationResponse> {
+    return this.http.put<AuthenticationResponse>(`${this.rootUrl}/auth/disable`, user);
+  }
+
+  disableLockout(user: ApplicationUser): Observable<AuthenticationResponse> {
+    return this.http.put<AuthenticationResponse>(`${this.rootUrl}/auth/enable`, user);
+  }
+
+  updateRegistration(user: ApplicationUser): Observable<AuthenticationResponse> {
+    return this.http.put<AuthenticationResponse>(`${this.rootUrl}/auth/update`, user);
   }
 }

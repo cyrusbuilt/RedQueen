@@ -1,0 +1,40 @@
+
+<div class="component-header">
+  <h2>User Management</h2>
+  <em>Create and manage users</em>
+</div>
+<div class="component-body">
+  <form [formGroup]="form" (submit)="submit()">
+    <h5>Manage/Edit User</h5>
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <input type="email" name="email" formControlName="email" class="form-control"/>
+          <label class="form-label required mt-2" for="email">Email</label>
+        </div>
+      </div>
+      <app-field-error-display
+        [displayError]="isFieldValid('email')"
+        errorMsg="Email is required">
+      </app-field-error-display>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <input type="text" name="phone" formControlName="phone" class="form-control"/>
+          <label class="form-label mt-2" for="phone">Phone</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <button *ngIf="!submitted && !saved" type="submit" class="btn create mr-2">Save</button>
+        <button *ngIf="!submitted" type="button" class="btn btn-danger" (click)="onBackClick()">Cancel</button>
+        <button *ngIf="user && user.lockoutEnabled" type="button" class="btn mr-2" (click)="onUnlockUserClick()">Enable</button>
+        <button *ngIf="user && !user.lockoutEnabled" type="button" class="btn mr-2" (click)="onLockUserClick()">Disable</button>
+      </div>
+    </div>
+  </form>
+</div>

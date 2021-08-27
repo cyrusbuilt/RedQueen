@@ -3,4 +3,5 @@ export interface ApplicationUser {
   userName: string;
   email: string;
   phoneNumber: string;
+  lockoutEnabled: boolean;
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -40,6 +40,16 @@ namespace RedQueenAPI.Controllers
             var user = await _userManager.FindByNameAsync(login.Username);
             if (user != null && await _userManager.CheckPasswordAsync(user, login.Password))
             {
+                var lockedOut = await _userManager.IsLockedOutAsync(user);
+                if (lockedOut)
+                {
+                    return BadRequest(new GeneralResponse
+                    {
+                        Status = "Error",
+                        Message = "Account locked out"
+                    });
+                }
+                
                 var userRoles = await _userManager.GetRolesAsync(user);
 
                 var authClaims = new List<Claim>
@@ -89,7 +99,8 @@ namespace RedQueenAPI.Controllers
             {
                 Email = registration.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = registration.Username
+                UserName = registration.Username,
+                PhoneNumber = registration.Phone
             };
 
             var result = await _userManager.CreateAsync(user, registration.Password);
@@ -192,6 +203,102 @@ namespace RedQueenAPI.Controllers
             };
 
             return await Login(login);
+        }
+
+        [HttpPut]
+        [Route("disable")]
+        public async Task<IActionResult> EnableLockout([FromBody] ApplicationUser appUser)
+        {
+            var user = await _userManager.FindByNameAsync(appUser.UserName);
+            if (user == null)
+            {
+                return BadRequest(new GeneralResponse
+                {
+                    Status = "Error",
+                    Message = "User does not exist."
+                });
+            }
+
+            var lockoutResult = await _userManager.SetLockoutEnabledAsync(user, true);
+            var endDateResult = await _userManager.SetLockoutEndDateAsync(user, new DateTime(2999, 01, 01));
+            if (lockoutResult.Succeeded && endDateResult.Succeeded)
+            {
+                return Ok(new GeneralResponse
+                {
+                    Status = "Success",
+                    Message = "Account locked out"
+                });
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError, new GeneralResponse
+            {
+                Status = "Error",
+                Message = "Lockout failed. See log for details."
+            });
+        }
+
+        [HttpPut]
+        [Route("enable")]
+        public async Task<IActionResult> DisableLockout([FromBody] ApplicationUser appUser)
+        {
+            var user = await _userManager.FindByNameAsync(appUser.UserName);
+            if (user == null)
+            {
+                return BadRequest(new GeneralResponse
+                {
+                    Status = "Error",
+                    Message = "User does not exist."
+                });
+            }
+           
+            var endDateResult = await _userManager.SetLockoutEndDateAsync(user, null);
+            var lockoutResult = await _userManager.SetLockoutEnabledAsync(user, false);
+            if (lockoutResult.Succeeded && endDateResult.Succeeded)
+            {
+                return Ok(new GeneralResponse
+                {
+                    Status = "Success",
+                    Message = "Account lockout removed"
+                });
+            }
+
+            return StatusCode(StatusCodes.Status500InternalServerError, new GeneralResponse
+            {
+                Status = "Error",
+                Message = "Lockout removal failed. See log for details."
+            });
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdateRegistration([FromBody] ApplicationUser appUser)
+        {
+            var user = await _userManager.FindByNameAsync(appUser.UserName);
+            if (user == null)
+            {
+                return BadRequest(new GeneralResponse
+                {
+                    Status = "Error",
+                    Message = "User does not exist."
+                });
+            }
+
+            var emResult = await _userManager.SetEmailAsync(user, appUser.Email);
+            var phResult = await _userManager.SetPhoneNumberAsync(user, appUser.PhoneNumber);
+            if (emResult.Succeeded && phResult.Succeeded)
+            {
+                return Ok(new GeneralResponse
+                {
+                    Status = "Success",
+                    Message = "Account updated."
+                });
+            }
+            
+            return StatusCode(StatusCodes.Status500InternalServerError, new GeneralResponse
+            {
+                Status = "Error",
+                Message = "Account update failed. See log for details."
+            });
         }
     }
 }

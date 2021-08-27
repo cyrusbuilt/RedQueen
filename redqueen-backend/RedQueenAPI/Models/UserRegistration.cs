@@ -6,5 +6,7 @@ namespace RedQueenAPI.Models
     {
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
+        
+        public string Phone { get; set; }
     }
 }

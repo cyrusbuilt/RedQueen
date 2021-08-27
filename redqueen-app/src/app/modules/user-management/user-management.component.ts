@@ -27,4 +27,9 @@ export class UserManagementComponent implements OnInit {
   onAddUser(): void {
     this._router.navigate(['/user-management/add']);
   }
+
+  onManageClick(user: ApplicationUser): void {
+    sessionStorage.setItem('manageUser', JSON.stringify(user));
+    this._router.navigate(['/user-management/edit']);
+  }
 }
