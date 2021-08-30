@@ -47,4 +47,9 @@ export class DeviceManagementComponent implements OnInit {
   onAddDevice(): void {
     this._router.navigate(['/device-management/add']);
   }
+
+  onEditDevice(dev: Device): void {
+    sessionStorage.setItem('manageDevice', JSON.stringify(dev));
+    this._router.navigate(['/device-management/edit']);
+  }
 }
