@@ -66,6 +66,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'topic-management/edit',
+    loadChildren: () => import('./modules/edit-topic/edit-topic.module').then(m => m.EditTopicModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'messages',
     loadChildren: () => import('./modules/message-list-view/message-list-view.module').then(m => m.MessageListViewModule),
     canActivate: [AuthGuard]
