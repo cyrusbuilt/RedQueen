@@ -39,7 +39,7 @@ export class AddBrokerComponent implements OnInit {
   }
 
   isFieldValid(field: string): boolean {
-    let fld = this.form.get(field);
+    const fld = this.form.get(field);
     return !!fld && !fld.valid && fld.touched;
   }
 
@@ -64,6 +64,10 @@ export class AddBrokerComponent implements OnInit {
     this._location.back();
   }
 
+  onUseTlsCheckChange(e: Event): void {
+    this.shouldUseTls = (e.target as HTMLInputElement).checked;
+  }
+
   submit(): void {
     if (this.checkForFormErrors(this.form)) {
       return;
@@ -71,7 +75,7 @@ export class AddBrokerComponent implements OnInit {
 
     this.submitted = true;
 
-    let broker = this.form.value as MqttBroker;
+    const broker = this.form.value as MqttBroker;
     this._telemService.addBroker(broker)
       .pipe(take(1))
       .subscribe(value => {

@@ -8,6 +8,7 @@ import { MqttBroker } from 'src/app/core/interfaces/mqtt-broker';
 import { MqttTopic } from 'src/app/core/interfaces/mqtt-topic';
 import { TelemetryService } from 'src/app/core/services/telemetry.service';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-device',
@@ -140,19 +141,22 @@ export class EditDeviceComponent implements OnInit {
     this.device.statusTopicId = this.form.value.statusTopic.id;
     this.device.controlTopicId = this.form.value.controlTopic?.id;
 
-    this._deviceService.updateDevice(this.device.id, this.device).subscribe({
-      next: value => {
-        if (value !== null) {
-          this.saved = true;
-          this._toastService.setSuccessMessage("Saved!");
-          setTimeout(() => { this._router.navigate(['/device-management']); }, 2000);
+    this._deviceService.updateDevice(this.device.id, this.device)
+      .pipe(take(1))
+      .subscribe({
+        next: value => {
+          if (value !== null) {
+            this.saved = true;
+            this._toastService.setSuccessMessage("Saved!");
+            sessionStorage.setItem('manageDevice', '');
+            setTimeout(() => { this._router.navigate(['/device-management']); }, 2000);
+          }
+          else {
+            this.saved = false;
+            this._toastService.setErrorMessage("Failed to save device!");
+          }
         }
-        else {
-          this.saved = false;
-          this._toastService.setErrorMessage("Failed to save device!");
-        }
-      }
-    });
+      });
   }
 
   onBackClick(): void {
