@@ -70,4 +70,9 @@ export class TopicManagementComponent implements OnInit {
   addTopic(): void {
     this._router.navigate(['/topic-management/add']);
   }
+
+  editTopic(topic: MqttTopic): void {
+    sessionStorage.setItem('manageTopic', JSON.stringify(topic));
+    this._router.navigate(['/topic-management/edit']);
+  }
 }

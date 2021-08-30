@@ -26,6 +26,7 @@
           <td>
             <button *ngIf="t.isActive" class="btn btn-danger" (click)="activateOrDeactivateTopic(t)">Deactivate</button>
             <button *ngIf="!t.isActive" class="btn btn-success" (click)="activateOrDeactivateTopic(t)">Activate</button>
+            <button class="btn create mr-2" (click)="editTopic(t)">Edit</button>
           </td>
         </tr>
       </tbody>
