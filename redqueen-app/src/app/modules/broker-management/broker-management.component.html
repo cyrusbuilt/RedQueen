@@ -32,6 +32,7 @@
           <td>
             <button *ngIf="b.isActive" class="btn btn-danger" (click)="activateOrDeactivateBroker(b)">Deactivate</button>
             <button *ngIf="!b.isActive" class="btn btn-success" (click)="activateOrDeactivateBroker(b)">Activate</button>
+            <button class="btn create" (click)="editBroker(b)">Edit</button>
           </td>
         </tr>
       </tbody>

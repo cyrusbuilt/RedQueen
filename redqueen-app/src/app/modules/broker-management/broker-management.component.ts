@@ -47,4 +47,9 @@ export class BrokerManagementComponent implements OnInit {
   addBroker(): void {
     this._router.navigate(['/broker-management/add']);
   }
+
+  editBroker(broker: MqttBroker): void {
+    sessionStorage.setItem('manageBroker', JSON.stringify(broker));
+    this._router.navigate(['/broker-management/edit']);
+  }
 }
