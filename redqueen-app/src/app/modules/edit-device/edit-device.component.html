@@ -1,0 +1,72 @@
+<div class="component-header">
+  <h2>Device Management</h2>
+  <em>Create and manage devices</em>
+</div>
+<div class="component-body">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h4>Edit Device</h4>
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <select name="broker" formControlName="broker" (change)="onSelectBroker()" class="custom-select">
+            <option disabled>Select Broker</option>
+            <option *ngFor="let b of (brokers | activeBrokers)" [ngValue]="b">{{ b.host }}</option>
+          </select>
+          <label class="form-label required mt-2" for="broker">Broker</label>
+        </div>
+      </div>
+      <app-field-error-display
+        [displayError]="isFieldValid('broker')"
+        errorMsg="Must select a broker">
+      </app-field-error-display>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <select name="statusTopic" formControlName="statusTopic" (change)="onSelectStatusTopic()" class="custom-select">
+            <option disabled>Select Status Topic</option>
+            <option *ngFor="let t of (topics | activeTopics)" [ngValue]="t">{{ t.name }}</option>
+          </select>
+          <label class="form-label required mt-2" for="statusTopic">Status Topic</label>
+        </div>
+      </div>
+      <app-field-error-display
+        [displayError]="isFieldValid('statusTopic')"
+        errorMsg="Must select a status topic">
+      </app-field-error-display>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <select name="controlTopic" formControlName="controlTopic" (change)="onSelectControlTopic()" class="custom-select">
+            <option disabled>Select Control Topic</option>
+            <option *ngFor="let t of (topics | activeTopics)" [ngValue]="t">{{ t.name }}</option>
+          </select>
+          <label class="form-label mt-2" for="controlTopic">Control Topic</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <input type="text" name="name" formControlName="name" class="form-control"/>
+          <label class="form-label" for="name">Name</label>
+        </div>
+      </div>
+      <app-field-error-display
+        [displayError]="isFieldValid('name')"
+        errorMsg="Name is required">
+      </app-field-error-display>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <button *ngIf="!submitted && !saved" type="submit" class="btn create mr-2">Save</button>
+        <button *ngIf="!submitted" type="button" (click)="onBackClick()" class="btn btn-danger">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>

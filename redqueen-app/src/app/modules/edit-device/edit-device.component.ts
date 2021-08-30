@@ -2,39 +2,40 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
 import { Device } from 'src/app/core/interfaces/device';
+import { DeviceService } from 'src/app/core/services/device.service';
 import { MqttBroker } from 'src/app/core/interfaces/mqtt-broker';
 import { MqttTopic } from 'src/app/core/interfaces/mqtt-topic';
-import { DeviceService } from 'src/app/core/services/device.service';
 import { TelemetryService } from 'src/app/core/services/telemetry.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 
 @Component({
-  selector: 'app-add-device',
-  templateUrl: './add-device.component.html',
-  styleUrls: ['./add-device.component.scss']
+  selector: 'app-edit-device',
+  templateUrl: './edit-device.component.html',
+  styleUrls: ['./edit-device.component.scss']
 })
-export class AddDeviceComponent implements OnInit {
-  form: FormGroup;
+export class EditDeviceComponent implements OnInit {
   submitted: boolean;
-  deviceAdded: boolean;
+  saved: boolean;
+  form: FormGroup;
+  device: Device | null;
   brokers: MqttBroker[];
   topics: MqttTopic[];
   selectedBroker: MqttBroker | null;
   selectedStatusTopic: MqttTopic | null;
   selectedControlTopic: MqttTopic | null;
 
-  constructor(
+  constructor (
     private _fb: FormBuilder,
     private _location: Location,
     private _router: Router,
-    private _toastService: ToastService,
     private _deviceService: DeviceService,
-    private _telemService: TelemetryService
+    private _telemService: TelemetryService,
+    private _toastService: ToastService
   ) {
+    this.device = null;
     this.submitted = false;
-    this.deviceAdded = false;
+    this.saved = false;
     this.brokers = [];
     this.topics = [];
     this.selectedBroker = null;
@@ -42,20 +43,45 @@ export class AddDeviceComponent implements OnInit {
     this.selectedControlTopic = null;
     this.form = this._fb.group({
       name: ['', [Validators.required]],
-      broker: ['', [Validators.required]],
       statusTopic: ['', [Validators.required]],
       controlTopic: [''],
+      broker: ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
     this._telemService.getBrokers().subscribe({
-      next: value => this.brokers = value
-    });
-  }
+      next: value => {
+        this.brokers = value;
+        let dev = sessionStorage.getItem('manageDevice');
+        if (dev) {
+          this.device = JSON.parse(dev) as Device;
+          this.form.controls['name'].setValue(this.device.name);
 
-  onBackClick(): void {
-    this._location.back();
+          let sb = this.brokers.find(b => b.id === this.device?.statusTopic?.brokerId);
+          if (sb) {
+            this.form.controls['broker'].setValue(sb);
+            this.selectedBroker = sb;
+            this._telemService.getTopicsForBroker(this.selectedBroker.id).subscribe({
+              next: value => {
+                this.topics = value;
+                let sst = this.topics.find(t => t.id === this.device?.statusTopicId);
+                if (sst) {
+                  this.selectedStatusTopic = sst;
+                  this.form.controls['statusTopic'].setValue(sst);
+                }
+
+                let sct = this.topics.find(t => t.id === this.device?.controlTopicId);
+                if (sct) {
+                  this.selectedControlTopic = sct;
+                  this.form.controls['controlTopic'].setValue(sct);
+                }
+              }
+            });
+          }
+        }
+      }
+    });
   }
 
   isFieldValid(field: string): boolean {
@@ -105,33 +131,31 @@ export class AddDeviceComponent implements OnInit {
   }
 
   submit(): void {
-    if (this.checkForFormErrors(this.form)) {
+    if (!this.device || this.checkForFormErrors(this.form)) {
       return;
     }
 
     this.submitted = true;
+    this.device.name = this.form.value.name;
+    this.device.statusTopicId = this.form.value.statusTopic.id;
+    this.device.controlTopicId = this.form.value.controlTopic?.id;
 
-    let dev = {
-      name: this.form.value.name,
-      statusTopicId: this.form.value.statusTopic.id,
-      controlTopicId: this.form.value.controlTopic?.id,
-      isActive: true
-    } as Device;
-
-    this._deviceService.saveDevice(dev)
-      .pipe(take(1))
-      .subscribe({
-        next: value => {
-          if (value !== null) {
-            this.deviceAdded = true;
-            this._toastService.setSuccessMessage("Success!");
-            setTimeout(() => { this._router.navigate(['/device-management']); }, 2000);
-          }
-          else {
-            this.deviceAdded = false;
-            this._toastService.setErrorMessage("Unable to save device! Make sure duplicate does not exist!");
-          }
+    this._deviceService.updateDevice(this.device.id, this.device).subscribe({
+      next: value => {
+        if (value !== null) {
+          this.saved = true;
+          this._toastService.setSuccessMessage("Saved!");
+          setTimeout(() => { this._router.navigate(['/device-management']); }, 2000);
         }
-      });
+        else {
+          this.saved = false;
+          this._toastService.setErrorMessage("Failed to save device!");
+        }
+      }
+    });
+  }
+
+  onBackClick(): void {
+    this._location.back();
   }
 }
