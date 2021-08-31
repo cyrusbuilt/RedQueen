@@ -1,7 +1,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RedQueen.Data.Models.Dto;
 using RedQueen.Data.Services;
+using RedQueenAPI.Collections;
 using RedQueenAPI.Models;
 
 namespace RedQueenAPI.Controllers
@@ -40,6 +42,15 @@ namespace RedQueenAPI.Controllers
         {
             var result = await _userService.GetUserList();
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("{id}/login-history")]
+        public async Task<IActionResult> GetUserLoginHistory([FromRoute] string id, [FromQuery] int pageSize, [FromQuery] int currentPage)
+        {
+            var history = _userService.GetLoginHistory(id);
+            var results = await PaginatedList<LoginHistoryDto>.BuildPaginatedList(history, pageSize, currentPage);
+            return Ok(results);
         }
     }
 }

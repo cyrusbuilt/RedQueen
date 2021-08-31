@@ -1,0 +1,60 @@
+<div class="component-header">
+  <h2>Settings/Login History</h2>
+  <em>User Login History</em>
+</div>
+<div class="component-body">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <select name="userSelction" formControlName="userSelection" class="custom-select" (change)="onSelectUser()">
+            <option disabled>Select User</option>
+            <option *ngFor="let u of users" [ngValue]="u">{{ u.userName }}</option>
+          </select>
+          <label class="form-label required mt-2" for="userSelection">User Selection</label>
+        </div>
+      </div>
+      <app-field-error-display
+        [displayError]="isFieldValid('userSelection')"
+        errorMsg="User selection required">
+      </app-field-error-display>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <button class="btn mr-2" type="button" (click)="onBackClick()">Back</button>
+        <button *ngIf="selectedUser" type="submit" class="btn create mr-2">Get History</button>
+      </div>
+    </div>
+  </form>
+
+  <br/>
+  <h5>Login Activity</h5>
+  <ng-container *ngIf="historyList.length > 0">
+    <table class="table table-hover table-light">
+      <thead class="thead-primary">
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Username</th>
+          <th scope="col">Timestamp</th>
+          <th scope="col">Email</th>
+          <th scope="col">User ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let login of historyList
+          | paginate: { id: 'history',
+                        itemsPerPage: pageSize,
+                        currentPage: curPage,
+                        totalItems: totalEntries }">
+          <td>{{ login.id }}</td>
+          <td>{{ login.userName }}</td>
+          <td>{{ login.timestamp }}</td>
+          <td>{{ login.email }}</td>
+          <td>{{ login.applicationUserId }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls id="historyList" (pageChange)="handlePageChange($event)"></pagination-controls>
+  </ng-container>
+</div>

@@ -38,4 +38,8 @@ export class UserSettingsComponent implements OnInit {
   resetPassword(): void {
     this._router.navigate(['/password-reset']);
   }
+
+  loginHistory(): void {
+    this._router.navigate(['/login/history']);
+  }
 }

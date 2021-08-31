@@ -16,6 +16,11 @@ const routes: Routes = [
     canActivate: [LoginGuard]
   },
   {
+    path: 'login/history',
+    loadChildren: () => import('./modules/login-history-list/login-history-list.module').then(m => m.LoginHistoryListModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'user-settings',
     loadChildren: () => import('./modules/user-settings/user-settings.module').then(m => m.UserSettingsModule),
     canActivate: [AuthGuard]
