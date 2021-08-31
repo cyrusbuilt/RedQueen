@@ -32,8 +32,8 @@ export class AddTopicComponent implements OnInit {
     this.selectedBroker = null;
     this.brokers = [];
     this.form = this._fb.group({
-      broker: ['', Validators.required],
-      name: ['', Validators.required]
+      broker: ['', [Validators.required]],
+      name: ['', [Validators.required]]
     });
   }
 

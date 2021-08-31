@@ -42,7 +42,6 @@ export class EditBrokerComponent implements OnInit {
 
   ngOnInit(): void {
     const brk = sessionStorage.getItem('manageBroker');
-    console.log(brk);
     if (brk) {
       this.broker = JSON.parse(brk);
       this.form.controls['host'].setValue(this.broker?.host);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MqttMessage } from 'src/app/core/interfaces/mqtt-message';
 import { TelemetryService } from 'src/app/core/services/telemetry.service';
 
@@ -7,7 +7,8 @@ import { TelemetryService } from 'src/app/core/services/telemetry.service';
   templateUrl: './message-list-view.component.html',
   styleUrls: ['./message-list-view.component.scss']
 })
-export class MessageListViewComponent implements OnInit {
+export class MessageListViewComponent implements OnInit, OnDestroy {
+  private _interval: any;
   messages: MqttMessage[];
   curPage: number;
   pageSize: number;
@@ -33,6 +34,11 @@ export class MessageListViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMessages();
+    this._interval = setInterval(() => this.getMessages(), 5000);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this._interval);
   }
 
   handlePageChange(event: number) {
