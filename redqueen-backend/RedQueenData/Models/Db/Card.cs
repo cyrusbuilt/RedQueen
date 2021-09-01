@@ -19,5 +19,10 @@ namespace RedQueen.Data.Models.Db
         
         [Column("is_active")]
         public bool IsActive { get; set; }
+        
+        [Column("access_control_user_id")]
+        public int? AccessControlUserId { get; set; }
+        
+        public AccessControlUser User { get; set; }
     }
 }

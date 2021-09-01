@@ -96,6 +96,16 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'card-management',
+    loadChildren: () => import('./modules/card-management/card-management.module').then(m => m.CardManagementModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'card-management/manage-card',
+    loadChildren: () => import('./modules/manage-card/manage-card.module').then(m => m.ManageCardModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]

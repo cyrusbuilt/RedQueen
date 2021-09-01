@@ -1,0 +1,39 @@
+<div class="component-header">
+  <h2>Card Management</h2>
+  <em>Create and Manage Access Control Cards</em>
+</div>
+<div class="component-body">
+  <button class="btn btn-primary float-right" (click)="onAddCard()">+ Add Card</button>
+  <ng-container *ngIf="cards">
+    <table class="table table-hover table-light">
+      <thead class="thead-primary">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Serial</th>
+          <th scope="col">Active</th>
+          <th scope="col">Created</th>
+          <th scope="col">User</th>
+          <th scope="col">Pin</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of cards
+            | paginate: { id: 'cards',
+                          itemsPerPage: pageSize,
+                          currentPage: curPage,
+                          totalItems: totalEntries }">
+          <td>{{c.id}}</td>
+          <td>{{c.serial}}</td>
+          <td>{{c.isActive}}</td>
+          <td>{{c.createdDate}}</td>
+          <td>{{c.user?.name}}</td>
+          <td>{{c.user?.pin}}</td>
+          <td>
+            <button type="button" class="btn mr-2" (click)="onManageClick(c)">Manage</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</div>
