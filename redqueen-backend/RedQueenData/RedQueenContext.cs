@@ -16,6 +16,8 @@ namespace RedQueen.Data
         public DbSet<Device> Devices { get; set; }
         
         public DbSet<Card> Cards { get; set; }
+        
+        public DbSet<AccessControlUser> AccessControlUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,6 +42,11 @@ namespace RedQueen.Data
             });
 
             modelBuilder.Entity<Card>(entity =>
+            {
+                entity.HasIndex(t => t.Id).IsUnique();
+            });
+
+            modelBuilder.Entity<AccessControlUser>(entity =>
             {
                 entity.HasIndex(t => t.Id).IsUnique();
             });

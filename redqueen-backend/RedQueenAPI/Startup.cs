@@ -128,6 +128,7 @@ namespace RedQueenAPI
             services.AddTransient<DatabaseContexts>();
             services.AddTransient<IRedQueenDataService, RedQueenDataService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ICardService, CardService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
