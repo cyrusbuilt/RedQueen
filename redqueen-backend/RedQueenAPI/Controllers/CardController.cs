@@ -27,5 +27,21 @@ namespace RedQueenAPI.Controllers
             var results = await PaginatedList<Card>.BuildPaginatedList(cardQuery, pageSize, currentPage);
             return Ok(results);
         }
+
+        [HttpGet]
+        [Route("active-users")]
+        public async Task<IActionResult> GetActiveUsers()
+        {
+            var result = await _cardService.GetActiveUsers();
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdateCard([FromBody] Card card)
+        {
+            var result = await _cardService.UpdateCard(card);
+            return Ok(result);
+        }
     }
 }

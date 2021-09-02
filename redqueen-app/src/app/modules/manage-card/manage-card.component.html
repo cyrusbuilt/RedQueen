@@ -1,1 +1,39 @@
-<p>manage-card works!</p>
+<div class="component-header">
+  <h2>Card Management</h2>
+  <em>Create and Manage Access Control Cards</em>
+</div>
+<div class="component-body">
+  <h3>Card Details</h3>
+  <div class="row my-4">
+    <div class="col-4">
+      <label class="form-label mt-2">Serial: {{card?.serial}}</label><br/>
+      <label class="form-label mt-2">Active: {{card?.isActive}}</label><br/>
+      <label class="form-label mt-2">Created: {{card?.createdDate}}</label><br/>
+      <label class="form-label mt-2">Current user: {{card?.user?.name}}</label><br/>
+      <button *ngIf="card?.isActive" type="button" class="btn mr-2" (click)="onActivateOrDeactivate()">Deactivate</button>
+      <button *ngIf="!card?.isActive" type="button" class="btn mr-2" (click)="onActivateOrDeactivate()">Activate</button>
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h4>Assign User</h4>
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <select name="user" formControlName="userSelection" (change)="onSelectUser()" class="custom-select">
+            <option disabled>Select User</option>
+            <option *ngFor="let u of users" [ngValue]="u">{{u.name}}</option>
+          </select>
+          <label class="form-label mt-2" for="user">User</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <button *ngIf="!submitted && !saved" type="submit" class="btn create mr-2">Save</button>
+        <button *ngIf="!submitted" type="button" class="btn btn-danger" (click)="onBackClick()">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>
