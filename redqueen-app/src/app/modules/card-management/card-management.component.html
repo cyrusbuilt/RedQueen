@@ -14,6 +14,7 @@
           <th scope="col">Created</th>
           <th scope="col">User</th>
           <th scope="col">Pin</th>
+          <th scope="col">Modified</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -29,6 +30,7 @@
           <td>{{c.createdDate}}</td>
           <td>{{c.user?.name}}</td>
           <td>{{c.user?.pin}}</td>
+          <td>{{c.modifiedDate}}</td>
           <td>
             <button type="button" class="btn mr-2" (click)="onManageClick(c)">Manage</button>
           </td>

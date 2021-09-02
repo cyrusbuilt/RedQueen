@@ -17,6 +17,9 @@ namespace RedQueen.Data.Models.Db
         [Column("created_date")]
         public DateTime CreatedDate { get; set; }
         
+        [Column("modified_date")]
+        public DateTime? ModifiedDate { get; set; }
+        
         [Column("is_active")]
         public bool IsActive { get; set; }
         

@@ -47,6 +47,7 @@ export class CardManagementComponent implements OnInit {
   }
 
   onManageClick(card: Card) {
+    sessionStorage.setItem('manageCard', JSON.stringify(card));
     this._router.navigate(['/card-management/manage-card']);
   }
 }
