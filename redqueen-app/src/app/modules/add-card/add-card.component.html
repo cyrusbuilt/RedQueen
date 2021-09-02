@@ -1,0 +1,41 @@
+<div class="component-header">
+  <h2>Card Management</h2>
+  <em>Create and Manage Access Control Cards</em>
+</div>
+<div class="component-body">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h4>Add New Card</h4>
+    <h5>New Card</h5>
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <input type="text" name="serial" formControlName="serial" class="form-control"/>
+          <label class="form-label required mt-2" for="serial">Serial</label>
+        </div>
+      </div>
+      <app-field-error-display
+        [displayError]="isFieldValid('serial')"
+        errorMsg="Serial is required">
+      </app-field-error-display>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
+          <select name="user" formControlName="userSelection" (change)="onSelectUser()" class="custom-select">
+            <option disabled>Select User</option>
+            <option *ngFor="let u of users" [ngValue]="u">{{u.name}}</option>
+          </select>
+          <label class="form-label mt-2" for="user">User Assignment</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <button *ngIf="!submitted && !cardAdded" type="submit" class="btn create mr-2">Create</button>
+        <button *ngIf="!submitted" type="button" class="btn btn-danger" (click)="onBackClick()">Cancel</button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -43,7 +43,7 @@ export class CardManagementComponent implements OnInit {
   }
 
   onAddCard(): void {
-    // TODO nav to add-card
+    this._router.navigate(['/card-management/add']);
   }
 
   onManageClick(card: Card) {
