@@ -13,6 +13,8 @@ namespace RedQueen.Data.Services
         Task<List<AccessControlUser>> GetActiveUsers();
         Task<Card> UpdateCard(Card card);
         Task<Card> AddCard(Card card);
+        IQueryable<AccessControlUser> GetCardUsers();
+        Task<AccessControlUser> UpdateCardUser(AccessControlUser user);
     }
     
     public class CardService : ICardService
@@ -95,6 +97,35 @@ namespace RedQueen.Data.Services
             await context.SaveChangesAsync();
 
             return newCard;
+        }
+
+        public IQueryable<AccessControlUser> GetCardUsers()
+        {
+            var context = _contexts.RedQueenContext;
+            var query = context.AccessControlUsers
+                .OrderBy(u => u.Name)
+                .AsQueryable();
+            return query;
+        }
+
+        public async Task<AccessControlUser> UpdateCardUser(AccessControlUser user)
+        {
+            var context = _contexts.RedQueenContext;
+
+            var existingUser = await context.AccessControlUsers.FirstOrDefaultAsync(u => u.Id == user.Id);
+            if (existingUser == null)
+            {
+                return null;
+            }
+
+            existingUser.Name = user.Name;
+            existingUser.Pin = user.Pin;
+            existingUser.IsActive = user.IsActive;
+            existingUser.ModifiedDate = DateTime.Now;
+
+            await context.SaveChangesAsync();
+
+            return existingUser;
         }
     }
 }

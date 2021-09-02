@@ -26,6 +26,7 @@ namespace RedQueen.Data.Models.Db
         [Column("access_control_user_id")]
         public int? AccessControlUserId { get; set; }
         
+        [NotMapped]
         public AccessControlUser User { get; set; }
     }
 }

@@ -50,4 +50,8 @@ export class CardManagementComponent implements OnInit {
     sessionStorage.setItem('manageCard', JSON.stringify(card));
     this._router.navigate(['/card-management/manage-card']);
   }
+
+  onManageUsersClick(): void {
+    this._router.navigate(['/card-management/access-control-user-management']);
+  }
 }
