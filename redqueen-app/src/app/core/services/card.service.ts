@@ -27,4 +27,8 @@ export class CardService {
   updateCard(card: Card): Observable<Card | null> {
     return this.http.put<Card | null>(`${this.rootUrl}/card/update`, card);
   }
+
+  addCard(card: Card): Observable<Card | null> {
+    return this.http.post<Card | null>(`${this.rootUrl}/card/add`, card);
+  }
 }

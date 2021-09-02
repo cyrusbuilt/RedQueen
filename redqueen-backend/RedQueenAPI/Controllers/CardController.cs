@@ -43,5 +43,13 @@ namespace RedQueenAPI.Controllers
             var result = await _cardService.UpdateCard(card);
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("add")]
+        public async Task<IActionResult> AddCard([FromBody] Card card)
+        {
+            var result = await _cardService.AddCard(card);
+            return Ok(result);
+        }
     }
 }
