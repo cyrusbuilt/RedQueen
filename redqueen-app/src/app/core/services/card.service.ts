@@ -31,4 +31,13 @@ export class CardService {
   addCard(card: Card): Observable<Card | null> {
     return this.http.post<Card | null>(`${this.rootUrl}/card/add`, card);
   }
+
+  getCardUsers(pageSize: number, currentPage: number): Observable<PaginatedList<AccessControlUser>> {
+    return this.http.get<PaginatedList<AccessControlUser>>(`${this.rootUrl}/card/all-users`,
+      {params: {'pageSize': pageSize, 'currentPage': currentPage }});
+  }
+
+  updateCardUser(user: AccessControlUser): Observable<AccessControlUser | null> {
+    return this.http.put<AccessControlUser | null>(`${this.rootUrl}/card/user`, user);
+  }
 }

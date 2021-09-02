@@ -1,0 +1,41 @@
+<div class="component-header">
+  <h2>Access Control User Management</h2>
+  <em>Create and Manage Access Control Users</em>
+</div>
+<div class="component-body">
+  <button class="btn mr-2 float-right" (click)="onBackClick()">Back</button>
+  <ng-container *ngIf="users">
+    <table class="table table-hover table-light">
+      <thead class="thead-primary">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Pin</th>
+          <th scope="col">Created</th>
+          <th scope="col">Active</th>
+          <th scope="col">Modified</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of users
+            | paginate: { id: 'users',
+                          itemsPerPage: pageSize,
+                          currentPage: curPage,
+                          totalItems: totalEntries }">
+          <td>{{u.id}}</td>
+          <td>{{u.name}}</td>
+          <td>{{u.pin}}</td>
+          <td>{{u.createdDate}}</td>
+          <td>{{u.isActive}}</td>
+          <td>{{u.modifiedDate}}</td>
+          <td>
+            <button *ngIf="u.isActive" type="button" class="btn mr-2" (click)="onActivateOrDeactivateUser(u)">Deactivate</button>
+            <button *ngIf="!u.isActive" type="button" class="btn mr-2" (click)="onActivateOrDeactivateUser(u)">Activate</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <pagination-controls id="users" (pageChange)="handlePageChange($event)"></pagination-controls>
+  </ng-container>
+</div>
