@@ -19,4 +19,8 @@ export class AppComponent extends CoreComponent {
   goToLogin(): void {
     this._router.navigate(['/login']);
   }
+
+  logout(): void {
+    this.authService.logout();
+  }
 }
