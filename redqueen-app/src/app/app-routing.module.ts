@@ -121,6 +121,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'card-management/access-control-user-management/edit',
+    loadChildren: () =>  import('./modules/access-control-user-edit/access-control-user-edit.module').then(m => m.AccessControlUserEditModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]

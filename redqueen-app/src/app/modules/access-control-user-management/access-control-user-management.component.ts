@@ -67,4 +67,9 @@ export class AccessControlUserManagementComponent implements OnInit {
   onAddUserClick(): void {
     this._router.navigate(['/card-management/access-control-user-management/add']);
   }
+
+  onEditUserClick(user: AccessControlUser): void {
+    sessionStorage.setItem("manageCardUser", JSON.stringify(user));
+    this._router.navigate(['/card-management/access-control-user-management/edit']);
+  }
 }

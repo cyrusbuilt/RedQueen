@@ -76,5 +76,7 @@ namespace RedQueenAPI.Controllers
             var result = await _cardService.AddCardUser(user);
             return Ok(result);
         }
+        
+        
     }
 }

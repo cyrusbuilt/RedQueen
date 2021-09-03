@@ -33,6 +33,7 @@
           <td>
             <button *ngIf="u.isActive" type="button" class="btn mr-2" (click)="onActivateOrDeactivateUser(u)">Deactivate</button>
             <button *ngIf="!u.isActive" type="button" class="btn mr-2" (click)="onActivateOrDeactivateUser(u)">Activate</button>
+            <button type="button" class="btn mr-2" (click)="onEditUserClick(u)">Edit</button>
           </td>
         </tr>
       </tbody>

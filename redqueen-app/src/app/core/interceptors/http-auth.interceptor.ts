@@ -3,25 +3,38 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpErrorResponse
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { TokenResponse } from '../interfaces/token-response';
+import { tap } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class HttpAuthInterceptor implements HttpInterceptor {
-  constructor() {}
+  constructor(private _authService: AuthService) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let auth = sessionStorage.getItem('loginResult');
-    if (auth) {
-      let authResult = JSON.parse(auth) as TokenResponse;
+    // Set the bearer token if we have one.
+    let authResult = this._authService.getToken();
+    if (authResult) {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${authResult.token}`
         }
       });
     }
-    return next.handle(request);
+
+    // On 401 (auth failed), clear out all session data and redirect to login page.
+    return next.handle(request).pipe(tap(() => {},
+      (err: any) => {
+        if (err instanceof HttpErrorResponse) {
+          if (err.status !== 401) {
+            return;
+          }
+
+          this._authService.logout();
+        }
+      }));
   }
 }

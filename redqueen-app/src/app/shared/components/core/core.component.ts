@@ -15,6 +15,7 @@ import {
   faBroadcastTower,
   faNewspaper,
   faKey,
+  faLock,
   IconDefinition
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -39,6 +40,7 @@ export class CoreComponent implements OnInit {
   faBroadcastTower: IconDefinition = faBroadcastTower;
   faNewspaper: IconDefinition = faNewspaper;
   faKey: IconDefinition = faKey;
+  faLock: IconDefinition = faLock;
 
   constructor() { }
 

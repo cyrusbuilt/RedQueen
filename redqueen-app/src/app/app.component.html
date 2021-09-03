@@ -16,6 +16,9 @@
           <li class="nav-item">
             <a class="nav-link" href="#"><fa-icon [icon]="faBell" class="fa-lg" [fixedWidth]="true"></fa-icon></a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" (click)="logout()"><fa-icon [icon]="faLock" class="fa-lg" [fixedWidth]="true"></fa-icon></a>
+          </li>
         </ul>
         <div *ngIf="authService.username" class="text-center user-name">
           <em>{{ authService.username }}</em><br />
@@ -25,9 +28,6 @@
       <ul class="nav left-nav flex-column my-4">
         <li class="nav-item my-1">
           <a class="nav-link" routerLink="/" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><fa-icon [icon]="faHome" [fixedWidth]="true"></fa-icon> Home</a>
-        </li>
-        <li class="nav-item my-1">
-          <a class="nav-link" (click)="goToLogin()"><fa-icon [icon]="faCaretRight" [fixedWidth]="true"></fa-icon> Login</a>
         </li>
         <li class="nav-item my-1">
           <a class="nav-link" routerLink="/device-management" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{ exact: true }"><fa-icon [icon]="faCogs" [fixedWidth]="true"></fa-icon> Device Management</a>
