@@ -63,4 +63,8 @@ export class AccessControlUserManagementComponent implements OnInit {
       }
     });
   }
+
+  onAddUserClick(): void {
+    this._router.navigate(['/card-management/access-control-user-management/add']);
+  }
 }
