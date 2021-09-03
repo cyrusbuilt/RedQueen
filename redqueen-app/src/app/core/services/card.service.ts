@@ -40,4 +40,8 @@ export class CardService {
   updateCardUser(user: AccessControlUser): Observable<AccessControlUser | null> {
     return this.http.put<AccessControlUser | null>(`${this.rootUrl}/card/user`, user);
   }
+
+  addCardUser(user: AccessControlUser): Observable<AccessControlUser | null> {
+    return this.http.post<AccessControlUser | null>(`${this.rootUrl}/card/add-user`, user);
+  }
 }

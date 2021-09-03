@@ -68,5 +68,13 @@ namespace RedQueenAPI.Controllers
             var result = await _cardService.UpdateCardUser(user);
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("add-user")]
+        public async Task<IActionResult> AddCardUser([FromBody] AccessControlUser user)
+        {
+            var result = await _cardService.AddCardUser(user);
+            return Ok(result);
+        }
     }
 }
