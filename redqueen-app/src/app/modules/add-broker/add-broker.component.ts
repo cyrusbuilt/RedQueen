@@ -26,12 +26,13 @@ export class AddBrokerComponent implements OnInit {
     private _router: Router
   ) {
     this.form = this._fb.group({
-      host: ['', Validators.required],
-      port: [1883, Validators.required],
+      host: ['', [Validators.required]],
+      port: [1883, [Validators.required]],
       username: [''],
       password: [''],
-      useTls: [false, Validators.required],
-      keepAliveSeconds: [null]
+      useTls: [false, [Validators.required]],
+      keepAliveSeconds: [null],
+      discoveryTopic: ['']
     });
   }
 

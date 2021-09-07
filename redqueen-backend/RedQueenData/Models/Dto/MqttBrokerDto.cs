@@ -15,5 +15,7 @@ namespace RedQueen.Data.Models.Dto
         public bool UseTls { get; set; }
         
         public int? KeepAliveSeconds { get; set; }
+        
+        public string DiscoveryTopic { get; set; }
     }
 }

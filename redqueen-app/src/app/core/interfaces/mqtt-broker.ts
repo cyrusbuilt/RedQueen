@@ -9,4 +9,5 @@ export interface MqttBroker {
   modifiedDate?: Date;
   useTls: boolean;
   keepAliveSeconds?: number;
+  discoveryTopic: string;
 }

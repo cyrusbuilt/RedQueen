@@ -39,6 +39,9 @@ namespace RedQueen.Data.Models.Db
         [Column("keep_alive_seconds")]
         public int? KeepAliveSeconds { get; set; }
         
+        [Column("discovery_topic")]
+        public string DiscoveryTopic { get; set; }
+        
         public IEnumerable<MqttTopic> Topics { get; set; }
     }
 }
