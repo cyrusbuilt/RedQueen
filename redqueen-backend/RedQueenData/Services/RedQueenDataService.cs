@@ -164,6 +164,7 @@ namespace RedQueen.Data.Services
             existingBroker.IsActive = broker.IsActive;
             existingBroker.UseTls = broker.UseTls;
             existingBroker.KeepAliveSeconds = broker.KeepAliveSeconds;
+            existingBroker.DiscoveryTopic = broker.DiscoveryTopic;
             
             await _context.SaveChangesAsync();
             return existingBroker;

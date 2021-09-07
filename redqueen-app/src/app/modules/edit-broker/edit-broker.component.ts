@@ -31,12 +31,13 @@ export class EditBrokerComponent implements OnInit {
     this.submitted = false;
     this.shouldUseTls = false;
     this.form = this._fb.group({
-      host: ['', Validators.required],
-      port: [1883, Validators.required],
+      host: ['', [Validators.required]],
+      port: [1883, [Validators.required]],
       username: [''],
       password: [''],
-      useTls: [false, Validators.required],
-      keepAliveSeconds: [null]
+      useTls: [false, [Validators.required]],
+      keepAliveSeconds: [null],
+      discoveryTopic: ['']
     });
   }
 
@@ -50,6 +51,7 @@ export class EditBrokerComponent implements OnInit {
       this.form.controls['password'].setValue(this.broker?.password);
       this.form.controls['useTls'].setValue(this.broker?.useTls);
       this.form.controls['keepAliveSeconds'].setValue(this.broker?.keepAliveSeconds);
+      this.form.controls['discoveryTopic'].setValue(this.broker?.discoveryTopic);
     }
   }
 
@@ -89,6 +91,7 @@ export class EditBrokerComponent implements OnInit {
     this.broker.password = broker.password;
     this.broker.useTls = broker.useTls;
     this.broker.keepAliveSeconds = broker.keepAliveSeconds;
+    this.broker.discoveryTopic = broker.discoveryTopic;
 
     this._telemService.updateBroker(this.broker.id, this.broker)
       .pipe(take(1))
