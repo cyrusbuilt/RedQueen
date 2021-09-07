@@ -236,3 +236,5 @@ internal-nlog.txt
 
 .DS_Store
 secrets.txt
+
+LogFiles/
