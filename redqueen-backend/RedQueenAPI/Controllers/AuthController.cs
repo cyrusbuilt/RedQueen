@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -126,6 +127,7 @@ namespace RedQueenAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] UserRegistration registration)
         {
@@ -179,6 +181,7 @@ namespace RedQueenAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         [Route("password-reset")]
         public async Task<IActionResult> ResetPassword([FromBody] PasswordResetRequest request)
         {
@@ -211,6 +214,7 @@ namespace RedQueenAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         [Route("disable")]
         public async Task<IActionResult> EnableLockout([FromBody] ApplicationUser appUser)
         {
@@ -243,6 +247,7 @@ namespace RedQueenAPI.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         [Route("enable")]
         public async Task<IActionResult> DisableLockout([FromBody] ApplicationUser appUser)
         {
@@ -273,8 +278,9 @@ namespace RedQueenAPI.Controllers
                 Message = "Lockout removal failed. See log for details."
             });
         }
-
+        
         [HttpPut]
+        [Authorize]
         [Route("update")]
         public async Task<IActionResult> UpdateRegistration([FromBody] ApplicationUser appUser)
         {
