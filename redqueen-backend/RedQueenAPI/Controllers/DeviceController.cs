@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RedQueen.Data.Models;
 using RedQueen.Data.Models.Dto;
 using RedQueen.Data.Services;
 using RedQueenAPI.Models;
@@ -65,6 +66,13 @@ namespace RedQueenAPI.Controllers
                     Message = ex.Message
                 });
             }
+        }
+
+        [HttpGet]
+        [Route("classes")]
+        public IActionResult GetDeviceClasses()
+        {
+            return Ok(DeviceClass.All);
         }
     }
 }

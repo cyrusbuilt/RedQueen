@@ -21,9 +21,11 @@ export class AddDeviceComponent implements OnInit {
   deviceAdded: boolean;
   brokers: MqttBroker[];
   topics: MqttTopic[];
+  classes: string[];
   selectedBroker: MqttBroker | null;
   selectedStatusTopic: MqttTopic | null;
   selectedControlTopic: MqttTopic | null;
+  selectedClass: string | null;
 
   constructor(
     private _fb: FormBuilder,
@@ -37,20 +39,27 @@ export class AddDeviceComponent implements OnInit {
     this.deviceAdded = false;
     this.brokers = [];
     this.topics = [];
+    this.classes = [];
     this.selectedBroker = null;
     this.selectedStatusTopic = null;
     this.selectedControlTopic = null;
+    this.selectedClass = null;
     this.form = this._fb.group({
       name: ['', [Validators.required]],
       broker: ['', [Validators.required]],
       statusTopic: ['', [Validators.required]],
       controlTopic: [''],
+      deviceClass: ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
     this._telemService.getBrokers().subscribe({
       next: value => this.brokers = value
+    });
+
+    this._deviceService.getDeviceClasses().subscribe({
+      next: value => this.classes = value
     });
   }
 
@@ -104,6 +113,11 @@ export class AddDeviceComponent implements OnInit {
     }
   }
 
+  onSelectClass(): void {
+    let klass = this.form.get('deviceClass');
+    this.selectedClass = klass?.value;
+  }
+
   submit(): void {
     if (this.checkForFormErrors(this.form)) {
       return;
@@ -115,7 +129,8 @@ export class AddDeviceComponent implements OnInit {
       name: this.form.value.name,
       statusTopicId: this.form.value.statusTopic.id,
       controlTopicId: this.form.value.controlTopic?.id,
-      isActive: true
+      isActive: true,
+      class: this.form.value.deviceClass
     } as Device;
 
     this._deviceService.saveDevice(dev)

@@ -25,4 +25,8 @@ export class DeviceService {
   saveDevice(device: Device): Observable<Device | null> {
     return this.http.post<Device | null>(`${this.rootUrl}/device/add`, device);
   }
+
+  getDeviceClasses(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.rootUrl}/device/classes`);
+  }
 }

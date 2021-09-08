@@ -10,4 +10,5 @@ export interface Device {
   controlTopic?: MqttTopic;
   createdDate: Date;
   modifiedDate?: Date;
+  class: string;
 }

@@ -22,9 +22,11 @@ export class EditDeviceComponent implements OnInit {
   device: Device | null;
   brokers: MqttBroker[];
   topics: MqttTopic[];
+  classes: string[];
   selectedBroker: MqttBroker | null;
   selectedStatusTopic: MqttTopic | null;
   selectedControlTopic: MqttTopic | null;
+  selectedClass: string | null;
 
   constructor (
     private _fb: FormBuilder,
@@ -39,18 +41,25 @@ export class EditDeviceComponent implements OnInit {
     this.saved = false;
     this.brokers = [];
     this.topics = [];
+    this.classes = [];
     this.selectedBroker = null;
     this.selectedStatusTopic = null;
     this.selectedControlTopic = null;
+    this.selectedClass = null;
     this.form = this._fb.group({
       name: ['', [Validators.required]],
       statusTopic: ['', [Validators.required]],
       controlTopic: [''],
-      broker: ['', [Validators.required]]
+      broker: ['', [Validators.required]],
+      deviceClass: ['', [Validators.required]]
     });
   }
 
   ngOnInit(): void {
+    this._deviceService.getDeviceClasses().subscribe({
+      next: value => this.classes = value
+    });
+
     this._telemService.getBrokers().subscribe({
       next: value => {
         this.brokers = value;
@@ -58,6 +67,7 @@ export class EditDeviceComponent implements OnInit {
         if (dev) {
           this.device = JSON.parse(dev) as Device;
           this.form.controls['name'].setValue(this.device.name);
+          this.form.controls['deviceClass'].setValue(this.device.class);
 
           let sb = this.brokers.find(b => b.id === this.device?.statusTopic?.brokerId);
           if (sb) {
@@ -131,6 +141,11 @@ export class EditDeviceComponent implements OnInit {
     }
   }
 
+  onSelectClass(): void {
+    let klass = this.form.get('deviceClass');
+    this.selectedClass = klass?.value;
+  }
+
   submit(): void {
     if (!this.device || this.checkForFormErrors(this.form)) {
       return;
@@ -140,6 +155,7 @@ export class EditDeviceComponent implements OnInit {
     this.device.name = this.form.value.name;
     this.device.statusTopicId = this.form.value.statusTopic.id;
     this.device.controlTopicId = this.form.value.controlTopic?.id;
+    this.device.class = this.form.value.deviceClass;
 
     this._deviceService.updateDevice(this.device.id, this.device)
       .pipe(take(1))
