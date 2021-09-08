@@ -1,4 +1,5 @@
 {
+  "title": "discovery_schema",
   "description": "Device Auto-Discovery Config",
   "type": "object",
   "properties": {

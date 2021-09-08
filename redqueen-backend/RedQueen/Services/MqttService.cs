@@ -239,7 +239,7 @@ namespace RedQueen.Services
             
             var topic = new MqttTopic
             {
-                Name = $"{_broker.DiscoveryTopic.Trim()}/#",
+                Name = _broker.DiscoveryTopic.Trim(),
                 BrokerId = _broker.Id,
                 Broker = _broker,
                 CreatedDate = DateTime.Now,
@@ -257,7 +257,7 @@ namespace RedQueen.Services
                 return;
             }
 
-            await _clientSubscriber.UnsubscribeAsync($"{_broker.DiscoveryTopic}/#");
+            await _clientSubscriber.UnsubscribeAsync(_broker.DiscoveryTopic.Trim());
         }
         
         public async void Dispose()
