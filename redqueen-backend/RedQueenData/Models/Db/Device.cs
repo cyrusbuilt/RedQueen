@@ -30,6 +30,9 @@ namespace RedQueen.Data.Models.Db
         [Column("modified_date")]
         public DateTime? ModifiedDate { get; set; }
         
+        [Column("class")]
+        public string Class { get; set; }
+        
         public MqttTopic StatusTopic { get; set; }
         
         public MqttTopic ControlTopic { get; set; }

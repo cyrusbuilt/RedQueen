@@ -215,6 +215,7 @@ namespace RedQueen.Data.Services
             existingDevice.StatusTopicId = device.StatusTopicId;
             existingDevice.IsActive = device.IsActive;
             existingDevice.ModifiedDate = DateTime.Now;
+            existingDevice.Class = device.Class;
 
             await _context.SaveChangesAsync();
             return existingDevice;
@@ -234,6 +235,7 @@ namespace RedQueen.Data.Services
                 StatusTopicId = device.StatusTopicId,
                 ControlTopicId = device.ControlTopicId,
                 CreatedDate = DateTime.Now,
+                Class = device.Class,
                 IsActive = true
             };
 

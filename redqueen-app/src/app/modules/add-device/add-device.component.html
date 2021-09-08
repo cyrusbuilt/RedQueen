@@ -53,6 +53,22 @@
     <div class="row my-4">
       <div class="col-4">
         <div class="form-outline">
+          <select name="deviceClass" formControlName="deviceClass" (change)="onSelectClass()" class="custom-select">
+            <option disabled>Select Device Class</option>
+            <option *ngFor="let klass of classes" [ngValue]="klass">{{klass}}</option>
+          </select>
+          <label class="form-label required mt-2" for="deviceClass">Device Class</label>
+        </div>
+      </div>
+      <app-field-error-display
+        [displayError]="isFieldValid('deviceClass')"
+        errorMsg="Must select a device class">
+      </app-field-error-display>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
+        <div class="form-outline">
           <input type="text" name="name" formControlName="name" class="form-control"/>
           <label class="form-label mt-2" for="name">Name</label>
         </div>

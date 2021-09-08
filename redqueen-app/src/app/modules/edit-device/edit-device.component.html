@@ -64,6 +64,22 @@
 
     <div class="row my-4">
       <div class="col-4">
+        <div class="form-outline">
+          <select name="deviceClass" formControlName="deviceClass" (change)="onSelectClass()" class="custom-select">
+            <option disabled>Select Device Class</option>
+            <option *ngFor="let klass of classes" [ngValue]="klass">{{klass}}</option>
+          </select>
+          <label class="form-label required mt-2">Device Class</label>
+        </div>
+      </div>
+      <app-field-error-display
+        [displayError]="isFieldValid('deviceClass')"
+        errorMsg="Device class is required">
+      </app-field-error-display>
+    </div>
+
+    <div class="row my-4">
+      <div class="col-4">
         <button *ngIf="!submitted && !saved" type="submit" class="btn create mr-2">Save</button>
         <button *ngIf="!submitted" type="button" (click)="onBackClick()" class="btn btn-danger">Cancel</button>
       </div>

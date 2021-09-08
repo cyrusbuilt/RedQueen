@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MQTTnet;
 using MQTTnet.Client.Connecting;
@@ -17,6 +18,7 @@ namespace RedQueen.Services
         event MqttMessageReceivedEventHandler MessageReceived;
         string Host { get; }
         bool IsDisposed { get; }
+        bool AutoDiscoverEnabled { get; }
         ManagedMqttClientOptions GetOptions();
         Task StartPublisher();
         Task StopPublisher();
@@ -24,6 +26,8 @@ namespace RedQueen.Services
         Task StopSubscriber();
         Task SubscribeTopic(MqttTopic topic);
         Task SubscribeAllTopics();
+        Task StartAutoDiscover();
+        Task StopAutoDiscover();
     }
     
     public class MqttService : IMqttService
@@ -47,6 +51,9 @@ namespace RedQueen.Services
         {
             System.Diagnostics.Debug.WriteLine("Subscriber disconnected.");
         }
+
+        private const string Pattern = @"(?P<component>\w+)/(?:(?P<node_id>[a-zA-Z0-9_-]+)/)?(?P<object_id>[a-zA-Z0-9_-]+)/config";
+        private static readonly Regex TopicMatcher = new Regex(Pattern, RegexOptions.Compiled);
         
         private IManagedMqttClient _clientPublisher;
         private IManagedMqttClient _clientSubscriber;
@@ -57,6 +64,8 @@ namespace RedQueen.Services
         public bool IsDisposed { get; private set; }
         
         public string Host { get; private set; }
+        
+        public bool AutoDiscoverEnabled { get; private set; }
 
         public MqttService(MqttBroker broker)
         {
@@ -209,6 +218,47 @@ namespace RedQueen.Services
                 }
             }
         }
+
+        public async Task StartAutoDiscover()
+        {
+            if (_broker == null)
+            {
+                throw new InvalidOperationException("MQTT Broker not defined.");
+            }
+
+            if (string.IsNullOrWhiteSpace(_broker.DiscoveryTopic))
+            {
+                System.Diagnostics.Debug.WriteLine("No Auto-Discover topic defined. Skipping auto-discover.");
+                return;
+            }
+
+            if (AutoDiscoverEnabled)
+            {
+                return;
+            }
+            
+            var topic = new MqttTopic
+            {
+                Name = $"{_broker.DiscoveryTopic.Trim()}/#",
+                BrokerId = _broker.Id,
+                Broker = _broker,
+                CreatedDate = DateTime.Now,
+                IsActive = true
+            };
+
+            await SubscribeTopic(topic);
+            AutoDiscoverEnabled = true;
+        }
+
+        public async Task StopAutoDiscover()
+        {
+            if (!AutoDiscoverEnabled || _broker == null || string.IsNullOrWhiteSpace(_broker.DiscoveryTopic))
+            {
+                return;
+            }
+
+            await _clientSubscriber.UnsubscribeAsync($"{_broker.DiscoveryTopic}/#");
+        }
         
         public async void Dispose()
         {
@@ -217,6 +267,7 @@ namespace RedQueen.Services
                 return;
             }
 
+            await StopAutoDiscover();
             await StopPublisher();
             await StopSubscriber();
             IsDisposed = true;

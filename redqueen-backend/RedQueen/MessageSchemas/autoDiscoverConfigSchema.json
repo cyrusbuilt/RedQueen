@@ -1,0 +1,18 @@
+{
+  "description": "Device Auto-Discovery Config",
+  "type": "object",
+  "properties": {
+    "statusTopic": {
+      "type": "string"
+    },
+    "controlTopic": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "class": {
+      "type": "string"
+    }
+  }
+}

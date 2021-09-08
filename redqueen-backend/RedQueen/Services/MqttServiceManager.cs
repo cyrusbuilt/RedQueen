@@ -41,7 +41,7 @@ namespace RedQueen.Services
             var msg = $"Message received: Timestamp: {DateTime.Now} | Topic: {evt.EventData.ApplicationMessage.Topic}";
             msg += $" | Sender: {evt.EventData.ClientId} | QoS: {evt.EventData.ApplicationMessage.QualityOfServiceLevel}";
             msg += $" | Broker: {evt.Host} | Payload: {payload}";
-            
+
             _logger.LogInformation(msg);
 
             var broker = _dataService.GetBrokerByHost(evt.Host).Result;
@@ -73,6 +73,24 @@ namespace RedQueen.Services
                 catch (Exception ex)
                 {
                     _logger.LogError($"Failed to start publisher and/or subscriber for host: {instance.Host}: {ex.Message}");
+                }
+
+                try
+                {
+                    _logger.LogInformation($"Attempting to start auto-discover for host: {instance.Host}");
+                    await instance.StartAutoDiscover();
+                    if (instance.AutoDiscoverEnabled)
+                    {
+                        _logger.LogInformation("Auto-discover running.");
+                    }
+                    else
+                    {
+                        _logger.LogWarning("Auto-discover already running or topic not defined.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Failed to start auto-discover for host: {instance.Host}: {ex.Message}");
                 }
             }
 
