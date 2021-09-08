@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MQTTnet;
 using RedQueen.Data.Services;
+using RedQueen.JsonMessages;
 
 namespace RedQueen.Services
 {
@@ -23,7 +24,7 @@ namespace RedQueen.Services
     {
         private readonly ILogger<MqttServiceManager> _logger;
         private readonly IRedQueenDataService _dataService;
-        
+
         public List<IMqttService> Instances { get; }
 
         public MqttServiceManager(ILogger<MqttServiceManager> logger, IServiceProvider services)
@@ -45,10 +46,39 @@ namespace RedQueen.Services
             _logger.LogInformation(msg);
 
             var broker = _dataService.GetBrokerByHost(evt.Host).Result;
-            _dataService.SaveTopic(evt.EventData.ApplicationMessage.Topic, broker.Id).Wait();
+            if (!string.IsNullOrWhiteSpace(broker.DiscoveryTopic)
+                && evt.EventData.ApplicationMessage.Topic.ToLower().Contains(broker.DiscoveryTopic.ToLower()))
+            {
+                var device = MessageParser.ParseDevice(payload, out var messages);
+                if (device == null)
+                {
+                    foreach (var errMsg in messages)
+                    {
+                        _logger.LogError($"Failed to parse JSON payload: {errMsg}");
+                    }
+                }
+                else
+                {
+                    _logger.LogInformation($"Discovered device {device.Name}!");
+                    _logger.LogInformation($"Attempting to save config for device: {device.Name}");
+                    var result = _dataService.AddDevice(device);
+                    if (result == null)
+                    {
+                        _logger.LogWarning($"Config for device already exists: {device.Name}");
+                    }
+                    else
+                    {
+                        _logger.LogInformation("Device saved!");
+                    }
+                }
+            }
+            else
+            {
+                _dataService.SaveTopic(evt.EventData.ApplicationMessage.Topic, broker.Id).Wait();
             
-            var topic = _dataService.GetTopic(evt.EventData.ApplicationMessage.Topic).Result;
-            _dataService.SaveMqttMessage(payload, topic.Id, evt.EventData.ClientId).Wait();
+                var topic = _dataService.GetTopic(evt.EventData.ApplicationMessage.Topic).Result;
+                _dataService.SaveMqttMessage(payload, topic.Id, evt.EventData.ClientId).Wait();
+            }
         }
 
         public void AddService(IMqttService service)

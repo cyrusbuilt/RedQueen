@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RedQueen.Data.Services;
+using RedQueen.JsonMessages;
 using RedQueen.Services;
 
 namespace RedQueen
@@ -28,9 +29,12 @@ namespace RedQueen
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("REDQUEEN is starting up!");
-            _logger.LogInformation("Fetching MQTT brokers...");
+            _logger.LogInformation("Loading message schemas...");
+            MessageParser.LoadSchemas();
             
+            _logger.LogInformation("Fetching MQTT brokers...");
             var brokers = await _dataService.GetMqttBrokers();
+            
             _logger.LogInformation($"Retrieved {brokers.Count.ToString()} MQTTT brokers.");
             foreach (var x in brokers)
             {
