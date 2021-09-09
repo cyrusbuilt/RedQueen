@@ -16,6 +16,9 @@ namespace RedQueen
         private readonly ILogger<Worker> _logger;
         private readonly IRedQueenDataService _dataService;
         private readonly IMqttServiceManager _mqttManager;
+        
+        // TODO The RedQueen daemon itself should probably have it's own status/control topics. That way both OpenHAB
+        // TODO or HomeAssistant, etc as well as the RedQueen API can communicate with the daemon.
 
         public Worker(ILogger<Worker> logger, IServiceProvider services)
         {
