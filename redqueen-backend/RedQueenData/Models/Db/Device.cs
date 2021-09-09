@@ -16,7 +16,7 @@ namespace RedQueen.Data.Models.Db
         public string Name { get; set; }
         
         [Column("control_topic_id")]
-        public int ControlTopicId { get; set; }
+        public int? ControlTopicId { get; set; }
         
         [Column("status_topic_id")]
         public int StatusTopicId { get; set; }
