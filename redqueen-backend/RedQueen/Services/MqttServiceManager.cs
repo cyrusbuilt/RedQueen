@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MQTTnet;
+using RedQueen.Data.Models;
 using RedQueen.Data.Models.Db;
 using RedQueen.Data.Models.Dto;
 using RedQueen.Data.Services;
@@ -87,6 +88,12 @@ namespace RedQueen.Services
                 if (statTopic == null)
                 {
                     _logger.LogError($"Unable to fetch or save status topic. Cannot save device.");
+                    return;
+                }
+
+                if (!DeviceClass.All.Contains(device.Class.ToLower()))
+                {
+                    _logger.LogError($"Illegal device class: '{device.Class}'. Ignoring device.");
                     return;
                 }
                     

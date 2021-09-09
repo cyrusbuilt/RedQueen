@@ -223,7 +223,8 @@ namespace RedQueen.Data.Services
 
         public async Task<Device> AddDevice(DeviceDto device)
         {
-            var dev = await _context.Devices.FirstOrDefaultAsync(d => d.Name.ToLower().Equals(device.Name));
+            var dev = await _context.Devices
+                .FirstOrDefaultAsync(d => d.Name.ToLower().Equals(device.Name.ToLower()));
             if (dev != null)
             {
                 return null;

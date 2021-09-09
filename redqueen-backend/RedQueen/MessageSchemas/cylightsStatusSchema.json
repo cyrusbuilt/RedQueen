@@ -1,5 +1,12 @@
 {
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "cylights_status_schema",
   "description": "CyLights Status Message",
+  "required": [
+    "client_id",
+    "systemState",
+    "firmwareVersion"
+  ],
   "type": "object",
   "properties": {
     "client_id": {
