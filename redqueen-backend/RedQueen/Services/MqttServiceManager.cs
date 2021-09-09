@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MQTTnet;
+using RedQueen.Data.Models.Db;
+using RedQueen.Data.Models.Dto;
 using RedQueen.Data.Services;
 using RedQueen.JsonMessages;
 
@@ -36,47 +38,103 @@ namespace RedQueen.Services
             Instances = new List<IMqttService>();
         }
 
+        private static bool IsDiscoveryTopic(MqttBroker broker, string topicName)
+        {
+            return !string.IsNullOrWhiteSpace(broker.DiscoveryTopic)
+                   && topicName.ToLower().Contains(broker.DiscoveryTopic.ToLower());
+        }
+
+        private void ProcessDeviceDiscovery(MqttBroker broker, string payload)
+        {
+            // Device discovery process:
+            // A device announces itself to the discovery topic and sends a config payload (see
+            // autoDiscoverConfigSchema.json) and if the payload validates properly, then the first thing to happen
+            // is to fetch the status topic (required. auto-create if not exist) and the control topic (if specified,
+            // and auto-create if not exist), then create the device if it doesn't already exist. If device did not
+            // already exist, and was successfully created, then subscribe to the status topic.
+            
+            var device = MessageParser.ParseDevice(payload, out var messages);
+            if (device == null)
+            {
+                foreach (var errMsg in messages)
+                {
+                    _logger.LogError($"Failed to parse JSON payload: {errMsg}");
+                }
+            }
+            else
+            {
+                _logger.LogInformation($"Discovered device {device.Name}!");
+                _logger.LogInformation($"Attempting to save config for device: {device.Name}");
+                var statTopic = _dataService.GetTopic(device.StatusTopic).Result;
+                if (statTopic == null)
+                {
+                    _logger.LogWarning($"Status topic not found: {device.StatusTopic}. Adding...");
+                    _dataService.SaveTopic(device.StatusTopic, broker.Id).Wait();
+                }
+
+                MqttTopic contTopic = null;
+                if (!string.IsNullOrWhiteSpace(device.ControlTopic))
+                {
+                    contTopic = _dataService.GetTopic(device.ControlTopic).Result;
+                    if (contTopic == null)
+                    {
+                        _logger.LogWarning($"Control topic not found: {device.ControlTopic}. Adding...");
+                        _dataService.SaveTopic(device.ControlTopic, broker.Id).Wait();
+                    }
+                }
+
+                statTopic = _dataService.GetTopic(device.StatusTopic).Result;
+                if (statTopic == null)
+                {
+                    _logger.LogError($"Unable to fetch or save status topic. Cannot save device.");
+                    return;
+                }
+                    
+                var newDev = new DeviceDto
+                {
+                    Name = device.Name,
+                    Class = device.Class,
+                    StatusTopicId = statTopic.Id,
+                    ControlTopicId = contTopic?.Id
+                };
+                    
+                var result = _dataService.AddDevice(newDev);
+                if (result == null)
+                {
+                    _logger.LogWarning($"Config for device already exists: {device.Name}");
+                }
+                else
+                {
+                    _logger.LogInformation("Device saved!");
+                    var serviceInstance = Instances.First(h => h.Host.Equals(broker.Host));
+                    serviceInstance.SubscribeTopic(statTopic);
+                }
+            }
+        }
+
         private void OnMessageReceived(object sender, MqttMessageReceivedEvent evt)
         {
             var payload = evt.EventData.ApplicationMessage.ConvertPayloadToString();
+            var topicName = evt.EventData.ApplicationMessage.Topic;
+            
             var msg = $"Message received: Timestamp: {DateTime.Now} | Topic: {evt.EventData.ApplicationMessage.Topic}";
             msg += $" | Sender: {evt.EventData.ClientId} | QoS: {evt.EventData.ApplicationMessage.QualityOfServiceLevel}";
             msg += $" | Broker: {evt.Host} | Payload: {payload}";
 
             _logger.LogInformation(msg);
 
+            // If we got a message on the discovery topic, then process the discovered device. Otherwise, save the
+            // payload as a message in the DB.
             var broker = _dataService.GetBrokerByHost(evt.Host).Result;
-            if (!string.IsNullOrWhiteSpace(broker.DiscoveryTopic)
-                && evt.EventData.ApplicationMessage.Topic.ToLower().Contains(broker.DiscoveryTopic.ToLower()))
+            if (IsDiscoveryTopic(broker, topicName))
             {
-                var device = MessageParser.ParseDevice(payload, out var messages);
-                if (device == null)
-                {
-                    foreach (var errMsg in messages)
-                    {
-                        _logger.LogError($"Failed to parse JSON payload: {errMsg}");
-                    }
-                }
-                else
-                {
-                    _logger.LogInformation($"Discovered device {device.Name}!");
-                    _logger.LogInformation($"Attempting to save config for device: {device.Name}");
-                    var result = _dataService.AddDevice(device);
-                    if (result == null)
-                    {
-                        _logger.LogWarning($"Config for device already exists: {device.Name}");
-                    }
-                    else
-                    {
-                        _logger.LogInformation("Device saved!");
-                    }
-                }
+                ProcessDeviceDiscovery(broker, payload);
             }
             else
             {
-                _dataService.SaveTopic(evt.EventData.ApplicationMessage.Topic, broker.Id).Wait();
+                _dataService.SaveTopic(topicName, broker.Id).Wait();
             
-                var topic = _dataService.GetTopic(evt.EventData.ApplicationMessage.Topic).Result;
+                var topic = _dataService.GetTopic(topicName).Result;
                 _dataService.SaveMqttMessage(payload, topic.Id, evt.EventData.ClientId).Wait();
             }
         }

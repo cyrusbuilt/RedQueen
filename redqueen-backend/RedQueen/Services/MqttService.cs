@@ -204,6 +204,7 @@ namespace RedQueen.Services
         {
             if (topic.IsActive)
             {
+                System.Diagnostics.Debug.WriteLine($"Subscribing topic: {topic.Name}");
                 await _clientSubscriber.SubscribeAsync(topic.Name);
             }
         }
@@ -212,10 +213,7 @@ namespace RedQueen.Services
         {
             foreach (var topic in _broker.Topics)
             {
-                if (topic.IsActive)
-                {
-                    await SubscribeTopic(topic);
-                }
+                await SubscribeTopic(topic);
             }
         }
 
@@ -236,6 +234,8 @@ namespace RedQueen.Services
             {
                 return;
             }
+            
+            System.Diagnostics.Debug.WriteLine($"Discovery topic: {_broker.DiscoveryTopic}");
             
             var topic = new MqttTopic
             {
@@ -258,6 +258,7 @@ namespace RedQueen.Services
             }
 
             await _clientSubscriber.UnsubscribeAsync(_broker.DiscoveryTopic.Trim());
+            AutoDiscoverEnabled = false;
         }
         
         public async void Dispose()

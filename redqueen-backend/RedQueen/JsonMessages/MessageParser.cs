@@ -11,11 +11,11 @@ namespace RedQueen.JsonMessages
 {
     public static class MessageParser
     {
-        private static List<JSchema> _schemas = new();
+        private static readonly List<JSchema> Schemas = new();
 
         public static void LoadSchemas()
         {
-            _schemas.Clear();
+            Schemas.Clear();
             var schemaPath = Path.Join(AppDomain.CurrentDomain.BaseDirectory, "MessageSchemas");
             
             var files = Directory.GetFiles(schemaPath, "*.json");
@@ -23,16 +23,16 @@ namespace RedQueen.JsonMessages
             {
                 using var reader = File.OpenText(schemaFile);
                 var schema = JSchema.Load(new JsonTextReader(reader));
-                _schemas.Add(schema);
+                Schemas.Add(schema);
             }
         }
         
         public static JSchema GetDiscoverySchema()
         {
-            return _schemas.FirstOrDefault(s => s.Title is "discovery_schema");
+            return Schemas.FirstOrDefault(s => s.Title is "discovery_schema");
         }
 
-        public static DeviceDto ParseDevice(string payload, out IList<string> messages)
+        public static DeviceConfig ParseDevice(string payload, out IList<string> messages)
         {
             messages = new List<string>();
             
@@ -42,11 +42,18 @@ namespace RedQueen.JsonMessages
                 return null;
             }
 
-            var config = JObject.Parse(payload);
-            if (config.IsValid(schema, out messages))
+            try
             {
-                var serializer = new JsonSerializer();
-                return serializer.Deserialize<DeviceDto>(new JTokenReader(config));
+                var config = JObject.Parse(payload);
+                if (config.IsValid(schema, out messages))
+                {
+                    var serializer = new JsonSerializer();
+                    return serializer.Deserialize<DeviceConfig>(new JTokenReader(config));
+                }
+            }
+            catch (JsonReaderException ex)
+            {
+                messages.Add(ex.Message);
             }
 
             return null;
