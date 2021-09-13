@@ -1,0 +1,25 @@
+<div class="component-header">
+  <h2>Integrations</h2>
+  <em>Control and Monitor Device Integrations</em>
+</div>
+<div class="component-body">
+  <h5>CyGarage</h5>
+  <button class="btn mr-2 float-right" (click)="onBackClick()">Back</button>
+  <ng-container *ngIf="device">
+    <div class="row my-4">
+      <div class="col-4">
+        <label class="form-label mt-2">Name: {{device.name}}</label><br/>
+        <label class="form-label mt-2">Class: {{device.class}}</label><br/>
+        <label class="form-label mt-2">System ID: {{state && state.client_id}}</label><br/>
+        <label class="form-label mt-2">Firmware version: {{state && state.firmwareVersion}}</label><br/>
+        <label class="form-label mt-2">Control</label><br/>
+        <mat-select *ngIf="state" (selectionChange)="onOperationSelect($event)" class="custom-select" placeholder="Select Operation">
+          <mat-option *ngFor="let cmd of commands" [value]="cmd">{{cmd.friendlyName}}</mat-option>
+        </mat-select>
+        <label class="form-label mt-2">System State: {{state && getStateName(state.systemState)}}</label><br/>
+        <label class="form-label mt-2">Current position: {{state && state.doorState}}</label><br/>
+        <button *ngIf="state && device && device.controlTopic" class="btn create mr-2" type="button" (click)="onActivate()">Activate</button>
+      </div>
+    </div>
+  </ng-container>
+</div>

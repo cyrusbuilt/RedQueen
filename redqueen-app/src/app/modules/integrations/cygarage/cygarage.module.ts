@@ -1,22 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CylightsRoutingModule } from './cylights-routing.module';
-import { CylightsComponent } from './cylights.component';
+import { CygarageRoutingModule } from './cygarage-routing.module';
+import { CygarageComponent } from './cygarage.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
+
 @NgModule({
   declarations: [
-    CylightsComponent
+    CygarageComponent
   ],
   imports: [
     CommonModule,
-    CylightsRoutingModule,
+    CygarageRoutingModule,
     SharedModule,
     ReactiveFormsModule,
-    MatSlideToggleModule,
     MatSelectModule
   ]
 })
-export class CylightsModule { }
+export class CygarageModule { }

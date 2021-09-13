@@ -91,5 +91,8 @@ export class HomeComponent implements OnInit {
     if (device.class === "cylights") {
       this._router.navigate(['/integrations/cylights']);
     }
+    else if (device.class === "cygarage") {
+      this._router.navigate(['/integrations/cygarage']);
+    }
   }
 }

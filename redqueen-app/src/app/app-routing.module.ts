@@ -131,6 +131,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'integrations/cygarage',
+    loadChildren: () => import('./modules/integrations/cygarage/cygarage.module').then(m => m.CygarageModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]
