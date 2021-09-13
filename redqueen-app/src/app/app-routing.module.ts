@@ -126,6 +126,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'integrations/cylights',
+    loadChildren: () => import('./modules/integrations/cylights/cylights.module').then(m => m.CylightsModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]
