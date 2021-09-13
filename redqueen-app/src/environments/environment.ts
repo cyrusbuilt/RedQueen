@@ -3,11 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 const config = {
-  apiUri: "https://localhost:5001"
+  apiUri: "https://localhost:5001",
+  mqttProtocol: "ws",
+  mqttBrokerId: 2
 };
 
-const { apiUri } = config as {
-  apiUri: string
+const { apiUri, mqttProtocol, mqttBrokerId } = config as {
+  apiUri: string,
+  mqttProtocol: string,
+  mqttBrokerId: number
 };
 
 export const environment = {
@@ -15,7 +19,11 @@ export const environment = {
   httpInterceptor: {
     allowedList: [`${apiUri}/*`],
   },
-  rootUrl: `${apiUri}/api`
+  rootUrl: `${apiUri}/api`,
+  mqtt: {
+    protocol: mqttProtocol,
+    brokerId: mqttBrokerId
+  }
 };
 
 /*

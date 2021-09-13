@@ -10,6 +10,14 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { LoginGuard } from './core/guards/login.guard';
 import { HomeComponent } from './modules/home/home.component';
 import { HttpAuthInterceptor } from './core/interceptors/http-auth.interceptor';
+import { MqttModule } from 'ngx-mqtt';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -22,7 +30,15 @@ import { HttpAuthInterceptor } from './core/interceptors/http-auth.interceptor';
     FormsModule,
     SharedModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    MqttModule.forRoot({}),
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatGridListModule,
+    FlexLayoutModule,
+    MatSlideToggleModule,
+    MatSelectModule
   ],
   providers: [
     AuthGuard,

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { PasswordResetRequest } from '../interfaces/password-reset-request';
 import { take } from 'rxjs/operators';
 import { ApplicationUser } from '../interfaces/application-user';
+import { MqttService } from 'ngx-mqtt';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,11 @@ export class AuthService {
   private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(!!this.getToken());
   private loginFailed: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private _mqtt: MqttService
+  ) {
     if (!this.getToken()) {
       AuthService.resetToken();
     }
@@ -77,6 +82,7 @@ export class AuthService {
     this.loggedIn.next(false);
     this.loginFailed.next(false);
     this.router.navigate(['/login']);
+    this._mqtt.disconnect(true);
   }
 
   register(registration: UserRegistration): Observable<AuthenticationResponse> {
