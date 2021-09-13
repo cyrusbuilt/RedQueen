@@ -7,11 +7,7 @@ import { Subscription } from 'rxjs';
 import { CylightsControl } from 'src/app/core/interfaces/cylights-control';
 import { CylightsStatus } from 'src/app/core/interfaces/cylights-status';
 import { Device } from 'src/app/core/interfaces/device';
-
-interface ControlCommand {
-  friendlyName: string;
-  command: number;
-}
+import { ControlCommand } from 'src/app/core/interfaces/control-command';
 
 enum CylightsCommand {
   DISABLE = 0,

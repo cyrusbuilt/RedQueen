@@ -12,11 +12,11 @@
         <label class="form-label mt-2">Class: {{device.class}}</label><br/>
         <label class="form-label mt-2">System ID: {{state && state.client_id}}</label><br/>
         <label class="form-label mt-2">Firmware version: {{state && state.firmwareVersion}}</label><br/>
-        <label class="form-label mt-2">Control</label>&nbsp;&nbsp;
-        <mat-select (selectionChange)="onOperationSelect($event)" class="custom-select" placeholder="Select Operation">
+        <label class="form-label mt-2">Control</label><br/>
+        <mat-select *ngIf="state" (selectionChange)="onOperationSelect($event)" class="custom-select" placeholder="Select Operation">
           <mat-option *ngFor="let cmd of commands" [value]="cmd">{{cmd.friendlyName}}</mat-option>
         </mat-select>
-        <label class="form-label mt-2">State: {{state && getStateName(state.systemState)}}</label><br/>
+        <label class="form-label mt-2">System State: {{state && getStateName(state.systemState)}}</label><br/>
         <label class="form-label mt-2">Light 1 State: {{state && getOutletState(state.light1State)}}</label>&nbsp;&nbsp;
         <mat-slide-toggle *ngIf="state" aria-label="light_1" (change)="onLight1Clicked($event)"></mat-slide-toggle><br/>
         <label class="form-label mt-2">Light 2 State: {{state && getOutletState(state.light2State)}}</label>&nbsp;&nbsp;
