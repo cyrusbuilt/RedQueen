@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MQTTnet;
@@ -10,12 +11,16 @@ using RedQueen.Data.Models.Db;
 using RedQueen.Data.Models.Dto;
 using RedQueen.Data.Services;
 using RedQueen.JsonMessages;
+using RedQueen.Telemetry;
 
 namespace RedQueen.Services
 {
     public interface IMqttServiceManager
     {
         List<IMqttService> Instances { get; }
+        bool ShouldStop { get; }
+        bool ShouldRestart { get; }
+        SystemStatus SystemStatus { get; }
         void AddService(IMqttService service);
         Task<int> StartAllServices();
         void StopAllServices();
@@ -27,12 +32,20 @@ namespace RedQueen.Services
     {
         private readonly ILogger<MqttServiceManager> _logger;
         private readonly IRedQueenDataService _dataService;
+        private readonly IConfiguration _configuration;
 
         public List<IMqttService> Instances { get; }
+        
+        public bool ShouldStop { get; private set; }
+        
+        public bool ShouldRestart { get; private set; }
+        
+        public SystemStatus SystemStatus { get; private set; }
 
-        public MqttServiceManager(ILogger<MqttServiceManager> logger, IServiceProvider services)
+        public MqttServiceManager(ILogger<MqttServiceManager> logger, IServiceProvider services, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
 
             var scope = services.CreateScope();
             _dataService = scope.ServiceProvider.GetRequiredService<IRedQueenDataService>();
@@ -43,6 +56,13 @@ namespace RedQueen.Services
         {
             return !string.IsNullOrWhiteSpace(broker.DiscoveryTopic)
                    && topicName.ToLower().Contains(broker.DiscoveryTopic.ToLower());
+        }
+
+        private bool IsControlTopic(string topicName)
+        {
+            return !string.IsNullOrWhiteSpace(topicName)
+                   && !string.IsNullOrWhiteSpace(_configuration["MQTT:ControlTopic"])
+                   && _configuration["MQTT:ControlTopic"].ToLower().Equals(topicName.ToLower());
         }
 
         private void ProcessDeviceDiscovery(MqttBroker broker, string payload)
@@ -119,6 +139,51 @@ namespace RedQueen.Services
             }
         }
 
+        private async Task PublishStatus(MqttService service)
+        {
+            var stat = new RedQueenSystemStatus
+            {
+                Timestamp = DateTime.Now,
+                Status = (int)SystemStatus
+            };
+
+            var topic = _configuration["MQTT:StatusTopic"];
+            await service.PublishSystemStatus(stat, topic);
+        }
+
+        private async Task ProcessControlMessage(string payload, MqttService service)
+        {
+            var cmd = MessageParser.ParseControlCommand(payload, out var messages);
+            if (cmd == null)
+            {
+                foreach (var errMsg in messages)
+                {
+                    _logger.LogError($"Failed to parse JSON payload: {errMsg}");
+                }
+            }
+            else
+            {
+                _logger.LogInformation($"Received command from {cmd.Sender}: {cmd.Command.ToString()}");
+                switch (cmd.Command)
+                {
+                    case (int)ControlCommand.Restart:
+                        _logger.LogWarning("Restarting services...");
+                        SystemStatus = SystemStatus.Restart;
+                        ShouldRestart = true;
+                        await PublishStatus(service);
+                        break;
+                    case (int)ControlCommand.Shutdown:
+                        _logger.LogWarning("**** REDQUEEN SHUTTING DOWN ****");
+                        SystemStatus = SystemStatus.Shutdown;
+                        ShouldStop = true;
+                        await PublishStatus(service);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         private void OnMessageReceived(object sender, MqttMessageReceivedEvent evt)
         {
             var payload = evt.EventData.ApplicationMessage.ConvertPayloadToString();
@@ -132,18 +197,21 @@ namespace RedQueen.Services
 
             // If we got a message on the discovery topic, then process the discovered device. Otherwise, save the
             // payload as a message in the DB.
-            var broker = _dataService.GetBrokerByHost(evt.Host).Result;
+            var broker = _dataService.GetBrokerByHost(evt.Host).GetAwaiter().GetResult();
             if (IsDiscoveryTopic(broker, topicName))
             {
                 ProcessDeviceDiscovery(broker, payload);
             }
-            else
+
+            if (IsControlTopic(topicName))
             {
-                _dataService.SaveTopic(topicName, broker.Id).Wait();
-            
-                var topic = _dataService.GetTopic(topicName).Result;
-                _dataService.SaveMqttMessage(payload, topic.Id, evt.EventData.ClientId).Wait();
+                ProcessControlMessage(payload, (MqttService)sender).Wait();
             }
+            
+            _dataService.SaveTopic(topicName, broker.Id).Wait();
+            
+            var topic = _dataService.GetTopic(topicName).GetAwaiter().GetResult();
+            _dataService.SaveMqttMessage(payload, topic.Id, evt.EventData.ClientId).Wait();
         }
 
         public void AddService(IMqttService service)
@@ -163,6 +231,7 @@ namespace RedQueen.Services
                     await instance.StartPublisher();
                     await instance.StartSubscriber();
                     await instance.SubscribeAllTopics();
+                    await instance.SubscribeSystemControlTopic(_configuration["MQTT:ControlTopic"]);
                     count++;
                 }
                 catch (Exception ex)
@@ -189,6 +258,7 @@ namespace RedQueen.Services
                 }
             }
 
+            SystemStatus = SystemStatus.Normal;
             return count;
         }
 
@@ -199,6 +269,9 @@ namespace RedQueen.Services
                 _logger.LogInformation($"Stopping MQTT service handler for host: {instance.Host}");
                 instance.Dispose();
             }
+
+            ShouldRestart = false;
+            SystemStatus = SystemStatus.Shutdown;
         }
 
         public async Task StartServiceForHost(string host)

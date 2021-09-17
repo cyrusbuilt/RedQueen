@@ -16,9 +16,6 @@ namespace RedQueen
         private readonly ILogger<Worker> _logger;
         private readonly IRedQueenDataService _dataService;
         private readonly IMqttServiceManager _mqttManager;
-        
-        // TODO The RedQueen daemon itself should probably have it's own status/control topics. That way both OpenHAB
-        // TODO or HomeAssistant, etc as well as the RedQueen API can communicate with the daemon.
 
         public Worker(ILogger<Worker> logger, IServiceProvider services)
         {
@@ -29,7 +26,7 @@ namespace RedQueen
             _mqttManager = scope.ServiceProvider.GetRequiredService<IMqttServiceManager>();
         }
 
-        public override async Task StartAsync(CancellationToken cancellationToken)
+        private async Task Startup()
         {
             _logger.LogInformation("REDQUEEN is starting up!");
             _logger.LogInformation("Loading message schemas...");
@@ -47,13 +44,23 @@ namespace RedQueen
 
             var result = await _mqttManager.StartAllServices();
             _logger.LogInformation($"Started {result.ToString()} MQTT service instances.");
+        }
+
+        public override async Task StartAsync(CancellationToken cancellationToken)
+        {
+            await Startup();
             await base.StartAsync(cancellationToken);
+        }
+
+        private void Stop()
+        {
+            _logger.LogInformation("REDQUEEN is shutting down!");
+            _mqttManager.StopAllServices();
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("REDQUEEN is shutting down!");
-            _mqttManager.StopAllServices();
+            Stop();
             return base.StopAsync(cancellationToken);
         }
 
@@ -61,7 +68,20 @@ namespace RedQueen
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                if (_mqttManager.ShouldRestart)
+                {
+                    Stop();
+                    await Startup();
+                    continue;
+                }
+                
+                if (_mqttManager.ShouldStop)
+                {
+                    await StopAsync(stoppingToken);
+                    continue;
+                }
+                
+                //_logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 await Task.Delay(1000, stoppingToken);
             }
         }

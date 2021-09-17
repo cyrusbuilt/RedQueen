@@ -10,4 +10,5 @@ export interface MqttBroker {
   useTls: boolean;
   keepAliveSeconds?: number;
   discoveryTopic: string;
+  webSocketsPort?: number;
 }

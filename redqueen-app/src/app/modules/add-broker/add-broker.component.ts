@@ -28,6 +28,7 @@ export class AddBrokerComponent implements OnInit {
     this.form = this._fb.group({
       host: ['', [Validators.required]],
       port: [1883, [Validators.required]],
+      webSocketsPort: [''],
       username: [''],
       password: [''],
       useTls: [false, [Validators.required]],

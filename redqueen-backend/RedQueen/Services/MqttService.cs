@@ -9,7 +9,10 @@ using MQTTnet.Client.Options;
 using MQTTnet.Client.Receiving;
 using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Formatter;
+using MQTTnet.Protocol;
+using Newtonsoft.Json;
 using RedQueen.Data.Models.Db;
+using RedQueen.Data.Models.Dto;
 
 namespace RedQueen.Services
 {
@@ -28,6 +31,8 @@ namespace RedQueen.Services
         Task SubscribeAllTopics();
         Task StartAutoDiscover();
         Task StopAutoDiscover();
+        Task PublishSystemStatus(RedQueenSystemStatus status, string statusTopic);
+        Task SubscribeSystemControlTopic(string controlTopic);
     }
     
     public class MqttService : IMqttService
@@ -52,9 +57,6 @@ namespace RedQueen.Services
             System.Diagnostics.Debug.WriteLine("Subscriber disconnected.");
         }
 
-        private const string Pattern = @"(?P<component>\w+)/(?:(?P<node_id>[a-zA-Z0-9_-]+)/)?(?P<object_id>[a-zA-Z0-9_-]+)/config";
-        private static readonly Regex TopicMatcher = new Regex(Pattern, RegexOptions.Compiled);
-        
         private IManagedMqttClient _clientPublisher;
         private IManagedMqttClient _clientSubscriber;
         private readonly MqttBroker _broker;
@@ -260,17 +262,45 @@ namespace RedQueen.Services
             await _clientSubscriber.UnsubscribeAsync(_broker.DiscoveryTopic.Trim());
             AutoDiscoverEnabled = false;
         }
+
+        public async Task PublishSystemStatus(RedQueenSystemStatus status, string statusTopic)
+        {
+            var payloadStr = JsonConvert.SerializeObject(status);
+
+            var msg = new MqttApplicationMessage
+            {
+                Topic = statusTopic,
+                Payload = Encoding.UTF8.GetBytes(payloadStr),
+                QualityOfServiceLevel = MqttQualityOfServiceLevel.AtMostOnce
+            };
+
+            await _clientPublisher.PublishAsync(msg);
+        }
+
+        public async Task SubscribeSystemControlTopic(string controlTopic)
+        {
+            var topic = new MqttTopic
+            {
+                Name = controlTopic,
+                IsActive = true,
+                Broker = _broker,
+                BrokerId = _broker.Id,
+                CreatedDate = DateTime.Now
+            };
+
+            await SubscribeTopic(topic);
+        }
         
-        public async void Dispose()
+        public void Dispose()
         {
             if (IsDisposed)
             {
                 return;
             }
 
-            await StopAutoDiscover();
-            await StopPublisher();
-            await StopSubscriber();
+            StopAutoDiscover().Wait();
+            StopPublisher().Wait();
+            StopSubscriber().Wait();
             IsDisposed = true;
             GC.SuppressFinalize(this);
         }

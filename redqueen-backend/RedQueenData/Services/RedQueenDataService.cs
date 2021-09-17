@@ -140,7 +140,8 @@ namespace RedQueen.Data.Services
                 IsActive = true,
                 CreatedDate = DateTime.Now,
                 UseTls = broker.UseTls,
-                KeepAliveSeconds = broker.KeepAliveSeconds
+                KeepAliveSeconds = broker.KeepAliveSeconds,
+                WebSocketsPort = broker.WebSocketsPort
             };
 
             _context.Brokers.Add(newBroker);
@@ -165,6 +166,7 @@ namespace RedQueen.Data.Services
             existingBroker.UseTls = broker.UseTls;
             existingBroker.KeepAliveSeconds = broker.KeepAliveSeconds;
             existingBroker.DiscoveryTopic = broker.DiscoveryTopic;
+            existingBroker.WebSocketsPort = broker.WebSocketsPort;
             
             await _context.SaveChangesAsync();
             return existingBroker;
