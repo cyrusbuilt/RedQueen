@@ -37,7 +37,8 @@ export class EditBrokerComponent implements OnInit {
       password: [''],
       useTls: [false, [Validators.required]],
       keepAliveSeconds: [null],
-      discoveryTopic: ['']
+      discoveryTopic: [''],
+      webSocketsPort: ['']
     });
   }
 
@@ -52,6 +53,7 @@ export class EditBrokerComponent implements OnInit {
       this.form.controls['useTls'].setValue(this.broker?.useTls);
       this.form.controls['keepAliveSeconds'].setValue(this.broker?.keepAliveSeconds);
       this.form.controls['discoveryTopic'].setValue(this.broker?.discoveryTopic);
+      this.form.controls['websocketsPort'].setValue(this.broker?.webSocketsPort);
     }
   }
 
@@ -92,6 +94,7 @@ export class EditBrokerComponent implements OnInit {
     this.broker.useTls = broker.useTls;
     this.broker.keepAliveSeconds = broker.keepAliveSeconds;
     this.broker.discoveryTopic = broker.discoveryTopic;
+    this.broker.webSocketsPort = broker.webSocketsPort;
 
     this._telemService.updateBroker(this.broker.id, this.broker)
       .pipe(take(1))

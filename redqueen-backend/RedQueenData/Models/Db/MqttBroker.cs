@@ -42,6 +42,9 @@ namespace RedQueen.Data.Models.Db
         [Column("discovery_topic")]
         public string DiscoveryTopic { get; set; }
         
+        [Column("ws_port")]
+        public int? WebSocketsPort { get; set; }
+        
         public IEnumerable<MqttTopic> Topics { get; set; }
     }
 }

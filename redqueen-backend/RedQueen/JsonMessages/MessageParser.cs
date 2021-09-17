@@ -26,10 +26,15 @@ namespace RedQueen.JsonMessages
                 Schemas.Add(schema);
             }
         }
-        
-        public static JSchema GetDiscoverySchema()
+
+        private static JSchema GetDiscoverySchema()
         {
             return Schemas.FirstOrDefault(s => s.Title is "discovery_schema");
+        }
+
+        private static JSchema GetControlSchema()
+        {
+            return Schemas.FirstOrDefault(s => s.Title is "redqueen_control_schema");
         }
 
         public static DeviceConfig ParseDevice(string payload, out IList<string> messages)
@@ -49,6 +54,33 @@ namespace RedQueen.JsonMessages
                 {
                     var serializer = new JsonSerializer();
                     return serializer.Deserialize<DeviceConfig>(new JTokenReader(config));
+                }
+            }
+            catch (JsonReaderException ex)
+            {
+                messages.Add(ex.Message);
+            }
+
+            return null;
+        }
+
+        public static RedQueenControlCommand ParseControlCommand(string payload, out IList<string> messages)
+        {
+            messages = new List<string>();
+
+            var schema = GetControlSchema();
+            if (schema == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                var cmd = JObject.Parse(payload);
+                if (cmd.IsValid(schema, out messages))
+                {
+                    var serializer = new JsonSerializer();
+                    return serializer.Deserialize<RedQueenControlCommand>(new JTokenReader(cmd));
                 }
             }
             catch (JsonReaderException ex)

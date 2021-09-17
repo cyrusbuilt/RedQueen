@@ -17,5 +17,7 @@ namespace RedQueen.Data.Models.Dto
         public int? KeepAliveSeconds { get; set; }
         
         public string DiscoveryTopic { get; set; }
+        
+        public int? WebSocketsPort { get; set; }
     }
 }

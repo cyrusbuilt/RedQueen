@@ -33,10 +33,10 @@ export class HomeComponent implements OnInit {
   connectMqtt(): void {
     this._telemService.getBrokerById(environment.mqtt.brokerId).subscribe({
       next: broker => {
-        if (broker !== null) {
+        if (broker && broker.webSocketsPort) {
           const opts = {
             hostname: broker.host,
-            port: broker.port,
+            port: broker.webSocketsPort,
             //keepalive: broker.keepAliveSeconds,
             username: broker.username,
             password: broker.password,
