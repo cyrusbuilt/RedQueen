@@ -141,6 +141,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'integrations/clcontroller',
+    loadChildren: () => import('./modules/integrations/clcontroller/clcontroller.module').then(m => m.ClcontrollerModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]

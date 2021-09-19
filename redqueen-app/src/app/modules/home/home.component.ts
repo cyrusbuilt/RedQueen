@@ -94,5 +94,8 @@ export class HomeComponent implements OnInit {
     else if (device.class === "cygarage") {
       this._router.navigate(['/integrations/cygarage']);
     }
+    else if (device.class === "clcontroller") {
+      this._router.navigate(['/integrations/clcontroller']);
+    }
   }
 }
