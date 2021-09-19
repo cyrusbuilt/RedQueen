@@ -1,0 +1,23 @@
+<div class="component-header">
+  <h2>Integrations</h2>
+  <em>Control and Monitor Device Integrations</em>
+</div>
+<div class="component-body">
+  <h5>System</h5>
+  <button class="btn mr-2 float-right" (click)="onBackClick()">Back</button>
+  <ng-container *ngIf="sysTelemetry">
+    <div class="row my-4">
+      <div class="col-4">
+        <label class="form-label mt-2">WebApp Version: {{webAppVersion}}</label><br/>
+        <label class="form-label mt-2">API Version: {{sysTelemetry?.apiVersion}}</label><br/>
+        <label class="form-label mt-2">Daemon Version: {{state?.daemonVersion}}</label><br/>
+        <label class="form-label mt-2">Daemon Status: {{state && getSystemStateName(state.status)}}</label><br/>
+        <label class="form-label mt-2">Last Update: {{state?.timestamp}}</label><br/>
+        <label class="form-label mt-2">Control</label><br/>
+        <mat-select (selectionChange)="onOperationSelect($event)" class="custom-select" placeholder="Select Operation">
+          <mat-option *ngFor="let cmd of commands" [value]="cmd">{{cmd.friendlyName}}</mat-option>
+        </mat-select>
+      </div>
+    </div>
+  </ng-container>
+</div>

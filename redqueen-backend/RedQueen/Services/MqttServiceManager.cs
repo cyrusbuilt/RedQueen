@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -139,12 +140,13 @@ namespace RedQueen.Services
             }
         }
 
-        private async Task PublishStatus(MqttService service)
+        private async Task PublishStatus(IMqttService service)
         {
             var stat = new RedQueenSystemStatus
             {
                 Timestamp = DateTime.Now,
-                Status = (int)SystemStatus
+                Status = (int)SystemStatus,
+                DaemonVersion = Assembly.GetEntryAssembly()?.GetName().Version?.ToString()
             };
 
             var topic = _configuration["MQTT:StatusTopic"];
@@ -222,6 +224,7 @@ namespace RedQueen.Services
 
         public async Task<int> StartAllServices()
         {
+            SystemStatus = SystemStatus.Normal;
             var count = 0;
             foreach (var instance in Instances)
             {
@@ -232,6 +235,7 @@ namespace RedQueen.Services
                     await instance.StartSubscriber();
                     await instance.SubscribeAllTopics();
                     await instance.SubscribeSystemControlTopic(_configuration["MQTT:ControlTopic"]);
+                    await PublishStatus(instance);
                     count++;
                 }
                 catch (Exception ex)
@@ -257,8 +261,7 @@ namespace RedQueen.Services
                     _logger.LogError($"Failed to start auto-discover for host: {instance.Host}: {ex.Message}");
                 }
             }
-
-            SystemStatus = SystemStatus.Normal;
+            
             return count;
         }
 

@@ -15,6 +15,7 @@ const { apiUri, mqttProtocol, mqttBrokerId } = config as {
 };
 
 export const environment = {
+  appVersion: require('package.json').version,
   production: false,
   httpInterceptor: {
     allowedList: [`${apiUri}/*`],

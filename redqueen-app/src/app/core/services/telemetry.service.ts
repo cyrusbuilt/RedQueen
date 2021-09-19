@@ -6,6 +6,8 @@ import { MqttBroker } from '../interfaces/mqtt-broker';
 import { MqttTopic } from '../interfaces/mqtt-topic';
 import { PaginatedList } from '../interfaces/paginated-list';
 import { MqttMessage } from '../interfaces/mqtt-message';
+import { RedQueenSystemStatus } from '../interfaces/red-queen-system-status';
+import { SystemTelemetry } from '../interfaces/system-telemetry';
 
 @Injectable({
   providedIn: 'root'
@@ -52,5 +54,9 @@ export class TelemetryService {
   getMessages(pageSize: number, currentPage: number): Observable<PaginatedList<MqttMessage>> {
     return this.http.get<PaginatedList<MqttMessage>>(`${this.rootUrl}/telemetry/messages`,
       {params: {'pageSize': pageSize, 'currentPage': currentPage }});
+  }
+
+  getSystemTelemetry(): Observable<SystemTelemetry> {
+    return this.http.get<SystemTelemetry>(`${this.rootUrl}/telemetry/systemTelemetry`);
   }
 }
