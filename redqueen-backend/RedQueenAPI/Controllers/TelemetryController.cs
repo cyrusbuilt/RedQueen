@@ -1,10 +1,10 @@
 using System;
-using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RedQueen.Data.Models.Db;
+using Microsoft.Extensions.Configuration;
 using RedQueen.Data.Services;
 using RedQueen.Data.Models.Dto;
 using RedQueenAPI.Collections;
@@ -17,10 +17,12 @@ namespace RedQueenAPI.Controllers
     public class TelemetryController : ControllerBase
     {
         private readonly IRedQueenDataService _redQueenDataService;
+        private readonly IConfiguration _configuration;
 
-        public TelemetryController(IRedQueenDataService redQueenDataService)
+        public TelemetryController(IRedQueenDataService redQueenDataService, IConfiguration configuration)
         {
             _redQueenDataService = redQueenDataService;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -150,6 +152,20 @@ namespace RedQueenAPI.Controllers
             var messages = _redQueenDataService.GetMessagesQueryable();
             var results = await PaginatedList<MqttMessageDto>.BuildPaginatedList(messages, pageSize, currentPage);
             return Ok(results);
+        }
+
+        [HttpGet]
+        [Route("systemTelemetry")]
+        public IActionResult GetSystemTelemetry()
+        {
+            var telem = new TelemetryResponse
+            {
+                ApiVersion = Assembly.GetEntryAssembly()?.GetName().Version?.ToString(),
+                DaemonControlTopic = _configuration["MQTT:ControlTopic"],
+                DaemonStatusTopic = _configuration["MQTT:StatusTopic"]
+            };
+
+            return Ok(telem);
         }
     }
 }

@@ -64,7 +64,7 @@ namespace RedQueenAPI
                     return new BadRequestObjectResult(new { Message = "There was an issue processing your request." });
                 };
             });
-            
+
             services.Configure<FormOptions>(o => {
                 o.ValueLengthLimit = int.MaxValue;
                 o.MultipartBodyLengthLimit = int.MaxValue;

@@ -136,6 +136,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'integrations/system',
+    loadChildren: () => import('./modules/integrations/system/system.module').then(m => m.SystemModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]

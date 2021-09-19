@@ -11,6 +11,7 @@ using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Formatter;
 using MQTTnet.Protocol;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using RedQueen.Data.Models.Db;
 using RedQueen.Data.Models.Dto;
 
@@ -265,13 +266,21 @@ namespace RedQueen.Services
 
         public async Task PublishSystemStatus(RedQueenSystemStatus status, string statusTopic)
         {
-            var payloadStr = JsonConvert.SerializeObject(status);
+            var payloadStr = JsonConvert.SerializeObject(status, new JsonSerializerSettings
+            {
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                },
+                Formatting = Formatting.None
+            });
 
             var msg = new MqttApplicationMessage
             {
                 Topic = statusTopic,
                 Payload = Encoding.UTF8.GetBytes(payloadStr),
-                QualityOfServiceLevel = MqttQualityOfServiceLevel.AtMostOnce
+                QualityOfServiceLevel = MqttQualityOfServiceLevel.AtMostOnce,
+                Retain = true
             };
 
             await _clientPublisher.PublishAsync(msg);
