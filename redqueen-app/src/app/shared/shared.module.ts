@@ -11,6 +11,7 @@ import { ActiveBrokersPipe } from '../core/pipes/active-brokers.pipe';
 import { ActiveTopicsPipe } from '../core/pipes/active-topics.pipe';
 import { ActiveDevicesPipe } from '../core/pipes/active-devices.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { TemperaturePipe } from '../core/pipes/temperature.pipe';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     FieldErrorDisplayComponent,
     ActiveBrokersPipe,
     ActiveTopicsPipe,
-    ActiveDevicesPipe
+    ActiveDevicesPipe,
+    TemperaturePipe
   ],
   imports: [
     CommonModule,
@@ -37,6 +39,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ActiveBrokersPipe,
     ActiveTopicsPipe,
     ActiveDevicesPipe,
+    TemperaturePipe,
     NgxPaginationModule
   ],
   providers: []

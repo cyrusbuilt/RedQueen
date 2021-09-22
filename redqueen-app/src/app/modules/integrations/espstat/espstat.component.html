@@ -1,0 +1,46 @@
+<div class="component-header">
+  <h2>Integrations</h2>
+  <em>Control and Monitor Device Integrations</em>
+</div>
+<div class="component-body">
+  <h5>EspStat</h5>
+  <button class="btn mr-2 float-right" (click)="onBackClick()">Back</button>
+  <ng-container *ngIf="device">
+    <div class="row my-4">
+      <div class="col-4">
+        <label class="form-label mt-2">Name: {{device.name}}</label><br/>
+        <label class="form-label mt-2">Class: {{device.class}}</label><br/>
+        <label class="form-label mt-2">System ID: {{state && state.client_id}}</label><br/>
+        <label class="form-label mt-2">Firmware version: {{state && state.firmwareVersion}}</label><br/>
+        <label class="form-label mt-2">System State: {{state && getStateName(state.systemState)}}</label><br/>
+        <label class="form-label mt-2">Control</label><br/>
+        <mat-select *ngIf="state" (selectionChange)="onOperationSelect($event)" class="custom-select" placeholder="Select Operation">
+          <mat-option *ngFor="let cmd of commands" [value]="cmd">{{cmd.friendlyName}}</mat-option>
+        </mat-select>
+        <label class="form-label mt-2">Current mode: {{state && getModeName(state.mode)}}</label><br/>
+        <label class="form-label mt-2">Temperature: {{state && state.tempF | temperature : 'FF'}}</label><br/>
+        <label class="form-label mt-2">Humidity: {{state && state.humidity + '%'}}</label><br/>
+        <label class="form-label mt-2">Heat index: {{state && state.heatIndexF | temperature : 'FF'}}</label><br/>
+        <label class="form-label mt-2">AUX/EM Heat: {{state && state.auxHeat}}</label><br/>
+        <label class="form-label mt-2">System running: {{state && state.isRunning}}</label><br/>
+        <label class="form-label mt-2">Mode:&nbsp;&nbsp;</label>
+        <mat-button-toggle-group *ngIf="state" #group="matButtonToggleGroup" (change)="onModeSelect($event)">
+          <mat-button-toggle aria-label="Off" [value]="0">Off</mat-button-toggle>
+          <mat-button-toggle aria-label="Cool" [value]="1">Cool</mat-button-toggle>
+          <mat-button-toggle aria-label="Heat" [value]="2">Heat</mat-button-toggle>
+          <mat-button-toggle aria-label="Fan" [value]="3">Fan</mat-button-toggle>
+        </mat-button-toggle-group><br/>
+        <label class="form-label mt-2">Setpoint:&nbsp;{{state && state.setpoint | temperature : 'FF'}}&nbsp;&nbsp;</label>
+        <mat-slider
+          thumbLabel
+          *ngIf="state"
+          min="50"
+          max="90"
+          step="1"
+          [value]="state && state.setpoint"
+          aria-label="setpoint">
+        </mat-slider><br/>
+      </div>
+    </div>
+  </ng-container>
+</div>

@@ -14,10 +14,13 @@ import { MqttModule } from 'ngx-mqtt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSliderModule } from '@angular/material/slider';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatGridListModule,
     FlexLayoutModule,
     MatSlideToggleModule,
-    MatSelectModule
+    MatSelectModule,
+    MatButtonToggleModule,
+    MatSliderModule,
+    ChartModule
   ],
   providers: [
     AuthGuard,

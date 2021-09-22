@@ -97,5 +97,8 @@ export class HomeComponent implements OnInit {
     else if (device.class === "clcontroller") {
       this._router.navigate(['/integrations/clcontroller']);
     }
+    else if (device.class === "espstat") {
+      this._router.navigate(['/integrations/espstat']);
+    }
   }
 }

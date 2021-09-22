@@ -146,6 +146,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'integrations/espstat',
+    loadChildren: () => import('./modules/integrations/espstat/espstat.module').then(m => m.EspstatModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]
