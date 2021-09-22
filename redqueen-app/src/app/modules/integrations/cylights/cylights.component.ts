@@ -29,7 +29,7 @@ enum CylightsCommand {
   IO_RESET = 16
 };
 
-enum CylighstState {
+enum CylightsState {
   BOOTING = 0,
   NORMAL = 1,
   UPDATING = 2,
@@ -106,22 +106,22 @@ export class CylightsComponent implements OnInit, OnDestroy {
   getStateName(state: number): string {
     let stateName = "Offline";
     switch (state) {
-      case CylighstState.BOOTING:
+      case CylightsState.BOOTING:
         stateName = "Booting";
         break;
-      case CylighstState.NORMAL:
+      case CylightsState.NORMAL:
         stateName = "Normal";
         break;
-      case CylighstState.UPDATING:
+      case CylightsState.UPDATING:
         stateName = "Updating";
         break;
-      case CylighstState.RECONNECTING:
+      case CylightsState.RECONNECTING:
         stateName = "Reconnecting";
         break;
-      case CylighstState.DISABLED:
+      case CylightsState.DISABLED:
         stateName = "Disabled";
         break;
-      case CylighstState.CHECK_IN:
+      case CylightsState.CHECK_IN:
         stateName = "Check-in";
         break;
       default:

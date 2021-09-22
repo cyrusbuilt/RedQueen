@@ -8,6 +8,7 @@ import { TelemetryService } from 'src/app/core/services/telemetry.service';
 import { SystemTelemetry } from 'src/app/core/interfaces/system-telemetry';
 import { environment } from 'src/environments/environment';
 import { RedQueenControlCommand } from 'src/app/core/interfaces/red-queen-control-command';
+import { ToastService } from 'src/app/core/services/toast.service';
 
 enum SystemStatus {
   NORMAL = 0,
@@ -36,7 +37,8 @@ export class SystemComponent implements OnInit, OnDestroy {
   constructor(
     private _location: Location,
     private _mqtt: MqttService,
-    private _telemService: TelemetryService
+    private _telemService: TelemetryService,
+    private _toastService: ToastService
   ) {
     this._systemSub = null;
     this.state = null;
@@ -64,7 +66,7 @@ export class SystemComponent implements OnInit, OnDestroy {
             });
         }
         else {
-
+          this._toastService.setErrorMessage("ERROR: Failed to fetch system telemetry!");
         }
       }
     });
