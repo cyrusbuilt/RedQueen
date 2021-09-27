@@ -2,12 +2,16 @@ import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { MatSliderChange } from '@angular/material/slider';
+import { Chart, ChartData, ChartDataset } from 'chart.js';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subscription } from 'rxjs';
 import { ControlCommand } from 'src/app/core/interfaces/control-command';
 import { Device } from 'src/app/core/interfaces/device';
 import { EspstatControl } from 'src/app/core/interfaces/espstat-control';
 import { EspstatStatus } from 'src/app/core/interfaces/espstat-status';
+import { MqttMessage } from 'src/app/core/interfaces/mqtt-message';
+import { HistoricalDataService } from 'src/app/core/services/historical-data.service';
+import { COLORSDARK } from 'src/app/chartColors';
 
 enum HvacMode {
   OFF = 0,
@@ -33,6 +37,12 @@ enum EspstatState {
   UPDATING = 3
 };
 
+enum ChartPeriod {
+  HOUR = 0,
+  DAY = 1,
+  WEEK = 2
+};
+
 @Component({
   selector: 'app-espstat',
   templateUrl: './espstat.component.html',
@@ -42,19 +52,34 @@ export class EspstatComponent implements OnInit, OnDestroy {
   private _espstatSub: Subscription | null;
   private _setpointChanging: boolean;
   private _newSetpoint: number;
+  private _refreshInterval: any | null;
+  private _selectedPeriod: ChartPeriod;
   device: Device | null;
   commands: ControlCommand[];
   state: EspstatStatus | null;
+  historicalMessages: MqttMessage[];
+  histChart: Chart | null;
+  lineChartOptions = {
+    legend: {
+      display: true,
+      position: 'right'
+    }
+  };
 
   constructor(
     private _location: Location,
-    private _mqtt: MqttService
+    private _mqtt: MqttService,
+    private _historicalData: HistoricalDataService
   ) {
     this._newSetpoint = 0;
     this._setpointChanging = false;
     this._espstatSub = null;
+    this._refreshInterval = null;
+    this._selectedPeriod = ChartPeriod.HOUR;
     this.device = null;
     this.state = null;
+    this.historicalMessages = [];
+    this.histChart = null;
     this.commands = [
       {
         friendlyName: 'Disable',
@@ -79,6 +104,70 @@ export class EspstatComponent implements OnInit, OnDestroy {
     ];
   }
 
+  generateHistoricalChartData(): void {
+    let historicalDataSet: ChartDataset[] = [];
+    let selectedMsgs: MqttMessage[] = [];
+
+    const now = new Date();
+    let val = new Date(now.getTime());
+    switch (this._selectedPeriod) {
+      case ChartPeriod.DAY:
+        val.setHours(val.getHours() - 24);
+        break;
+      case ChartPeriod.HOUR:
+        val.setHours(val.getHours() - 1);
+        break;
+      case ChartPeriod.WEEK:
+        val.setHours(val.getHours() - 168);
+        break;
+      default:
+        break;
+    }
+
+    selectedMsgs = this.historicalMessages.filter(s => s.timestamp >= val && s.timestamp < now);
+    const msgData = selectedMsgs.map(m => JSON.parse(m.content) as EspstatStatus);
+
+    const tempData: ChartDataset = {
+      label: 'Temperature',
+      borderColor: COLORSDARK[0],
+      data: msgData.map(t => t.tempF),
+      fill: false,
+      tension: 0.1,
+      pointStyle: 'rectRot',
+      radius: 7
+    };
+
+    const humidityData: ChartDataset = {
+      label: 'Humidity',
+      borderColor: COLORSDARK[1],
+      data: msgData.map(h => h.humidity),
+      fill: false,
+      tension: 0.1,
+      pointStyle: 'rectRot',
+      radius: 7
+    };
+
+    const heatIndexData: ChartDataset = {
+      label: 'Heat Index',
+      borderColor: COLORSDARK[2],
+      data: msgData.map(i => i.heatIndexF),
+      fill: false,
+      tension: 0.1,
+      pointStyle: 'rectRot',
+      radius: 7
+    };
+
+    historicalDataSet.push(tempData);
+    historicalDataSet.push(humidityData);
+    historicalDataSet.push(heatIndexData);
+
+    this.histChart = {
+      data: {
+        datasets: historicalDataSet
+      } as ChartData
+    } as Chart;
+  }
+
   ngOnInit(): void {
     const devStr = sessionStorage.getItem('integrationDevice');
     if (devStr) {
@@ -88,11 +177,25 @@ export class EspstatComponent implements OnInit, OnDestroy {
         this._espstatSub = this._mqtt.observe(topic).subscribe((message: IMqttMessage) => {
           this.state = JSON.parse(message.payload.toString()) as EspstatStatus;
         });
+
+        this._refreshInterval ??= setInterval(() => {
+          this._historicalData.getHistoricalMessages(this.device!.statusTopicId, 7).subscribe({
+            next: value => {
+              this.historicalMessages = value;
+              this.generateHistoricalChartData();
+            }
+          });
+        }, 5000);
       }
     }
   }
 
   ngOnDestroy(): void {
+    if (this._refreshInterval) {
+      clearInterval(this._refreshInterval);
+      this._refreshInterval = null;
+    }
+
     if (this._espstatSub) {
       this._espstatSub.unsubscribe();
       this._espstatSub = null;
@@ -195,5 +298,9 @@ export class EspstatComponent implements OnInit, OnDestroy {
 
       this._setpointChanging = false;
     }, 1000);
+  }
+
+  onChartPeriodSelect(event: MatButtonToggleChange): void {
+    this._selectedPeriod = event.value as ChartPeriod;
   }
 }

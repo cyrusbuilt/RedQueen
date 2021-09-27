@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { MatSliderModule } from '@angular/material/slider';
     ReactiveFormsModule,
     MatButtonToggleModule,
     MatSelectModule,
-    MatSliderModule
+    MatSliderModule,
+    ChartModule
   ]
 })
 export class EspstatModule { }
