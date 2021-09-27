@@ -1,14 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -16,13 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RedQueen.Data;
 using RedQueen.Data.Services;
 using RedQueen.Data.Models.Db;
-using RedQueenAPI.Authentication;
 
 namespace RedQueenAPI
 {
@@ -130,6 +123,7 @@ namespace RedQueenAPI
             services.AddTransient<IRedQueenDataService, RedQueenDataService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICardService, CardService>();
+            services.AddTransient<IHistoricalDataService, HistoricalDataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -39,7 +39,20 @@
           step="1"
           [value]="state && state.setpoint"
           aria-label="setpoint">
-        </mat-slider><br/>
+        </mat-slider><br/><br/>
+        <label class="form-label mt-2">Chart Period:&nbsp;&nbsp;</label>
+        <mat-button-toggle-group *ngIf="historicalMessages.length > 0" #group="matButtonToggleGroup" (change)="onChartPeriodSelect($event)">
+          <mat-button-toggle aria-label="Hour" [value]="0">Hour</mat-button-toggle>
+          <mat-button-toggle aria-label="Day" [value]="1">Day</mat-button-toggle>
+          <mat-button-toggle aria-label="Week" [value]="2">Week</mat-button-toggle>
+        </mat-button-toggle-group><br/>
+        <div *ngIf="histChart && histChart.data && historicalMessages.length > 0" class="row my-4">
+          <div class="col-6">
+            <h3>History<sup>1, 2</sup></h3>
+            <p-chart type="line" [options]="lineChartOptions" [data]="histChart.data"></p-chart>
+            <small></small>
+          </div>
+        </div>
       </div>
     </div>
   </ng-container>
