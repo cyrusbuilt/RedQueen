@@ -12,6 +12,7 @@ import { EspstatStatus } from 'src/app/core/interfaces/espstat-status';
 import { MqttMessage } from 'src/app/core/interfaces/mqtt-message';
 import { HistoricalDataService } from 'src/app/core/services/historical-data.service';
 import { COLORSDARK } from 'src/app/chartColors';
+import { ChartPeriod } from 'src/app/core/enum/chart-period';
 
 enum HvacMode {
   OFF = 0,
@@ -35,12 +36,6 @@ enum EspstatState {
   NORMAL = 1,
   DISABLED = 2,
   UPDATING = 3
-};
-
-enum ChartPeriod {
-  HOUR = 0,
-  DAY = 1,
-  WEEK = 2
 };
 
 @Component({

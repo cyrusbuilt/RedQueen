@@ -151,6 +151,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'integrations/cysump',
+    loadChildren: () => import('./modules/integrations/cysump/cysump.module').then(m => m.CysumpModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]

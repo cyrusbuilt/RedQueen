@@ -100,5 +100,8 @@ export class HomeComponent implements OnInit {
     else if (device.class === "espstat") {
       this._router.navigate(['/integrations/espstat']);
     }
+    else if (device.class === "cysump") {
+      this._router.navigate(['/integrations/cysump']);
+    }
   }
 }
