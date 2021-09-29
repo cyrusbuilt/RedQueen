@@ -3,7 +3,7 @@
   <em>Control and Monitor Device Integrations</em>
 </div>
 <div class="component-body">
-  <h5>EspStat</h5>
+  <h5>CySump</h5>
   <button class="btn mr-2 float-right" (click)="onBackClick()">Back</button>
   <ng-container *ngIf="device">
     <div class="row my-4">
@@ -13,33 +13,23 @@
         <label class="form-label mt-2">System ID: {{state && state.client_id}}</label><br/>
         <label class="form-label mt-2">Firmware version: {{state && state.firmwareVersion}}</label><br/>
         <label class="form-label mt-2">System State: {{state && getStateName(state.systemState)}}</label><br/>
-        <label class="form-label mt-2">Control</label><br/>
+        <label class="form-label mt-2">Water Level: {{state && state.waterLevelPercent}}%</label><br/>
+        <label class="form-label mt-2">Sump Pump: {{state && state.pumpState}}&nbsp;&nbsp;</label>
+        <mat-button-toggle-group *ngIf="state" #group="matButtonToggleGroup" (change)="onPumpStateSelect($event)">
+          <mat-button-toggle value="Start">Start</mat-button-toggle>
+          <mat-button-toggle value="Stop">Stop</mat-button-toggle>
+        </mat-button-toggle-group><br/>
+        <label class="form-label mt-2">Pit State: {{state && state.pitState}}</label><br/>
+        <label class="form-label mt-2">Alarm: {{state && state.alarmEnabled}}&nbsp;&nbsp;</label>
+        <mat-button-toggle-group *ngIf="state" #group="matButtonToggleGroup" (change)="onAlarmStateSelect($event)">
+          <mat-button-toggle value="Enable">Enable</mat-button-toggle>
+          <mat-button-toggle value="Silence">Silence</mat-button-toggle>
+        </mat-button-toggle-group><br/>
+        <label class="form-label mt-2">Actions</label><br/>
         <mat-select *ngIf="state" (selectionChange)="onOperationSelect($event)" class="custom-select" placeholder="Select Operation">
           <mat-option *ngFor="let cmd of commands" [value]="cmd">{{cmd.friendlyName}}</mat-option>
         </mat-select>
-        <label class="form-label mt-2">Current mode: {{state && getModeName(state.mode)}}</label><br/>
-        <label class="form-label mt-2">Temperature: {{state && state.tempF | temperature : 'FF'}}</label><br/>
-        <label class="form-label mt-2">Humidity: {{state && state.humidity + '%'}}</label><br/>
-        <label class="form-label mt-2">Heat index: {{state && state.heatIndexF | temperature : 'FF'}}</label><br/>
-        <label class="form-label mt-2">AUX/EM Heat: {{state && state.auxHeat}}</label><br/>
-        <label class="form-label mt-2">System running: {{state && state.isRunning}}</label><br/>
-        <label class="form-label mt-2">Mode:&nbsp;&nbsp;</label>
-        <mat-button-toggle-group *ngIf="state" #group="matButtonToggleGroup" (change)="onModeSelect($event)">
-          <mat-button-toggle aria-label="Off" [value]="0">Off</mat-button-toggle>
-          <mat-button-toggle aria-label="Cool" [value]="1">Cool</mat-button-toggle>
-          <mat-button-toggle aria-label="Heat" [value]="2">Heat</mat-button-toggle>
-          <mat-button-toggle aria-label="Fan" [value]="3">Fan</mat-button-toggle>
-        </mat-button-toggle-group><br/>
-        <label class="form-label mt-2">Setpoint:&nbsp;{{state && state.setpoint | temperature : 'FF'}}&nbsp;&nbsp;</label>
-        <mat-slider
-          thumbLabel
-          *ngIf="state"
-          min="50"
-          max="90"
-          step="1"
-          [value]="state && state.setpoint"
-          aria-label="setpoint">
-        </mat-slider><br/><br/>
+        <label class="form-label mt-2">Water Depth: {{state && state.waterDepth}} in</label><br/>
         <label class="form-label mt-2">Chart Period:&nbsp;&nbsp;</label>
         <mat-button-toggle-group *ngIf="historicalMessages.length > 0" #group="matButtonToggleGroup" (change)="onChartPeriodSelect($event)">
           <mat-button-toggle aria-label="Hour" [value]="0">Hour</mat-button-toggle>
@@ -50,8 +40,6 @@
           <div class="col-6">
             <h3>History<sup>1, 2</sup></h3>
             <p-chart type="line" [options]="lineChartOptions" [data]="histChart.data"></p-chart>
-            <!-- TODO do we need a footer? -->
-            <!-- <small></small> -->
           </div>
         </div>
       </div>
