@@ -49,7 +49,7 @@
                         totalItems: totalEntries }">
           <td>{{ login.id }}</td>
           <td>{{ login.userName }}</td>
-          <td>{{ login.timestamp }}</td>
+          <td>{{ login.timestamp | date:'medium' }}</td>
           <td>{{ login.email }}</td>
           <td>{{ login.applicationUserId }}</td>
         </tr>

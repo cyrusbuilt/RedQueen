@@ -27,9 +27,9 @@
           <td>{{u.id}}</td>
           <td>{{u.name}}</td>
           <td>{{u.pin}}</td>
-          <td>{{u.createdDate}}</td>
+          <td>{{u.createdDate | date:'medium'}}</td>
           <td>{{u.isActive}}</td>
-          <td>{{u.modifiedDate}}</td>
+          <td>{{u.modifiedDate | date:'medium'}}</td>
           <td>
             <button *ngIf="u.isActive" type="button" class="btn mr-2" (click)="onActivateOrDeactivateUser(u)">Deactivate</button>
             <button *ngIf="!u.isActive" type="button" class="btn mr-2" (click)="onActivateOrDeactivateUser(u)">Activate</button>
