@@ -18,15 +18,15 @@
         </mat-select>
         <label class="form-label mt-2">System State: {{state && getStateName(state.systemState)}}</label><br/>
         <label class="form-label mt-2">Light 1 State: {{state && getOutletState(state.light1State)}}</label>&nbsp;&nbsp;
-        <mat-slide-toggle *ngIf="state" aria-label="light_1" (change)="onLight1Clicked($event)"></mat-slide-toggle><br/>
+        <mat-slide-toggle *ngIf="state" aria-label="light_1" (change)="onLight1Clicked($event)" [checked]="isOutlet1On"></mat-slide-toggle><br/>
         <label class="form-label mt-2">Light 2 State: {{state && getOutletState(state.light2State)}}</label>&nbsp;&nbsp;
-        <mat-slide-toggle *ngIf="state" aria-label="light_2" (change)="onLight2Clicked($event)"></mat-slide-toggle><br/>
+        <mat-slide-toggle *ngIf="state" aria-label="light_2" (change)="onLight2Clicked($event)" [checked]="isOutlet2On"></mat-slide-toggle><br/>
         <label class="form-label mt-2">Light 3 State: {{state && getOutletState(state.light3State)}}</label>&nbsp;&nbsp;
-        <mat-slide-toggle *ngIf="state" aria-label="light_3" (change)="onLight3Clicked($event)"></mat-slide-toggle><br/>
+        <mat-slide-toggle *ngIf="state" aria-label="light_3" (change)="onLight3Clicked($event)" [checked]="isOutlet3On"></mat-slide-toggle><br/>
         <label class="form-label mt-2">Light 4 State: {{state && getOutletState(state.light4State)}}</label>&nbsp;&nbsp;
-        <mat-slide-toggle *ngIf="state" aria-label="light_4" (change)="onLight4Clicked($event)"></mat-slide-toggle><br/>
+        <mat-slide-toggle *ngIf="state" aria-label="light_4" (change)="onLight4Clicked($event)" [checked]="isOutlet4On"></mat-slide-toggle><br/>
         <label class="form-label mt-2">Light 5 State: {{state && getOutletState(state.light5State)}}</label>&nbsp;&nbsp;
-        <mat-slide-toggle *ngIf="state" aria-label="light_5" (change)="onLight5Clicked($event)"></mat-slide-toggle><br/>
+        <mat-slide-toggle *ngIf="state" aria-label="light_5" (change)="onLight5Clicked($event)" [checked]="isOutlet5On"></mat-slide-toggle><br/>
         <label class="form-label mt-2">All Lights:</label>&nbsp;&nbsp;
         <mat-slide-toggle *ngIf="state" aria-label="all_lights" (change)="onAllLightsClicked($event)"></mat-slide-toggle><br/>
       </div>

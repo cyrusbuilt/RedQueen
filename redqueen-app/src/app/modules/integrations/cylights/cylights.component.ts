@@ -1,4 +1,3 @@
-import { CdkMonitorFocus } from '@angular/cdk/a11y';
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
@@ -48,6 +47,11 @@ export class CylightsComponent implements OnInit, OnDestroy {
   device: Device | null;
   state: CylightsStatus | null;
   commands: ControlCommand[];
+  isOutlet1On: boolean;
+  isOutlet2On: boolean;
+  isOutlet3On: boolean;
+  isOutlet4On: boolean;
+  isOutlet5On: boolean;
 
   constructor(
     private _location: Location,
@@ -78,6 +82,11 @@ export class CylightsComponent implements OnInit, OnDestroy {
         command: CylightsCommand.IO_RESET
       }
     ];
+    this.isOutlet1On = false;
+    this.isOutlet2On = false;
+    this.isOutlet3On = false;
+    this.isOutlet4On = false;
+    this.isOutlet5On = false;
   }
 
   ngOnInit(): void {
@@ -88,6 +97,11 @@ export class CylightsComponent implements OnInit, OnDestroy {
         const topic = this.device.statusTopic.name;
         this._cylightsSub = this._mqtt.observe(topic).subscribe((message: IMqttMessage) => {
           this.state = JSON.parse(message.payload.toString()) as CylightsStatus;
+          this.isOutlet1On = this.state.light1State === 1;
+          this.isOutlet2On = this.state.light2State === 1;
+          this.isOutlet3On = this.state.light3State === 1;
+          this.isOutlet4On = this.state.light4State === 1;
+          this.isOutlet5On = this.state.light5State === 1;
         });
       }
     }

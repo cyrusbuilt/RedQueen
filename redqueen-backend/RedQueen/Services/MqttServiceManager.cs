@@ -233,6 +233,10 @@ namespace RedQueen.Services
                 {
                     await instance.StartPublisher();
                     await instance.StartSubscriber();
+                    // TODO Instead of subscribing to ALL topics, we probably need to think about subscribing to
+                    // TODO "devices" instead. So pull all devices assigned to a broker, if the device is active
+                    // TODO *AND* the status topic is active, then subscribe the topic.  Also, when we disable a
+                    // TODO device, we should disable any associated topics automatically.
                     await instance.SubscribeAllTopics();
                     await instance.SubscribeSystemControlTopic(_configuration["MQTT:ControlTopic"]);
                     await PublishStatus(instance);
