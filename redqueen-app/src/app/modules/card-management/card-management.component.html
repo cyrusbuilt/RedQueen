@@ -28,10 +28,10 @@
           <td>{{c.id}}</td>
           <td>{{c.serial}}</td>
           <td>{{c.isActive}}</td>
-          <td>{{c.createdDate}}</td>
+          <td>{{c.createdDate | date:'medium'}}</td>
           <td>{{c.user?.name}}</td>
           <td>{{c.user?.pin}}</td>
-          <td>{{c.modifiedDate}}</td>
+          <td>{{c.modifiedDate | date:'medium'}}</td>
           <td>
             <button type="button" class="btn mr-2" (click)="onManageClick(c)">Manage</button>
           </td>

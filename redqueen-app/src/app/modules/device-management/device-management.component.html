@@ -23,8 +23,8 @@
           <td>{{ dev.statusTopic && dev.statusTopic.name }}</td>
           <td>{{ dev.controlTopic && dev.controlTopic.name }}</td>
           <td>{{ dev.isActive }}</td>
-          <td>{{ dev.createdDate }}</td>
-          <td>{{ dev.modifiedDate }}</td>
+          <td>{{ dev.createdDate | date:'medium' }}</td>
+          <td>{{ dev.modifiedDate | date:'medium' }}</td>
           <td>
             <button *ngIf="dev.isActive" class="btn btn-danger" (click)="activateOrDeactivateDevice(dev)">Deactivate</button>
             <button *ngIf="!dev.isActive" class="btn btn-success" (click)="activateOrDeactivateDevice(dev)">Activate</button>

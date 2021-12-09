@@ -20,8 +20,8 @@
         <tr *ngFor="let t of topics">
           <td>{{ getBrokerNameForTopic(t) }}</td>
           <td>{{ t.name }}</td>
-          <td>{{ t.createdDate }}</td>
-          <td>{{ t.modifiedDate }}</td>
+          <td>{{ t.createdDate | date:'medium' }}</td>
+          <td>{{ t.modifiedDate | date:'medium' }}</td>
           <td>{{ t.isActive }}</td>
           <td>
             <button *ngIf="t.isActive" class="btn btn-danger" (click)="activateOrDeactivateTopic(t)">Deactivate</button>

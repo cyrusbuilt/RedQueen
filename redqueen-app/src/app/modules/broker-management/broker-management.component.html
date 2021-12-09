@@ -25,8 +25,8 @@
           <td>{{ b.port }}</td>
           <td>{{ b.username }}</td>
           <td>{{ b.isActive }}</td>
-          <td>{{ b.createdDate }}</td>
-          <td>{{ b.modifiedDate }}</td>
+          <td>{{ b.createdDate | date:'medium'}}</td>
+          <td>{{ b.modifiedDate | date:'medium'}}</td>
           <td>{{ b.useTls }}</td>
           <td>{{ b.keepAliveSeconds }}</td>
           <td>

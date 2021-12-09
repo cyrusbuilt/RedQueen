@@ -8,7 +8,7 @@
     <div class="col-4">
       <label class="form-label mt-2">Serial: {{card?.serial}}</label><br/>
       <label class="form-label mt-2">Active: {{card?.isActive}}</label><br/>
-      <label class="form-label mt-2">Created: {{card?.createdDate}}</label><br/>
+      <label class="form-label mt-2">Created: {{card?.createdDate | date:'medium'}}</label><br/>
       <label class="form-label mt-2">Current user: {{card?.user?.name}}</label><br/>
       <button *ngIf="card?.isActive" type="button" class="btn mr-2" (click)="onActivateOrDeactivate()">Deactivate</button>
       <button *ngIf="!card?.isActive" type="button" class="btn mr-2" (click)="onActivateOrDeactivate()">Activate</button>

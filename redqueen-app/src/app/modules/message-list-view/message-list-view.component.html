@@ -22,7 +22,7 @@
                           currentPage: curPage,
                           totalItems: totalEntries }">
           <td>{{entry.id}}</td>
-          <td>{{entry.timestamp}}</td>
+          <td>{{entry.timestamp | date:'medium'}}</td>
           <td>{{entry.topicName}}</td>
           <td>{{entry.clientId}}</td>
           <td>{{entry.content}}</td>

@@ -12,7 +12,7 @@
         <label class="form-label mt-2">API Version: {{sysTelemetry?.apiVersion}}</label><br/>
         <label class="form-label mt-2">Daemon Version: {{state?.daemonVersion}}</label><br/>
         <label class="form-label mt-2">Daemon Status: {{state && getSystemStateName(state.status)}}</label><br/>
-        <label class="form-label mt-2">Last Update: {{state?.timestamp}}</label><br/>
+        <label class="form-label mt-2">Last Update: {{state?.timestamp | date:'medium'}}</label><br/>
         <label class="form-label mt-2">Control</label><br/>
         <mat-select (selectionChange)="onOperationSelect($event)" class="custom-select" placeholder="Select Operation">
           <mat-option *ngFor="let cmd of commands" [value]="cmd">{{cmd.friendlyName}}</mat-option>
