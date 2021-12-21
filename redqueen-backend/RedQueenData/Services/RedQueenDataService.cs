@@ -21,6 +21,7 @@ namespace RedQueen.Data.Services
         Task<MqttTopic> UpdateTopic(int id, MqttTopicDto topic);
         Task SaveMqttMessage(string message, int topicId, string clientId);
         Task<List<Device>> GetDevices(bool activeOnly = true);
+        IQueryable<Device> GetDevicesQueryable(bool activeOnly = true);
         Task<MqttBroker> SaveBroker(MqttBrokerDto broker);
         Task<MqttBroker> UpdateBroker(int id, MqttBrokerDto broker);
         Task<List<MqttTopic>> GetTopics(bool activeOnly = true);
@@ -121,6 +122,48 @@ namespace RedQueen.Data.Services
             }
 
             return devices;
+        }
+
+        public IQueryable<Device> GetDevicesQueryable(bool activeOnly)
+        {
+            var query = from d in _context.Devices
+                join t in _context.Topics on d.StatusTopicId equals t.Id
+                join t2 in _context.Topics on d.ControlTopicId equals t2.Id
+                select new Device
+                {
+                    Id = d.Id,
+                    Class = d.Class,
+                    ControlTopic = t2,
+                    ControlTopicId = t2.Id,
+                    CreatedDate = d.CreatedDate,
+                    IsActive = d.IsActive,
+                    ModifiedDate = d.ModifiedDate,
+                    Name = d.Name,
+                    StatusTopic = t,
+                    StatusTopicId = t.Id
+                };
+            if (activeOnly)
+            {
+                query = from d in _context.Devices
+                    join t in _context.Topics on d.StatusTopicId equals t.Id
+                    join t2 in _context.Topics on d.ControlTopicId equals t2.Id
+                    where d.IsActive
+                    select new Device
+                    {
+                        Id = d.Id,
+                        Class = d.Class,
+                        ControlTopic = t2,
+                        ControlTopicId = t2.Id,
+                        CreatedDate = d.CreatedDate,
+                        IsActive = d.IsActive,
+                        ModifiedDate = d.ModifiedDate,
+                        Name = d.Name,
+                        StatusTopic = t,
+                        StatusTopicId = t.Id
+                    };
+            }
+
+            return query;
         }
 
         public async Task<MqttBroker> SaveBroker(MqttBrokerDto broker)

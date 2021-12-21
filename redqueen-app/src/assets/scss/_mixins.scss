@@ -63,75 +63,75 @@
   }
 }
 
-@mixin button($color: $btn-color-secondary, $text-color: white) {
-  display: inline-block;
-  min-width: 100px;
-  outline: none;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: .75rem;
-  line-height: 2.25;
-  padding: .5rem;
-  color: $text_color !important;
-  background: $color;
-  border: none;
-  white-space: nowrap;
-  @include rounded();
-  @include box-shadow(0, 2px, 8px, lighten($color, 15%));
+// @mixin button($color: $btn-color-secondary, $text-color: white) {
+//   display: inline-block;
+//   min-width: 100px;
+//   outline: none;
+//   cursor: pointer;
+//   text-align: center;
+//   text-decoration: none;
+//   text-transform: uppercase;
+//   font-weight: 700;
+//   font-size: .75rem;
+//   line-height: 2.25;
+//   padding: .5rem;
+//   color: $text_color !important;
+//   background: $color;
+//   border: none;
+//   white-space: nowrap;
+//   @include rounded();
+//   @include box-shadow(0, 2px, 8px, lighten($color, 15%));
 
-  &:hover,
-  &:active {
-    text-decoration: none;
-    background: lighten($color, 5%);
-  }
+//   &:hover,
+//   &:active {
+//     text-decoration: none;
+//     background: lighten($color, 5%);
+//   }
 
-  &:after {
-    @include button-arrow($color);
-  }
+//   &:after {
+//     @include button-arrow($color);
+//   }
 
-  &[disabled] {
-    background: $btn-color-disabled;
-    cursor: not-allowed;
-    @include box-shadow(0, 2px, 8px, lighten($btn-color-disabled, 15%));
+//   &[disabled] {
+//     background: $btn-color-disabled;
+//     cursor: not-allowed;
+//     @include box-shadow(0, 2px, 8px, lighten($btn-color-disabled, 15%));
 
 
-    &:after {
-      @include button-arrow($btn-color-disabled);
-    }
-  }
+//     &:after {
+//       @include button-arrow($btn-color-disabled);
+//     }
+//   }
 
-  &.reverse {
-    padding-right: 16px;
+//   &.reverse {
+//     padding-right: 16px;
 
-    &:before {
-      @include button-arrow($color);
+//     &:before {
+//       @include button-arrow($color);
 
-      float: left;
-      transform: rotate(180deg);
-      margin-right: 8px;
-      margin-left: 0;
-    }
+//       float: left;
+//       transform: rotate(180deg);
+//       margin-right: 8px;
+//       margin-left: 0;
+//     }
 
-    &[disabled]:before {
-      @include button-arrow($btn-color-disabled);
+//     &[disabled]:before {
+//       @include button-arrow($btn-color-disabled);
 
-      float: left;
-      transform: rotate(180deg);
-      margin-right: 8px;
-      margin-left: 0;
-    }
+//       float: left;
+//       transform: rotate(180deg);
+//       margin-right: 8px;
+//       margin-left: 0;
+//     }
 
-    &:after {
-      content: '';
-      width: 0;
-      height: 0;
-    }
-  }
+//     &:after {
+//       content: '';
+//       width: 0;
+//       height: 0;
+//     }
+//   }
 
-}
+// }
 
 @mixin rounded($radius: 1.6rem) {
   border-radius: $radius;

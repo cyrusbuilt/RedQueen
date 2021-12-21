@@ -3,7 +3,7 @@
   <em>Create and Manage Access Control Cards</em>
 </div>
 <div class="component-body">
-  <button class="btn btn-primary float-right" (click)="onAddCard()">+ Add Card</button>
+  <button class="btn btn-primary float-right create" (click)="onAddCard()">+ Add Card</button>
   <button class="btn btn-primary float-right" (click)="onManageUsersClick()">Manage Card Users</button>
   <ng-container *ngIf="cards">
     <table class="table table-hover table-light">
@@ -33,7 +33,7 @@
           <td>{{c.user?.pin}}</td>
           <td>{{c.modifiedDate | date:'medium'}}</td>
           <td>
-            <button type="button" class="btn mr-2" (click)="onManageClick(c)">Manage</button>
+            <button type="button" class="btn btn-danger" (click)="onManageClick(c)">Manage</button>
           </td>
         </tr>
       </tbody>

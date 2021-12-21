@@ -69,26 +69,27 @@ a {
 
 button {
   cursor: pointer;
+  padding: .5rem;
+  margin: 5px;
 }
 
 .btn {
-  @include button($btn-color-secondary);
-
-
+  //@include button($btn-color-secondary);
+  padding: .5rem;
 
   &.btn-primary {
-    @include button($btn-color-primary);
+    //@include button($btn-color-primary);
     padding-left: 16px;
   }
 }
 
-.btn.btn-primary.backorder {
-  background: #B50D26;
+// .btn.btn-primary.backorder {
+//   background: #B50D26;
 
-  &:after {
-    color: #B50D26;
-  }
-}
+//   &:after {
+//     color: #B50D26;
+//   }
+// }
 
 span.backorder {
   display: inline-block;

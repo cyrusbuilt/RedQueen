@@ -4,7 +4,7 @@
 </div>
 <div class="component-body">
   <h5>CyGarage</h5>
-  <button class="btn mr-2 float-right" (click)="onBackClick()">Back</button>
+  <button class="btn create float-right" (click)="onBackClick()">Back</button>
   <ng-container *ngIf="device">
     <div class="row my-4">
       <div class="col-4">
@@ -18,7 +18,7 @@
         </mat-select>
         <label class="form-label mt-2">System State: {{state && getStateName(state.systemState)}}</label><br/>
         <label class="form-label mt-2">Current position: {{state && state.doorState}}</label><br/>
-        <button *ngIf="state && device && device.controlTopic" class="btn create mr-2" type="button" (click)="onActivate()">Activate</button>
+        <button *ngIf="state && device && device.controlTopic" class="btn create" type="button" (click)="onActivate()">Activate</button>
       </div>
     </div>
   </ng-container>

@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
           });
           this._mqtt.onReconnect.asObservable().subscribe({
             next: value => console.log('Reconnect:', value)
-          })
+          });
         }
       }
     });

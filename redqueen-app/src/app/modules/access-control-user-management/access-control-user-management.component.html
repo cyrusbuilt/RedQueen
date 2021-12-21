@@ -3,7 +3,7 @@
   <em>Create and Manage Access Control Users</em>
 </div>
 <div class="component-body">
-  <button class="btn mr-2 float-right" (click)="onBackClick()">Back</button>
+  <button class="btn float-right" (click)="onBackClick()">Back</button>
   <button class="btn btn-primary float-right" (click)="onAddUserClick()">+ Add User</button>
   <ng-container *ngIf="users">
     <table class="table table-hover table-light">
@@ -31,9 +31,9 @@
           <td>{{u.isActive}}</td>
           <td>{{u.modifiedDate | date:'medium'}}</td>
           <td>
-            <button *ngIf="u.isActive" type="button" class="btn mr-2" (click)="onActivateOrDeactivateUser(u)">Deactivate</button>
-            <button *ngIf="!u.isActive" type="button" class="btn mr-2" (click)="onActivateOrDeactivateUser(u)">Activate</button>
-            <button type="button" class="btn mr-2" (click)="onEditUserClick(u)">Edit</button>
+            <button *ngIf="u.isActive" type="button" class="btn create" (click)="onActivateOrDeactivateUser(u)">Deactivate</button>
+            <button *ngIf="!u.isActive" type="button" class="btn create" (click)="onActivateOrDeactivateUser(u)">Activate</button>
+            <button type="button" class="btn create" (click)="onEditUserClick(u)">Edit</button>
           </td>
         </tr>
       </tbody>

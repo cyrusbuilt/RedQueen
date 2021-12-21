@@ -6,11 +6,11 @@
   <h4>User Details</h4>
   <div class="row my-4">
     <div class="col-4">
-      <label class="form-label mr-2">ID: {{user?.id}}</label><br/>
-      <label class="form-label mr-2">Name: {{user?.name}}</label><br/>
-      <label class="form-label mr-2">Created: {{user?.createdDate}}</label><br/>
-      <label class="form-label mr-2">Active: {{user?.isActive}}</label><br/>
-      <label class="form-label mr-2">Modified: {{user?.modifiedDate}}</label><br/>
+      <label class="form-label mt-2">ID: {{user?.id}}</label><br/>
+      <label class="form-label mt-2">Name: {{user?.name}}</label><br/>
+      <label class="form-label mt-2">Created: {{user?.createdDate}}</label><br/>
+      <label class="form-label mt-2">Active: {{user?.isActive}}</label><br/>
+      <label class="form-label mt-2">Modified: {{user?.modifiedDate}}</label><br/>
     </div>
   </div>
 
@@ -31,7 +31,7 @@
 
     <div class="row my-4">
       <div class="col-4">
-        <button *ngIf="!submitted && !saved" type="submit" class="btn create mr-2">Save</button>
+        <button *ngIf="!submitted && !saved" type="submit" class="btn create">Save</button>
         <button *ngIf="!submitted" type="button" class="btn btn-danger" (click)="onBackClick()">Cancel</button>
       </div>
     </div>
