@@ -11,6 +11,9 @@ import { ToastService } from 'src/app/core/services/toast.service';
 })
 export class DeviceManagementComponent implements OnInit {
   devices: Device[];
+  curPage: number;
+  pageSize: number;
+  totalEntries: number;
 
   constructor(
     private _router: Router,
@@ -18,11 +21,17 @@ export class DeviceManagementComponent implements OnInit {
     private _toastService: ToastService
   ) {
     this.devices = [];
+    this.curPage = 1;
+    this.pageSize = 10;
+    this.totalEntries = 0;
   }
 
   refreshDevices(): void {
-    this._deviceService.getDevices().subscribe({
-      next: devs => this.devices = devs
+    this._deviceService.getDevicesPaginated(this.pageSize, this.curPage).subscribe({
+      next: devs => {
+        this.totalEntries = devs.contentSize;
+        this.devices = devs.items;
+      }
     });
   }
 
@@ -51,5 +60,10 @@ export class DeviceManagementComponent implements OnInit {
   onEditDevice(dev: Device): void {
     sessionStorage.setItem('manageDevice', JSON.stringify(dev));
     this._router.navigate(['/device-management/edit']);
+  }
+
+  handlePageChange(event: number): void {
+    this.curPage = event;
+    this.refreshDevices();
   }
 }

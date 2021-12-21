@@ -41,7 +41,7 @@ export class MessageListViewComponent implements OnInit, OnDestroy {
     clearInterval(this._interval);
   }
 
-  handlePageChange(event: number) {
+  handlePageChange(event: number): void {
     this.curPage = event;
     this.getMessages();
   }

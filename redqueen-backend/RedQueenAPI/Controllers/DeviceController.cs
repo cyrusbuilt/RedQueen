@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RedQueen.Data.Models;
+using RedQueen.Data.Models.Db;
 using RedQueen.Data.Models.Dto;
 using RedQueen.Data.Services;
+using RedQueenAPI.Collections;
 using RedQueenAPI.Models;
 
 namespace RedQueenAPI.Controllers
@@ -20,14 +22,22 @@ namespace RedQueenAPI.Controllers
         {
             _redQueenDataService = redQueenDataService;
         }
-
+        
         [HttpGet]
         [Route("list")]
         public async Task<IActionResult> GetDevices()
         {
-            // TODO Paginate these?
             var devices = await _redQueenDataService.GetDevices(false);
             return Ok(devices);
+        }
+
+        [HttpGet]
+        [Route("list/paginated")]
+        public async Task<IActionResult> GetDevices([FromQuery] int pageSize, [FromQuery] int currentPage)
+        {
+            var devices = _redQueenDataService.GetDevicesQueryable(false);
+            var results = await PaginatedList<Device>.BuildPaginatedList(devices, pageSize, currentPage);
+            return Ok(results);
         }
 
         [HttpPut]

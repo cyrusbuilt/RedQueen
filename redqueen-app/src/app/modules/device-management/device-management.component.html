@@ -18,7 +18,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let dev of devices">
+        <tr *ngFor="let dev of devices
+            | paginate: { id: 'devices',
+                          itemsPerPage: pageSize,
+                          currentPage: curPage,
+                          totalItems: totalEntries }">
           <td>{{ dev.name }}</td>
           <td>{{ dev.statusTopic && dev.statusTopic.name }}</td>
           <td>{{ dev.controlTopic && dev.controlTopic.name }}</td>
@@ -28,10 +32,11 @@
           <td>
             <button *ngIf="dev.isActive" class="btn btn-danger" (click)="activateOrDeactivateDevice(dev)">Deactivate</button>
             <button *ngIf="!dev.isActive" class="btn btn-success" (click)="activateOrDeactivateDevice(dev)">Activate</button>
-            <button class="btn mr-2" (click)="onEditDevice(dev)">Edit</button>
+            <button class="btn create" (click)="onEditDevice(dev)">Edit</button>
           </td>
         </tr>
       </tbody>
     </table>
+    <pagination-controls id="devices" (pageChange)="handlePageChange($event)"></pagination-controls>
   </ng-container>
 </div>
