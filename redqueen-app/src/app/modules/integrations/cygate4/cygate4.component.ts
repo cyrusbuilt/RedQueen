@@ -3,8 +3,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subscription } from 'rxjs';
 import { ControlCommand } from 'src/app/core/interfaces/control-command';
-import { Cygate4Status } from 'src/app/core/interfaces/cygate4-status';
+import { Cygate4Control } from 'src/app/core/interfaces/cygate4-control';
+import { Cygate4Door, Cygate4Status } from 'src/app/core/interfaces/cygate4-status';
 import { Device } from 'src/app/core/interfaces/device';
+import { Tile } from 'src/app/core/interfaces/tile';
 
 enum CygateCommand {
   DISABLE = 0,
@@ -29,6 +31,10 @@ enum CygateArmState {
   ARMED_AWAY = 2
 }
 
+interface DoorTile extends Tile {
+  door: Cygate4Door;
+}
+
 @Component({
   selector: 'app-cygate4',
   templateUrl: './cygate4.component.html',
@@ -39,6 +45,7 @@ export class Cygate4Component implements OnInit, OnDestroy {
   device: Device | null;
   state: Cygate4Status | null;
   commands: ControlCommand[];
+  doorTiles: DoorTile[];
 
   constructor(
     private _location: Location,
@@ -47,6 +54,7 @@ export class Cygate4Component implements OnInit, OnDestroy {
     this._cygateSub = null;
     this.device = null;
     this.state = null;
+    this.doorTiles = [];
     this.commands = [
       {
         friendlyName: 'Disable',
@@ -75,6 +83,16 @@ export class Cygate4Component implements OnInit, OnDestroy {
         const topic = this.device.statusTopic.name;
         this._cygateSub = this._mqttService.observe(topic).subscribe((message: IMqttMessage) => {
           this.state = JSON.parse(message.payload.toString()) as Cygate4Status;
+          this.state.doors.forEach(d => {
+            let tile: DoorTile = {
+              text: d.name,
+              cols: 1,
+              rows: 2,
+              color: 'white',
+              door: d
+            };
+            this.doorTiles.push(tile);
+          });
         });
       }
     }
@@ -129,6 +147,18 @@ export class Cygate4Component implements OnInit, OnDestroy {
     }
 
     return armState;
+  }
+
+  onOperationSelect(ctrl: any): void {
+    const selection = ctrl.value as ControlCommand;
+    if (this.device?.controlTopic && this.state) {
+      const cmd: Cygate4Control = {
+        clientId: this.state.clientId,
+        command: selection.command
+      };
+
+      this._mqttService.unsafePublish(this.device.controlTopic.name, JSON.stringify(cmd));
+    }
   }
 
   // TODO Finish this out.

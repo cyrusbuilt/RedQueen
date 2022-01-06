@@ -117,7 +117,7 @@ export class CygarageComponent implements OnInit, OnDestroy {
   }
 
   onOperationSelect(ctrl: any): void {
-    const selection = ctrl.value;
+    const selection = ctrl.value as ControlCommand;
     if (this.device?.controlTopic && this.state) {
       const cmd: CygarageControl = {
         client_id: this.state.client_id,

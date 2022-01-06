@@ -1,1 +1,46 @@
-<p>cygate4 works!</p>
+<div class="component-header">
+  <h2>Integrations</h2>
+  <em>Control and Monitor Device Integrations</em>
+</div>
+<div class="component-body">
+  <h5>CyGate4</h5>
+  <button class="btn create float-right" (click)="onBackClick()">Back</button>
+  <ng-container *ngIf="device">
+    <div class="row my-4">
+      <div class="col-4">
+        <label class="form-label mt-2">Name: {{device.name}}</label><br/>
+        <label class="form-label mt-2">Class: {{device.class}}</label><br/>
+        <label class="form-label mt-2">System ID: {{state && state.clientId}}</label><br/>
+        <label class="form-label mt-2">Firmware version: {{state && state.firmwareVersion}}</label><br/>
+        <label class="form-label mt-2">Control</label><br/>
+        <mat-select *ngIf="state" (selectionChange)="onOperationSelect($event)" class="custom-select" placeholder="Select Operation">
+          <mat-option *ngFor="let cmd of commands" [value]="cmd">{{cmd.friendlyName}}</mat-option>
+        </mat-select>
+        <label class="form-label mt-2">System State: {{state && getSystemState(state.systemState)}}</label><br/>
+        <label class="form-label mt-2">Arm State: {{state && getArmState(state.armState)}}</label><br/>
+        <label class="form-label mt-2">Doors</label><br/>
+        <div class="card-wrapper">
+          <mat-grid-list cols="4" rowHeight="100px">
+            <mat-grid-tile
+              *ngFor="let tile of doorTiles"
+              [colspan]="tile.cols"
+              [rowspan]="tile.rows"
+              [style.background]="tile.color">
+              <mat-card class="mat-elevation-z4">
+                <mat-card-header>
+                  <mat-card-title>{{tile.text}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+
+                </mat-card-content>
+                <mat-card-actions>
+
+                </mat-card-actions>
+              </mat-card>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
