@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Cygate4Component } from './cygate4.component';
+import { CyenvironComponent } from './cyenviron.component';
 
-describe('Cygate4Component', () => {
-  let component: Cygate4Component;
-  let fixture: ComponentFixture<Cygate4Component>;
+describe('CyenvironComponent', () => {
+  let component: CyenvironComponent;
+  let fixture: ComponentFixture<CyenvironComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ Cygate4Component ]
+      declarations: [ CyenvironComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Cygate4Component);
+    fixture = TestBed.createComponent(CyenvironComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

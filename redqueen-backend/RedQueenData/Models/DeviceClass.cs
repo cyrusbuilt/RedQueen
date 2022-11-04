@@ -6,7 +6,7 @@ namespace RedQueen.Data.Models
         public const string CyLights = "cylights";
         public const string ClController = "clcontroller";
         public const string EspStat = "espstat";
-        public const string CyGate4 = "cygate4";
+        public const string CyEnviron = "cyenviron";
         public const string CySump = "cysump";
         public const string BinarySensor = "binary_sensor";
         public const string AlarmControlPanel = "alarm_control_panel";
@@ -43,7 +43,7 @@ namespace RedQueen.Data.Models
             BinarySensor,
             ClController, 
             CyGarage,
-            CyGate4,
+            CyEnviron,
             CyLights,
             CySump,
             DeviceTracker,

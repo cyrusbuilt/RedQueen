@@ -1,0 +1,37 @@
+<div class="component-header">
+  <h2>Integrations</h2>
+  <em>Control and Monitor Device Integrations</em>
+</div>
+<div class="component-body">
+  <h5>CyEnviron</h5>
+  <button class="btn create float-right" (click)="onBackClick()">Back</button>
+  <ng-container *ngIf="device">
+    <div class="row my-4">
+      <div class="col-4">
+        <label class="form-label mt-2">Name: {{device.name}}</label><br/>
+        <label class="form-label mt-2">Class: {{device.class}}</label><br/>
+        <label class="form-label mt-2">System ID: {{state && state.clientId}}</label><br/>
+        <label class="form-label mt-2">Firmware version: {{state && state.firmwareVersion}}</label><br/>
+        <label class="form-label mt-2">Control</label><br/>
+        <mat-select *ngIf="state" (selectionChange)="onOperationSelect($event)" class="custom-select" placeholder="Select Operation">
+          <mat-option *ngFor="let cmd of commands" [value]="cmd">{{cmd.friendlyName}}</mat-option>
+        </mat-select>
+        <label class="form-label mt-2">System State: {{state && getStateName(state.systemState)}}</label><br/>
+        <label class="form-label mt-2">Alarm: {{state && state.alarm}}</label><br/>
+        <label class="form-label mt-2">Approx. Altitude (above sealevel): {{state && state.altitudeFeet}} Ft</label><br/>
+        <label class="form-label mt-2">Temperature: {{state && state.tempF}}°F</label><br/>
+        <label class="form-label mt-2">Humidity: {{state && state.humidity}}%</label><br/>
+        <label class="form-label mt-2">Barometric Pressure: {{state && state.pressureHpa}} hPa/mBa</label><br/>
+        <label class="form-label mt-2">Dew Point: {{state && state.dewPoint}}°F</label><br/>
+        <label class="form-label mt-2">Air Quality Index: {{state && getAirQualityIndexLabel(state.aqi)}}</label><br/>
+        <label class="form-label mt-2">Indoor Air Quality: {{state && state.iaq}}</label><br/>
+        <label class="form-label mt-2">CO2 Equivalent: {{state && state.co2Equivalent}} ppm</label><br/>
+        <label class="form-label mt-2">Breath VOC: {{state && state.breathVoc}} ppm</label><br/>
+        <label class="form-label mt-2">Gas Resistance: {{state && state.gasKohms}} KOhms</label><br/>
+        <label class="form-label mt-2">Brightness: {{state && state.brightness}}</label><br/>
+        <label class="form-label mt-2">Light Level: {{state && getLightLevelLabel(state.lightLevel)}}</label><br/>
+        <label class="form-label mt-2">Last Update: {{state && state.lastUpdate}}</label>
+      </div>
+    </div>
+  </ng-container>
+</div>
