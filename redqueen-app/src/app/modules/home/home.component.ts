@@ -103,5 +103,8 @@ export class HomeComponent implements OnInit {
     else if (device.class === "cysump") {
       this._router.navigate(['/integrations/cysump']);
     }
+    else if (device.class === "cyenviron") {
+      this._router.navigate(['/integrations/cyenviron']);
+    }
   }
 }

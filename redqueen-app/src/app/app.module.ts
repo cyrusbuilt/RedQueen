@@ -21,13 +21,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ChartModule } from 'primeng/chart';
-import { Cygate4Component } from './modules/integrations/cygate4/cygate4.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    Cygate4Component
+    HomeComponent
   ],
   imports: [
     BrowserModule,

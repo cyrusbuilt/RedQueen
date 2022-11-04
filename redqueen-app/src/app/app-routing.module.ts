@@ -156,6 +156,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'integrations/cyenviron',
+    loadChildren: () => import('./modules/integrations/cyenviron/cyenviron.module').then(m => m.CyenvironModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]

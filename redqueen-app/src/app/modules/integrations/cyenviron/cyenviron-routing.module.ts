@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Cygate4Component } from './cygate4.component';
+import { CyenvironComponent } from './cyenviron.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: Cygate4Component,
+    component: CyenvironComponent,
     children: [
       {
         path: ''
@@ -18,4 +18,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class Cygate4RoutingModule { }
+export class CyenvironRoutingModule { }
