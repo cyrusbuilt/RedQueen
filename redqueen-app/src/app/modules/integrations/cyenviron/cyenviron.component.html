@@ -30,7 +30,22 @@
         <label class="form-label mt-2">Gas Resistance: {{state && state.gasKohms}} KOhms</label><br/>
         <label class="form-label mt-2">Brightness: {{state && state.brightness}}</label><br/>
         <label class="form-label mt-2">Light Level: {{state && getLightLevelLabel(state.lightLevel)}}</label><br/>
-        <label class="form-label mt-2">Last Update: {{state && state.lastUpdate}}</label>
+        <label class="form-label mt-2">Last Update: {{state && state.lastUpdate}}</label><br/>
+        <label *ngIf="historicalMessages.length > 0" class="form-label mt-2">Chart Period:&nbsp;&nbsp;</label>
+        <mat-button-toggle-group *ngIf="historicalMessages.length > 0" #group="matButtonToggleGroup" (change)="onChartPeriodSelect($event)">
+          <mat-button-toggle aria-label="Hour" [value]="0">Hour</mat-button-toggle>
+          <mat-button-toggle aria-label="Day" [value]="1">Day</mat-button-toggle>
+          <mat-button-toggle aria-label="Week" [value]="2">Week</mat-button-toggle>
+        </mat-button-toggle-group><br/>
+        <div *ngIf="historicalMessages.length > 0" class="row my-4">
+          <div class="col-6">
+            <h3>History</h3>
+            <p-chart *ngIf="histChartHumidity" type="line" [options]="lineChartOptions" [data]="histChartHumidity" width="600px" height="400px"></p-chart>
+            <p-chart *ngIf="histChartTemp" type="line" [options]="lineChartOptions" [data]="histChartTemp" width="600px" height="400px"></p-chart>
+            <p-chart *ngIf="histChartPressure" type="line" [options]="lineChartOptions" [data]="histChartPressure" width="600px" height="400px"></p-chart>
+            <p-chart *ngIf="histChartBrightness" type="line" [options]="lineChartOptions" [data]="histChartBrightness" width="600px" height="400px"></p-chart>
+          </div>
+        </div>
       </div>
     </div>
   </ng-container>
