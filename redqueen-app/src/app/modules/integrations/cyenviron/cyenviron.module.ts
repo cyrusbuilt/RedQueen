@@ -5,6 +5,8 @@ import { CyenvironComponent } from './cyenviron.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { ChartModule } from 'primeng/chart';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { MatSelectModule } from '@angular/material/select';
     CyenvironRoutingModule,
     SharedModule,
     ReactiveFormsModule,
-    MatSelectModule
+    MatSelectModule,
+    MatButtonToggleModule,
+    ChartModule
   ]
 })
 export class CyenvironModule { }
