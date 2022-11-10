@@ -1,12 +1,9 @@
 using System;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using MQTTnet;
-using MQTTnet.Client.Connecting;
-using MQTTnet.Client.Disconnecting;
-using MQTTnet.Client.Options;
-using MQTTnet.Client.Receiving;
+using MQTTnet.Client;
 using MQTTnet.Extensions.ManagedClient;
 using MQTTnet.Formatter;
 using MQTTnet.Protocol;
@@ -38,24 +35,28 @@ namespace RedQueen.Services
     
     public class MqttService : IMqttService
     {
-        private static void OnPublisherConnected(MqttClientConnectedEventArgs evt)
+        private static Task OnPublisherConnected(MqttClientConnectedEventArgs evt)
         {
             System.Diagnostics.Debug.WriteLine("Publisher connected.");
+            return Task.CompletedTask;
         }
 
-        private static void OnPublisherDisconnected(MqttClientDisconnectedEventArgs evt)
+        private static Task OnPublisherDisconnected(MqttClientDisconnectedEventArgs evt)
         {
             System.Diagnostics.Debug.WriteLine("Publisher disconnected.");
+            return Task.CompletedTask;
         }
 
-        private static void OnSubscriberConnected(MqttClientConnectedEventArgs evt)
+        private static Task OnSubscriberConnected(MqttClientConnectedEventArgs evt)
         {
             System.Diagnostics.Debug.WriteLine("Subscriber connected.");
+            return Task.CompletedTask;
         }
 
-        private static void OnSubscriberDisconnected(MqttClientDisconnectedEventArgs evt)
+        private static Task OnSubscriberDisconnected(MqttClientDisconnectedEventArgs evt)
         {
             System.Diagnostics.Debug.WriteLine("Subscriber disconnected.");
+            return Task.CompletedTask;
         }
 
         private IManagedMqttClient _clientPublisher;
@@ -81,14 +82,14 @@ namespace RedQueen.Services
             MessageReceived?.Invoke(this, evt);
         }
 
-        private void HandleReceivedReceivedMessage(MqttApplicationMessageReceivedEventArgs evt)
+        private Task HandleReceivedReceivedMessage(MqttApplicationMessageReceivedEventArgs evt)
         {
-            OnMessageReceived(new MqttMessageReceivedEvent(evt, Host));
+            return Task.Run(() => OnMessageReceived(new MqttMessageReceivedEvent(evt, Host)));
         }
 
-        private void OnSubscriberMessageReceived(MqttApplicationMessageReceivedEventArgs evt)
+        private Task OnSubscriberMessageReceived(MqttApplicationMessageReceivedEventArgs evt)
         {
-            OnMessageReceived(new MqttMessageReceivedEvent(evt, Host));
+            return Task.Run(() => OnMessageReceived(new MqttMessageReceivedEvent(evt, Host)));
         }
 
         public ManagedMqttClientOptions GetOptions()
@@ -113,11 +114,10 @@ namespace RedQueen.Services
                             AllowUntrustedCertificates = true
                         }
                     },
-                    Credentials = new MqttClientCredentials
-                    {
-                        Username = _broker.Username,
-                        Password = Encoding.UTF8.GetBytes(_broker.Password)
-                    },
+                    Credentials = new MqttClientCredentials(
+                        _broker.Username,
+                        Encoding.UTF8.GetBytes(_broker.Password)
+                    ),
                     CleanSession = true,
                     KeepAlivePeriod = TimeSpan.FromSeconds(keepAlive)
                 }
@@ -147,9 +147,9 @@ namespace RedQueen.Services
             var mqttFactory = new MqttFactory();
             
             _clientPublisher = mqttFactory.CreateManagedMqttClient();
-            _clientPublisher.UseApplicationMessageReceivedHandler(HandleReceivedReceivedMessage);
-            _clientPublisher.ConnectedHandler = new MqttClientConnectedHandlerDelegate(OnPublisherConnected);
-            _clientPublisher.DisconnectedHandler = new MqttClientDisconnectedHandlerDelegate(OnPublisherDisconnected);
+            _clientPublisher.ApplicationMessageReceivedAsync += HandleReceivedReceivedMessage;
+            _clientPublisher.ConnectedAsync += OnPublisherConnected;
+            _clientPublisher.DisconnectedAsync += OnPublisherDisconnected;
             await _clientPublisher.StartAsync(options);
         }
 
@@ -184,10 +184,9 @@ namespace RedQueen.Services
             
             var mqttFactory = new MqttFactory();
             _clientSubscriber = mqttFactory.CreateManagedMqttClient();
-            _clientSubscriber.ConnectedHandler = new MqttClientConnectedHandlerDelegate(OnSubscriberConnected);
-            _clientSubscriber.DisconnectedHandler = new MqttClientDisconnectedHandlerDelegate(OnSubscriberDisconnected);
-            _clientSubscriber.ApplicationMessageReceivedHandler =
-                new MqttApplicationMessageReceivedHandlerDelegate(OnSubscriberMessageReceived);
+            _clientSubscriber.ConnectedAsync += OnSubscriberConnected;
+            _clientSubscriber.DisconnectedAsync += OnSubscriberDisconnected;
+            _clientSubscriber.ApplicationMessageReceivedAsync += OnSubscriberMessageReceived;
             await _clientSubscriber.StartAsync(options);
         }
 
@@ -197,7 +196,6 @@ namespace RedQueen.Services
             {
                 return;
             }
-
             
             await _clientSubscriber.StopAsync();
             _clientSubscriber = null;
@@ -283,7 +281,7 @@ namespace RedQueen.Services
                 Retain = true
             };
 
-            await _clientPublisher.PublishAsync(msg);
+            await _clientPublisher.EnqueueAsync(msg);
         }
 
         public async Task SubscribeSystemControlTopic(string controlTopic)

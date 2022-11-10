@@ -3,6 +3,7 @@ import { MqttTopic } from "./mqtt-topic";
 export interface Device {
   id: number;
   name: string;
+  friendlyName?: string;
   isActive: boolean;
   statusTopicId: number;
   controlTopicId: number;

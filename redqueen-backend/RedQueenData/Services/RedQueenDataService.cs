@@ -16,6 +16,7 @@ namespace RedQueen.Data.Services
         Task<MqttBroker> GetBrokerById(int id);
         Task<bool> TopicExists(string topic);
         Task<MqttTopic> GetTopic(string topic);
+        Task<MqttTopic> GetTopicById(int id);
         Task<List<MqttTopic>> GetTopicsForBroker(int brokerId);
         Task<bool> SaveTopic(string topicName, int brokerId);
         Task<MqttTopic> UpdateTopic(int id, MqttTopicDto topic);
@@ -72,6 +73,11 @@ namespace RedQueen.Data.Services
         public async Task<MqttTopic> GetTopic(string topic)
         {
             return await _context.Topics.Where(t => t.Name.Equals(topic)).FirstOrDefaultAsync();
+        }
+
+        public async Task<MqttTopic> GetTopicById(int id)
+        {
+            return await _context.Topics.Where(t => t.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<List<MqttTopic>> GetTopicsForBroker(int brokerId)
@@ -255,14 +261,33 @@ namespace RedQueen.Data.Services
                 return null;
             }
 
-            existingDevice.Name = device.Name;
+            existingDevice.Name = string.IsNullOrWhiteSpace(device.Name) ? device.FriendlyName : device.Name;
+            existingDevice.FriendlyName =
+                string.IsNullOrWhiteSpace(device.FriendlyName) ? device.Name : device.FriendlyName;
             existingDevice.ControlTopicId = device.ControlTopicId;
             existingDevice.StatusTopicId = device.StatusTopicId;
             existingDevice.IsActive = device.IsActive;
             existingDevice.ModifiedDate = DateTime.Now;
             existingDevice.Class = device.Class;
+            
+            // Also activate/deactivate any associated topics
+            var statusTopic = await GetTopicById(existingDevice.StatusTopicId);
+            if (statusTopic != null)
+            {
+                statusTopic.IsActive = existingDevice.IsActive;
+            }
 
+            if (existingDevice.ControlTopicId.HasValue)
+            {
+                var controlTopic = await GetTopicById(existingDevice.ControlTopicId.Value);
+                if (controlTopic != null)
+                {
+                    controlTopic.IsActive = existingDevice.IsActive;
+                }
+            }
+            
             await _context.SaveChangesAsync();
+            
             return existingDevice;
         }
 
@@ -277,7 +302,8 @@ namespace RedQueen.Data.Services
 
             var newDevice = new Device
             {
-                Name = device.Name,
+                Name = string.IsNullOrWhiteSpace(device.Name) ? device.FriendlyName : device.Name,
+                FriendlyName = string.IsNullOrWhiteSpace(device.FriendlyName) ? device.Name : device.FriendlyName,
                 StatusTopicId = device.StatusTopicId,
                 ControlTopicId = device.ControlTopicId,
                 CreatedDate = DateTime.Now,

@@ -15,6 +15,9 @@ namespace RedQueen.Data.Models.Db
         [Column("name")]
         public string Name { get; set; }
         
+        [Column("friendly_name")]
+        public string FriendlyName { get; set; }
+        
         [Column("control_topic_id")]
         public int? ControlTopicId { get; set; }
         

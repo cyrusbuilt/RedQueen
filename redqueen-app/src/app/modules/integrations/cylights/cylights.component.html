@@ -8,7 +8,7 @@
   <ng-container *ngIf="device">
     <div class="row my-4">
       <div class="col-4">
-        <label class="form-label mt-2">Name: {{device.name}}</label><br/>
+        <label class="form-label mt-2">Name: {{device | friendlyDeviceName}}</label><br/>
         <label class="form-label mt-2">Class: {{device.class}}</label><br/>
         <label class="form-label mt-2">System ID: {{state && state.client_id}}</label><br/>
         <label class="form-label mt-2">Firmware version: {{state && state.firmwareVersion}}</label><br/>

@@ -46,6 +46,7 @@ export class AddDeviceComponent implements OnInit {
     this.selectedClass = null;
     this.form = this._fb.group({
       name: ['', [Validators.required]],
+      friendlyName: [''],
       broker: ['', [Validators.required]],
       statusTopic: ['', [Validators.required]],
       controlTopic: [''],
@@ -127,6 +128,7 @@ export class AddDeviceComponent implements OnInit {
 
     let dev = {
       name: this.form.value.name,
+      friendlyName: this.form.value.friendlyName,
       statusTopicId: this.form.value.statusTopic.id,
       controlTopicId: this.form.value.controlTopic?.id,
       isActive: true,

@@ -12,6 +12,7 @@ import { ActiveTopicsPipe } from '../core/pipes/active-topics.pipe';
 import { ActiveDevicesPipe } from '../core/pipes/active-devices.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TemperaturePipe } from '../core/pipes/temperature.pipe';
+import { FriendlyDeviceNamePipe } from '../core/pipes/friendly-device-name.pipe';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { TemperaturePipe } from '../core/pipes/temperature.pipe';
     ActiveBrokersPipe,
     ActiveTopicsPipe,
     ActiveDevicesPipe,
+    FriendlyDeviceNamePipe,
     TemperaturePipe
   ],
   imports: [
@@ -40,6 +42,7 @@ import { TemperaturePipe } from '../core/pipes/temperature.pipe';
     ActiveTopicsPipe,
     ActiveDevicesPipe,
     TemperaturePipe,
+    FriendlyDeviceNamePipe,
     NgxPaginationModule,
     DatePipe
   ],

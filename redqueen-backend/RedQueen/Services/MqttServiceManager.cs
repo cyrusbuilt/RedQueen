@@ -102,6 +102,7 @@ namespace RedQueen.Services
                     {
                         _logger.LogWarning($"Control topic not found: {device.ControlTopic}. Adding...");
                         _dataService.SaveTopic(device.ControlTopic, broker.Id).Wait();
+                        contTopic = _dataService.GetTopic(device.ControlTopic).Result;
                     }
                 }
 
@@ -126,7 +127,7 @@ namespace RedQueen.Services
                     ControlTopicId = contTopic?.Id
                 };
                     
-                var result = _dataService.AddDevice(newDev);
+                var result = _dataService.AddDevice(newDev).Result;
                 if (result == null)
                 {
                     _logger.LogWarning($"Config for device already exists: {device.Name}");
@@ -135,7 +136,7 @@ namespace RedQueen.Services
                 {
                     _logger.LogInformation("Device saved!");
                     var serviceInstance = Instances.First(h => h.Host.Equals(broker.Host));
-                    serviceInstance.SubscribeTopic(statTopic);
+                    serviceInstance.SubscribeTopic(statTopic).Wait();
                 }
             }
         }
@@ -153,7 +154,7 @@ namespace RedQueen.Services
             await service.PublishSystemStatus(stat, topic);
         }
 
-        private async Task ProcessControlMessage(string payload, MqttService service)
+        private async Task ProcessControlMessage(string payload, IMqttService service)
         {
             var cmd = MessageParser.ParseControlCommand(payload, out var messages);
             if (cmd == null)
@@ -192,7 +193,7 @@ namespace RedQueen.Services
             var topicName = evt.EventData.ApplicationMessage.Topic;
             
             var msg = $"Message received: Timestamp: {DateTime.Now} | Topic: {evt.EventData.ApplicationMessage.Topic}";
-            msg += $" | Sender: {evt.EventData.ClientId} | QoS: {evt.EventData.ApplicationMessage.QualityOfServiceLevel}";
+            msg += $" | QoS: {evt.EventData.ApplicationMessage.QualityOfServiceLevel}";
             msg += $" | Broker: {evt.Host} | Payload: {payload}";
 
             _logger.LogInformation(msg);
@@ -233,10 +234,6 @@ namespace RedQueen.Services
                 {
                     await instance.StartPublisher();
                     await instance.StartSubscriber();
-                    // TODO Instead of subscribing to ALL topics, we probably need to think about subscribing to
-                    // TODO "devices" instead. So pull all devices assigned to a broker, if the device is active
-                    // TODO *AND* the status topic is active, then subscribe the topic.  Also, when we disable a
-                    // TODO device, we should disable any associated topics automatically.
                     await instance.SubscribeAllTopics();
                     await instance.SubscribeSystemControlTopic(_configuration["MQTT:ControlTopic"]);
                     await PublishStatus(instance);

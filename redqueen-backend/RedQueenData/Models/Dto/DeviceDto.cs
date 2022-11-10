@@ -4,6 +4,8 @@ namespace RedQueen.Data.Models.Dto
     {
         public string Name { get; set; }
         
+        public string FriendlyName { get; set; }
+        
         public int? ControlTopicId { get; set; }
         
         public int StatusTopicId { get; set; }

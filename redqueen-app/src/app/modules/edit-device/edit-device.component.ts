@@ -48,6 +48,7 @@ export class EditDeviceComponent implements OnInit {
     this.selectedClass = null;
     this.form = this._fb.group({
       name: ['', [Validators.required]],
+      friendlyName: [''],
       statusTopic: ['', [Validators.required]],
       controlTopic: [''],
       broker: ['', [Validators.required]],
@@ -153,6 +154,7 @@ export class EditDeviceComponent implements OnInit {
 
     this.submitted = true;
     this.device.name = this.form.value.name;
+    this.device.friendlyName = this.form.value.friendlyName;
     this.device.statusTopicId = this.form.value.statusTopic.id;
     this.device.controlTopicId = this.form.value.controlTopic?.id;
     this.device.class = this.form.value.deviceClass;
