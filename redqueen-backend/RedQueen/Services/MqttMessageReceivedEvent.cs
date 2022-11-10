@@ -1,5 +1,5 @@
 using System;
-using MQTTnet;
+using MQTTnet.Client;
 
 namespace RedQueen.Services
 {

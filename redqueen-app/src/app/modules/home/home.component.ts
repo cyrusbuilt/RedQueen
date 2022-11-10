@@ -6,6 +6,7 @@ import { DeviceService } from 'src/app/core/services/device.service';
 import { TelemetryService } from 'src/app/core/services/telemetry.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { FriendlyDeviceNamePipe } from 'src/app/core/pipes/friendly-device-name.pipe';
 
 interface DeviceTile extends Tile {
   device: Device;
@@ -62,12 +63,13 @@ export class HomeComponent implements OnInit {
   }
 
   getDevices(): void {
+    const friendlyName = new FriendlyDeviceNamePipe();
     this._deviceService.getDevices().subscribe({
       next: value => {
         this.devices = value.filter(d => d.isActive);
         for (let d of this.devices) {
           let tile: DeviceTile = {
-            text: d.name,
+            text: friendlyName.transform(d),
             cols: 1,
             rows: 2,
             color: 'white',
