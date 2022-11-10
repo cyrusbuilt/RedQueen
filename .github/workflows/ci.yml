@@ -37,6 +37,7 @@ jobs:
       - name: Install FE Dependencies
         if: steps.cache-nodemodules.output.cache-hit != 'true'
         run: |
+          cd redqueen-app
           npm ci
       
       - name: Build FE
@@ -54,6 +55,7 @@ jobs:
       
       - name: Install BE Dependencies
         run: |
+          cd ../redqueen-backend
           dotnet restore
       
       - name: Build BE
