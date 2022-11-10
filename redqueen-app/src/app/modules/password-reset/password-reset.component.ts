@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import { PasswordResetRequest } from 'src/app/core/interfaces/password-reset-request';
@@ -11,7 +11,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
   templateUrl: './password-reset.component.html',
   styleUrls: ['./password-reset.component.scss']
 })
-export class PasswordResetComponent implements OnInit {
+export class PasswordResetComponent {
   form: FormGroup;
   submitted: boolean;
 
@@ -25,10 +25,6 @@ export class PasswordResetComponent implements OnInit {
     this.form = this._fb.group({
       newPassword: ['', Validators.required]
     });
-  }
-
-  ngOnInit(): void {
-
   }
 
   isFieldValid(field: string) {

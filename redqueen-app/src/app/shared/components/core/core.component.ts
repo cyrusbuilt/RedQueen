@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   faBell,
   faChartBar,
@@ -25,7 +25,7 @@ import {
   templateUrl: './core.component.html',
   styleUrls: ['./core.component.scss']
 })
-export class CoreComponent implements OnInit {
+export class CoreComponent {
   faCog: IconDefinition = faCog;
   faCogs: IconDefinition = faCogs;
   faSearch: IconDefinition = faSearch;
@@ -45,6 +45,4 @@ export class CoreComponent implements OnInit {
   faChessQueen: IconDefinition = faChessQueen;
 
   constructor() { }
-
-  ngOnInit(): void { }
 }

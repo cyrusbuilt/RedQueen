@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
   templateUrl: './access-control-user-add.component.html',
   styleUrls: ['./access-control-user-add.component.scss']
 })
-export class AccessControlUserAddComponent implements OnInit {
+export class AccessControlUserAddComponent {
   form: FormGroup;
   submitted: boolean;
   userAdded: boolean;
@@ -31,8 +31,6 @@ export class AccessControlUserAddComponent implements OnInit {
       pin: ['', [Validators.required]]
     });
   }
-
-  ngOnInit(): void {}
 
   onBackClick(): void {
     this._location.back();

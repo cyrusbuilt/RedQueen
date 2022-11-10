@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TelemetryService } from 'src/app/core/services/telemetry.service';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './add-broker.component.html',
   styleUrls: ['./add-broker.component.scss']
 })
-export class AddBrokerComponent implements OnInit {
+export class AddBrokerComponent {
   form: FormGroup;
   shouldUseTls: boolean = false;
   brokerAdded: boolean = false;
@@ -35,9 +35,6 @@ export class AddBrokerComponent implements OnInit {
       keepAliveSeconds: [null],
       discoveryTopic: ['']
     });
-  }
-
-  ngOnInit(): void {
   }
 
   isFieldValid(field: string): boolean {
