@@ -42,10 +42,12 @@ jobs:
       
       - name: Build FE
         run: |
+          cd redqueen-app
           npm run build:dev
       
       - name: Lint FE
         run: |
+          cd redqueen-app
           npm run lint
       
       - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
@@ -55,9 +57,10 @@ jobs:
       
       - name: Install BE Dependencies
         run: |
-          cd ../redqueen-backend
+          cd redqueen-backend
           dotnet restore
       
       - name: Build BE
         run: |
+          cd redqueen-backend
           dotnet build --configuration Development --no-restore
