@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserRegistration } from 'src/app/core/interfaces/user-registration';
@@ -11,7 +11,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
   templateUrl: './add-user.component.html',
   styleUrls: ['./add-user.component.scss']
 })
-export class AddUserComponent implements OnInit {
+export class AddUserComponent {
   form: FormGroup;
   submitted: boolean;
   registered: boolean;
@@ -40,8 +40,6 @@ export class AddUserComponent implements OnInit {
       return forbidden ? { customemail: !forbidden } : null;
     };
   }
-
-  ngOnInit(): void {}
 
   isFieldValid(field: string): boolean {
     let fld = this.form.get(field);

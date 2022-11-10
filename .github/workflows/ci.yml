@@ -1,0 +1,61 @@
+name: Angular Github CI
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  front-end-ci:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: ['18.x']
+        dotnet-version: ['5.0.x']
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      
+      - name: Cache node modules
+        id: cache-nodemodules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      
+      - name: Install FE Dependencies
+        if: steps.cache-nodemodules.output.cache-hit != 'true'
+        run: |
+          npm ci
+      
+      - name: Build FE
+        run: |
+          npm run build:dev
+      
+      - name: Lint FE
+        run: |
+          npm run lint
+      
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      
+      - name: Install BE Dependencies
+        run: |
+          dotnet restore
+      
+      - name: Build BE
+        run: |
+          dotnet build --configuration Development --no-restore
