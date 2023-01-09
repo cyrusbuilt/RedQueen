@@ -1,0 +1,42 @@
+<div class="component-header">
+  <h2>Integrations</h2>
+  <em>Control and Monitor Device Integrations</em>
+</div>
+<div class="component-body">
+  <h5>ArduDesk</h5>
+  <button class="btn create float-right" (click)="onBackClick()">Back</button>
+  <ng-container *ngIf="device">
+    <div class="row my-4">
+      <div class="col-4">
+        <label class="form-label mt-2">Name: {{device | friendlyDeviceName}}</label><br/>
+        <label class="form-label mt-2">Class: {{device.class}}</label><br/>
+        <label class="form-label mt-2">System ID: {{state && state.clientId}}</label><br/>
+        <label class="form-label mt-2">Firmware Version: {{state && state.firmwareVersion}}</label><br/>
+        <label class="form-label mt-2">System State: {{state && getSystemStateName(state.systemState)}}</label><br/>
+        <label class="form-label mt-2">Control</label><br/>
+        <mat-select *ngIf="state" (selectionChange)="onOperationSelect($event)" class="custom-select" placeholder="Select Operation">
+          <mat-option *ngFor="let cmd of commands" [value]="cmd">{{cmd.friendlyName}}</mat-option>
+        </mat-select><br/><br>
+        <label class="form-label mt-2">Desk State: {{state && state.state}}</label><br/>
+        <label class="form-label mt-2">Desk Height: {{state && state.height}}</label><br/>
+        <label class="form-label mt-2">Operation:&nbsp;&nbsp;</label>
+        <mat-button-toggle-group *ngIf="state" #group="matButtonToggleGroup" (change)="onDeskAction($event)">
+          <mat-button-toggle aria-label="Stop" [value]="5">Stop</mat-button-toggle>
+          <mat-button-toggle aria-label="Sit" [value]="6">Sit</mat-button-toggle>
+          <mat-button-toggle aria-label="Stand" [value]="7">Stand</mat-button-toggle>
+        </mat-button-toggle-group><br/>
+        <label class="form-label mt-2">Height Setpoint:&nbsp;{{state && state.height}}&nbsp;&nbsp;</label>
+        <mat-slider
+          thumbLabel
+          *ngIf="state"
+          min="0"
+          max="256"
+          step="5"
+          [value]="state && state.height"
+          aria-label="Height"
+          (change)="onHeightSetpointChanged($event)">
+        </mat-slider>
+      </div>
+    </div>
+  </ng-container>
+</div>

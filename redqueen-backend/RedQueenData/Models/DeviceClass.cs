@@ -2,6 +2,7 @@ namespace RedQueen.Data.Models
 {
     public static class DeviceClass
     {
+        public const string ArduDesk = "ardudesk";
         public const string CyGarage = "cygarage";
         public const string CyLights = "cylights";
         public const string ClController = "clcontroller";
@@ -27,6 +28,7 @@ namespace RedQueen.Data.Models
         public const string TagScanner = "tag_scanner";
         public const string Vacuum = "vacuum";
         public static readonly string[] All = {
+            ArduDesk,
             Camera,
             Cover,
             Fan,
