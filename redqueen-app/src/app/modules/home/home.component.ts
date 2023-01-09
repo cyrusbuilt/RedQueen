@@ -108,5 +108,8 @@ export class HomeComponent implements OnInit {
     else if (device.class === "cyenviron") {
       this._router.navigate(['/integrations/cyenviron']);
     }
+    else if (device.class === "ardudesk") {
+      this._router.navigate(['/integrations/ardudesk']);
+    }
   }
 }

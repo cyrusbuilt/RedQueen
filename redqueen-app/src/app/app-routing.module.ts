@@ -161,6 +161,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'integrations/ardudesk',
+    loadChildren: () => import('./modules/integrations/ardudesk/ardudesk.module').then(m => m.ArdudeskModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]
