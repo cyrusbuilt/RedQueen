@@ -4,4 +4,6 @@ export interface ArdudeskStatus {
   systemState: number;
   height: number;
   state: string;
+  sittingHeight: number;
+  standingHeight: number;
 }

@@ -17,7 +17,9 @@ enum ArduDeskCommand {
   MOVE = 4,
   STOP = 5,
   SIT = 6,
-  STAND = 7
+  STAND = 7,
+  SET_SITTING_HEIGHT = 8,
+  SET_STANDING_HEIGHT = 9
 }
 
 enum ArduDeskSystemState {
@@ -173,5 +175,25 @@ export class ArdudeskComponent implements OnInit, OnDestroy {
         this._mqtt.unsafePublish(this.device.controlTopic.name, JSON.stringify(cmd));
       }
     }, 500);
+  }
+
+  onSetSittingHeightClick(): void {
+    if (this.device?.controlTopic && this.state) {
+      const cmd: ArdudeskControl = {
+        clientId: this.state.clientId,
+        command: ArduDeskCommand.SET_SITTING_HEIGHT
+      };
+      this._mqtt.unsafePublish(this.device.controlTopic.name, JSON.stringify(cmd));
+    }
+  }
+
+  onSetStandingHeightClick(): void {
+    if (this.device?.controlTopic && this.state) {
+      const cmd: ArdudeskControl = {
+        clientId: this.state.clientId,
+        command: ArduDeskCommand.SET_STANDING_HEIGHT
+      };
+      this._mqtt.unsafePublish(this.device.controlTopic.name, JSON.stringify(cmd));
+    }
   }
 }
