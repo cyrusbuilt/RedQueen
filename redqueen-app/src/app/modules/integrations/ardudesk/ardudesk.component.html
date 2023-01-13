@@ -35,7 +35,11 @@
           [value]="state && state.height"
           aria-label="Height"
           (change)="onHeightSetpointChanged($event)">
-        </mat-slider>
+        </mat-slider><br/>
+        <label class="form-label mt-2">Preset Sitting Height: {{state && state.sittingHeight}}&nbsp;&nbsp;</label>
+        <button *ngIf="state" type="button" class="btn btn-primary" (click)="onSetSittingHeightClick()">Set</button><br/>
+        <label class="form-label mt-2">Preset Standing Height: {{state && state.standingHeight}}&nbsp;&nbsp;</label>
+        <button *ngIf="state" type="button" class="btn btn-primary" (click)="onSetStandingHeightClick()">Set</button>
       </div>
     </div>
   </ng-container>
