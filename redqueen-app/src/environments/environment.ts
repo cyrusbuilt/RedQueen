@@ -5,7 +5,7 @@
 const config = {
   apiUri: "https://localhost:5001",
   mqttProtocol: "ws",
-  mqttBrokerId: 2
+  mqttBrokerId: 1
 };
 
 const { apiUri, mqttProtocol, mqttBrokerId } = config as {

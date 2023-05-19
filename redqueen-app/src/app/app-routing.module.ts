@@ -166,6 +166,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'integrations/cylence',
+    loadChildren: () => import('./modules/integrations/cylence/cylence.module').then(m => m.CylenceModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: '**',
     redirectTo: '',
     canActivate: [AuthGuard]

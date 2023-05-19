@@ -5,6 +5,7 @@ namespace RedQueen.Data.Models
         public const string ArduDesk = "ardudesk";
         public const string CyGarage = "cygarage";
         public const string CyLights = "cylights";
+        public const string Cylence = "cylence";
         public const string ClController = "clcontroller";
         public const string EspStat = "espstat";
         public const string CyEnviron = "cyenviron";
@@ -47,6 +48,7 @@ namespace RedQueen.Data.Models
             CyGarage,
             CyEnviron,
             CyLights,
+            Cylence,
             CySump,
             DeviceTracker,
             DeviceTrigger,

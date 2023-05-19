@@ -92,7 +92,7 @@ export class ArdudeskComponent implements OnInit, OnDestroy {
     if (devStr) {
       this.device = JSON.parse(devStr) as Device;
       if (this.device.statusTopic?.isActive) {
-        const topic = this.device.statusTopic.name
+        const topic = this.device.statusTopic.name;
         this._arduDeskSub = this._mqtt.observe(topic).subscribe((message: IMqttMessage) => {
           this.state = JSON.parse(message.payload.toString()) as ArdudeskStatus;
         });

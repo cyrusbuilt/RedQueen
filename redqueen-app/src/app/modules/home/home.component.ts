@@ -111,5 +111,8 @@ export class HomeComponent implements OnInit {
     else if (device.class === "ardudesk") {
       this._router.navigate(['/integrations/ardudesk']);
     }
+    else if (device.class === "cylence") {
+      this._router.navigate(['/integrations/cylence']);
+    }
   }
 }

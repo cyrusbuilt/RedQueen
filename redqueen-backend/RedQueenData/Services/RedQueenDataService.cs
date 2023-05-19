@@ -190,7 +190,8 @@ namespace RedQueen.Data.Services
                 CreatedDate = DateTime.Now,
                 UseTls = broker.UseTls,
                 KeepAliveSeconds = broker.KeepAliveSeconds,
-                WebSocketsPort = broker.WebSocketsPort
+                WebSocketsPort = broker.WebSocketsPort,
+                DiscoveryTopic = broker.DiscoveryTopic
             };
 
             _context.Brokers.Add(newBroker);
