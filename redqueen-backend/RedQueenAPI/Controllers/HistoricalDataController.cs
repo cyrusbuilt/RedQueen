@@ -6,6 +6,7 @@ using RedQueen.Data.Services;
 namespace RedQueenAPI.Controllers
 {
     [Authorize]
+    [ApiController]
     [Route("api/[controller]")]
     public class HistoricalDataController : ControllerBase
     {
@@ -16,8 +17,7 @@ namespace RedQueenAPI.Controllers
             _historicalDataService = historicalDataService;
         }
 
-        [HttpGet]
-        [Route("messages")]
+        [HttpGet("messages")]
         public async Task<IActionResult> GetHistoricalData([FromQuery] int topicId, [FromQuery] int numDays)
         {
             var result = await _historicalDataService.GetHistoricalDataForClient(topicId, numDays);

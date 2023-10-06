@@ -205,7 +205,7 @@ namespace RedQueen.Services
             if (topic.IsActive)
             {
                 System.Diagnostics.Debug.WriteLine($"Subscribing topic: {topic.Name}");
-                await _clientSubscriber.SubscribeAsync(topic.Name);
+                await _clientSubscriber.SubscribeAsync(topic.Name, MqttQualityOfServiceLevel.ExactlyOnce);
             }
         }
 
@@ -276,7 +276,7 @@ namespace RedQueen.Services
             {
                 Topic = statusTopic,
                 Payload = Encoding.UTF8.GetBytes(payloadStr),
-                QualityOfServiceLevel = MqttQualityOfServiceLevel.AtMostOnce,
+                QualityOfServiceLevel = MqttQualityOfServiceLevel.ExactlyOnce,
                 Retain = true
             };
 

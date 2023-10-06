@@ -19,8 +19,7 @@ namespace RedQueenAPI.Controllers
             _cardService = cardService;
         }
 
-        [HttpGet]
-        [Route("list")]
+        [HttpGet("list")]
         public async Task<IActionResult> GetCards([FromQuery] int pageSize, [FromQuery] int currentPage)
         {
             var cardQuery = _cardService.GetCards();
@@ -28,32 +27,34 @@ namespace RedQueenAPI.Controllers
             return Ok(results);
         }
 
-        [HttpGet]
-        [Route("active-users")]
+        [HttpGet("active-users")]
         public async Task<IActionResult> GetActiveUsers()
         {
             var result = await _cardService.GetActiveUsers();
             return Ok(result);
         }
 
-        [HttpPut]
-        [Route("update")]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateCard([FromBody] Card card)
         {
             var result = await _cardService.UpdateCard(card);
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("add")]
+        [HttpPost("legacy/update")]
+        public async Task<IActionResult> LegacyUpdateCard([FromBody] Card card)
+        {
+            return await UpdateCard(card);
+        }
+
+        [HttpPost("add")]
         public async Task<IActionResult> AddCard([FromBody] Card card)
         {
             var result = await _cardService.AddCard(card);
             return Ok(result);
         }
 
-        [HttpGet]
-        [Route("all-users")]
+        [HttpGet("all-users")]
         public async Task<IActionResult> GetAllCardUsers([FromQuery] int pageSize, [FromQuery] int currentPage)
         {
             var userQuery = _cardService.GetCardUsers();
@@ -61,22 +62,24 @@ namespace RedQueenAPI.Controllers
             return Ok(results);
         }
 
-        [HttpPut]
-        [Route("user")]
+        [HttpPut("user")]
         public async Task<IActionResult> UpdateCardUser([FromBody] AccessControlUser user)
         {
             var result = await _cardService.UpdateCardUser(user);
             return Ok(result);
         }
 
-        [HttpPost]
-        [Route("add-user")]
+        [HttpPost("legacy/user")]
+        public async Task<IActionResult> LegacyUpdateCardUser([FromBody] AccessControlUser user)
+        {
+            return await UpdateCardUser(user);
+        }
+
+        [HttpPost("add-user")]
         public async Task<IActionResult> AddCardUser([FromBody] AccessControlUser user)
         {
             var result = await _cardService.AddCardUser(user);
             return Ok(result);
         }
-        
-        
     }
 }

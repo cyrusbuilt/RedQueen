@@ -13,6 +13,7 @@ using RedQueenAPI.Models;
 namespace RedQueenAPI.Controllers
 {
     [Authorize]
+    [ApiController]
     [Route("api/[controller]")]
     public class TelemetryController : ControllerBase
     {
@@ -25,16 +26,14 @@ namespace RedQueenAPI.Controllers
             _configuration = configuration;
         }
 
-        [HttpGet]
-        [Route("brokers")]
+        [HttpGet("brokers")]
         public async Task<IActionResult> GetBrokers()
         {
             var brokers = await _redQueenDataService.GetMqttBrokers(false);
             return Ok(brokers);
         }
 
-        [HttpPost]
-        [Route("brokers/add")]
+        [HttpPost("brokers/add")]
         public async Task<IActionResult> AddBroker([FromBody] MqttBrokerDto broker)
         {
             try
@@ -52,8 +51,7 @@ namespace RedQueenAPI.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("brokers/{id:int}")]
+        [HttpPut("brokers/{id:int}")]
         public async Task<IActionResult> UpdateBroker([FromRoute] int id, [FromBody] MqttBrokerDto broker)
         {
             try
@@ -71,24 +69,27 @@ namespace RedQueenAPI.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("brokers/{id:int}")]
+        [HttpPost("legacy/brokers/{id:int}")]
+        public async Task<IActionResult> LegacyUpdateBroker([FromRoute] int id, [FromBody] MqttBrokerDto broker)
+        {
+            return await UpdateBroker(id, broker);
+        }
+
+        [HttpGet("brokers/{id:int}")]
         public async Task<IActionResult> GetBrokerById([FromRoute] int id)
         {
             var result = await _redQueenDataService.GetBrokerById(id);
             return Ok(result);
         }
 
-        [HttpGet]
-        [Route("topics")]
+        [HttpGet("topics")]
         public async Task<IActionResult> GetTopics()
         {
             var result = await _redQueenDataService.GetTopics(false);
             return Ok(result);
         }
 
-        [HttpPut]
-        [Route("topics/{id:int}")]
+        [HttpPut("topics/{id:int}")]
         public async Task<IActionResult> UpdateTopic([FromRoute] int id, [FromBody] MqttTopicDto topic)
         {
             try
@@ -105,20 +106,20 @@ namespace RedQueenAPI.Controllers
                 });
             }
         }
+    
+        [HttpPost("legacy/topics/{id:int}")]
+        public async Task<IActionResult> LegacyUpdateTopic([FromRoute] int id, [FromBody] MqttTopicDto topic)
+        {
+            return await UpdateTopic(id, topic);
+        }
 
-        [HttpPost]
-        [Route("topics/add")]
+        [HttpPost("topics/add")]
         public async Task<IActionResult> AddTopic([FromBody] MqttTopicDto topic)
         {
             try
             {
                 var success = await _redQueenDataService.SaveTopic(topic.Name, topic.BrokerId);
-                if (success)
-                {
-                    var savedTopic = await _redQueenDataService.GetTopic(topic.Name);
-                    return Ok(savedTopic);
-                }
-                else
+                if (!success)
                 {
                     return BadRequest(new GeneralResponse
                     {
@@ -126,6 +127,9 @@ namespace RedQueenAPI.Controllers
                         Message = "Could not save topic! Make sure topic does not already exist."
                     });
                 }
+
+                var savedTopic = await _redQueenDataService.GetTopic(topic.Name);
+                return Ok(savedTopic);
             }
             catch (Exception ex)
             {
@@ -137,16 +141,14 @@ namespace RedQueenAPI.Controllers
             }
         }
         
-        [HttpGet]
-        [Route("brokers/{brokerId:int}/topics")]
+        [HttpGet("brokers/{brokerId:int}/topics")]
         public async Task<IActionResult> GetTopicsForBroker([FromRoute] int brokerId)
         {
             var result = await _redQueenDataService.GetTopicsForBroker(brokerId);
             return Ok(result);
         }
 
-        [HttpGet]
-        [Route("messages")]
+        [HttpGet("messages")]
         public async Task<IActionResult> GetMessages([FromQuery] int pageSize, [FromQuery] int currentPage)
         {
             var messages = _redQueenDataService.GetMessagesQueryable();
@@ -154,8 +156,7 @@ namespace RedQueenAPI.Controllers
             return Ok(results);
         }
 
-        [HttpGet]
-        [Route("systemTelemetry")]
+        [HttpGet("systemTelemetry")]
         public IActionResult GetSystemTelemetry()
         {
             var telem = new TelemetryResponse

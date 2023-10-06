@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 const config = {
-  apiUri: "https://localhost:5001",
+  apiUri: "http://192.168.0.237:5000",
   mqttProtocol: "ws",
   mqttBrokerId: 1
 };

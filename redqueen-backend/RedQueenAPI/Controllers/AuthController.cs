@@ -37,8 +37,7 @@ namespace RedQueenAPI.Controllers
             _userService = userService;
         }
 
-        [HttpPost]
-        [Route("login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserLogin login)
         {
             var user = await _userManager.FindByNameAsync(login.Username);
@@ -87,8 +86,7 @@ namespace RedQueenAPI.Controllers
             return Unauthorized();
         }
 
-        [HttpPost]
-        [Route("register")]
+        [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRegistration registration)
         {
             var existingUser = await _userManager.FindByNameAsync(registration.Username);
@@ -126,9 +124,8 @@ namespace RedQueenAPI.Controllers
             });
         }
 
-        [HttpPost]
+        [HttpPost("register-admin")]
         [Authorize]
-        [Route("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] UserRegistration registration)
         {
             var existingUser = await _userManager.FindByNameAsync(registration.Username);
@@ -180,9 +177,8 @@ namespace RedQueenAPI.Controllers
             });
         }
 
-        [HttpPut]
+        [HttpPut("password-reset")]
         [Authorize]
-        [Route("password-reset")]
         public async Task<IActionResult> ResetPassword([FromBody] PasswordResetRequest request)
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
@@ -213,9 +209,15 @@ namespace RedQueenAPI.Controllers
             return await Login(login);
         }
 
-        [HttpPut]
+        [HttpPost("legacy/password-reset")]
         [Authorize]
-        [Route("disable")]
+        public async Task<IActionResult> LegacyResetPassword([FromBody] PasswordResetRequest request)
+        {
+            return await ResetPassword(request);
+        }
+
+        [HttpPut("disable")]
+        [Authorize]
         public async Task<IActionResult> EnableLockout([FromBody] ApplicationUser appUser)
         {
             var user = await _userManager.FindByNameAsync(appUser.UserName);
@@ -246,9 +248,15 @@ namespace RedQueenAPI.Controllers
             });
         }
 
-        [HttpPut]
+        [HttpPost("legacy/disable")]
         [Authorize]
-        [Route("enable")]
+        public async Task<IActionResult> LegacyEnableLockout([FromBody] ApplicationUser appUser)
+        {
+            return await EnableLockout(appUser);
+        }
+
+        [HttpPut("enable")]
+        [Authorize]
         public async Task<IActionResult> DisableLockout([FromBody] ApplicationUser appUser)
         {
             var user = await _userManager.FindByNameAsync(appUser.UserName);
@@ -278,10 +286,16 @@ namespace RedQueenAPI.Controllers
                 Message = "Lockout removal failed. See log for details."
             });
         }
-        
-        [HttpPut]
+
+        [HttpPost("legacy/enable")]
         [Authorize]
-        [Route("update")]
+        public async Task<IActionResult> LegacyDisableLockout([FromBody] ApplicationUser appUser)
+        {
+            return await DisableLockout(appUser);
+        }
+        
+        [HttpPut("update")]
+        [Authorize]
         public async Task<IActionResult> UpdateRegistration([FromBody] ApplicationUser appUser)
         {
             var user = await _userManager.FindByNameAsync(appUser.UserName);
@@ -310,6 +324,13 @@ namespace RedQueenAPI.Controllers
                 Status = "Error",
                 Message = "Account update failed. See log for details."
             });
+        }
+
+        [HttpPost("legacy/update")]
+        [Authorize]
+        public async Task<IActionResult> LegacyUpdateRegistration([FromBody] ApplicationUser appUser)
+        {
+            return await UpdateRegistration(appUser);
         }
     }
 }
