@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Net;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -67,6 +68,11 @@ namespace RedQueenAPI
             services.Configure<KestrelServerOptions>(options =>
             {
                 options.Limits.MaxRequestBodySize = int.MaxValue;
+                // TODO Comment this for local testing
+                options.Listen(IPAddress.Parse("192.168.0.237"), 5000, opts =>
+                {
+                    opts.UseConnectionLogging();
+                });
             });
 
             services.AddHttpContextAccessor();
@@ -135,7 +141,7 @@ namespace RedQueenAPI
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RedQueenAPI v1"));
             }
-
+            
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors();

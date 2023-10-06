@@ -13,6 +13,7 @@ using RedQueenAPI.Models;
 namespace RedQueenAPI.Controllers
 {
     [Authorize]
+    [ApiController]
     [Route("api/[controller]")]
     public class DeviceController : ControllerBase
     {
@@ -23,16 +24,14 @@ namespace RedQueenAPI.Controllers
             _redQueenDataService = redQueenDataService;
         }
         
-        [HttpGet]
-        [Route("list")]
+        [HttpGet("list")]
         public async Task<IActionResult> GetDevices()
         {
             var devices = await _redQueenDataService.GetDevices(false);
             return Ok(devices);
         }
 
-        [HttpGet]
-        [Route("list/paginated")]
+        [HttpGet("list/paginated")]
         public async Task<IActionResult> GetDevices([FromQuery] int pageSize, [FromQuery] int currentPage)
         {
             var devices = _redQueenDataService.GetDevicesQueryable(false);
@@ -40,8 +39,7 @@ namespace RedQueenAPI.Controllers
             return Ok(results);
         }
 
-        [HttpPut]
-        [Route("{id:int}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateDevice([FromRoute] int id, [FromBody] DeviceDto device)
         {
             try
@@ -59,8 +57,13 @@ namespace RedQueenAPI.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("add")]
+        [HttpPost("legacy/{id:int}")]
+        public async Task<IActionResult> LegacyUpdateDevice([FromRoute] int id, [FromBody] DeviceDto device)
+        {
+            return await UpdateDevice(id, device);
+        }
+
+        [HttpPost("add")]
         public async Task<IActionResult> AddDevice([FromBody] DeviceDto device)
         {
             try
@@ -78,8 +81,7 @@ namespace RedQueenAPI.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("classes")]
+        [HttpGet("classes")]
         public IActionResult GetDeviceClasses()
         {
             return Ok(DeviceClass.All);

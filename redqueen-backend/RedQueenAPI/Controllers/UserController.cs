@@ -36,16 +36,14 @@ namespace RedQueenAPI.Controllers
             });
         }
 
-        [HttpGet]
-        [Route("list")]
+        [HttpGet("list")]
         public async Task<IActionResult> GetUserList()
         {
             var result = await _userService.GetUserList();
             return Ok(result);
         }
 
-        [HttpGet]
-        [Route("{id}/login-history")]
+        [HttpGet("{id}/login-history")]
         public async Task<IActionResult> GetUserLoginHistory([FromRoute] string id, [FromQuery] int pageSize, [FromQuery] int currentPage)
         {
             var history = _userService.GetLoginHistory(id);

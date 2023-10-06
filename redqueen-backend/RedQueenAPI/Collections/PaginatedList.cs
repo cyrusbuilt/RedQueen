@@ -26,6 +26,7 @@ namespace RedQueenAPI.Collections
                 var skip = (currentPage - 1) * pageSize;
 
                 var contentSize = await query.CountAsync();
+                // TODO really need an OrderBy for predictable results. But how to do that with generic type?
                 var items = await query.Skip(skip).Take(pageSize).ToListAsync();
 
                 ret = new PaginatedList<T> {ContentSize = contentSize, Items = items};
