@@ -19,6 +19,7 @@ namespace RedQueenAPI.Controllers
             _cardService = cardService;
         }
 
+        [HttpHead("list")]
         [HttpGet("list")]
         public async Task<IActionResult> GetCards([FromQuery] int pageSize, [FromQuery] int currentPage)
         {
@@ -27,6 +28,7 @@ namespace RedQueenAPI.Controllers
             return Ok(results);
         }
 
+        [HttpHead("active-users")]
         [HttpGet("active-users")]
         public async Task<IActionResult> GetActiveUsers()
         {
@@ -41,12 +43,14 @@ namespace RedQueenAPI.Controllers
             return Ok(result);
         }
 
+        [HttpHead("legacy/update")]
         [HttpPost("legacy/update")]
         public async Task<IActionResult> LegacyUpdateCard([FromBody] Card card)
         {
             return await UpdateCard(card);
         }
 
+        [HttpHead("add")]
         [HttpPost("add")]
         public async Task<IActionResult> AddCard([FromBody] Card card)
         {
@@ -54,6 +58,7 @@ namespace RedQueenAPI.Controllers
             return Ok(result);
         }
 
+        [HttpHead("all-users")]
         [HttpGet("all-users")]
         public async Task<IActionResult> GetAllCardUsers([FromQuery] int pageSize, [FromQuery] int currentPage)
         {
@@ -61,7 +66,7 @@ namespace RedQueenAPI.Controllers
             var results = await PaginatedList<AccessControlUser>.BuildPaginatedList(userQuery, pageSize, currentPage);
             return Ok(results);
         }
-
+        
         [HttpPut("user")]
         public async Task<IActionResult> UpdateCardUser([FromBody] AccessControlUser user)
         {
@@ -69,12 +74,14 @@ namespace RedQueenAPI.Controllers
             return Ok(result);
         }
 
+        [HttpHead("legacy/user")]
         [HttpPost("legacy/user")]
         public async Task<IActionResult> LegacyUpdateCardUser([FromBody] AccessControlUser user)
         {
             return await UpdateCardUser(user);
         }
 
+        [HttpHead("add-user")]
         [HttpPost("add-user")]
         public async Task<IActionResult> AddCardUser([FromBody] AccessControlUser user)
         {

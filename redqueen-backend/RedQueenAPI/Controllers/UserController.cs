@@ -20,6 +20,7 @@ namespace RedQueenAPI.Controllers
             _userService = userService;
         }
 
+        [HttpHead]
         [HttpGet]
         public async Task<IActionResult> GetUser([FromQuery] string userId)
         {
@@ -36,6 +37,7 @@ namespace RedQueenAPI.Controllers
             });
         }
 
+        [HttpHead("list")]
         [HttpGet("list")]
         public async Task<IActionResult> GetUserList()
         {
@@ -43,6 +45,7 @@ namespace RedQueenAPI.Controllers
             return Ok(result);
         }
 
+        [HttpHead("{id}/login-history")]
         [HttpGet("{id}/login-history")]
         public async Task<IActionResult> GetUserLoginHistory([FromRoute] string id, [FromQuery] int pageSize, [FromQuery] int currentPage)
         {
