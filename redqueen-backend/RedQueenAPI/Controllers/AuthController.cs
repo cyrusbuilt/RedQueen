@@ -38,6 +38,7 @@ namespace RedQueenAPI.Controllers
         }
 
         [HttpPost("login")]
+        [HttpHead("login")]
         public async Task<IActionResult> Login([FromBody] UserLogin login)
         {
             var user = await _userManager.FindByNameAsync(login.Username);
@@ -87,6 +88,7 @@ namespace RedQueenAPI.Controllers
         }
 
         [HttpPost("register")]
+        [HttpHead("register")]
         public async Task<IActionResult> Register([FromBody] UserRegistration registration)
         {
             var existingUser = await _userManager.FindByNameAsync(registration.Username);
@@ -125,6 +127,7 @@ namespace RedQueenAPI.Controllers
         }
 
         [HttpPost("register-admin")]
+        [HttpHead("register-admin")]
         [Authorize]
         public async Task<IActionResult> RegisterAdmin([FromBody] UserRegistration registration)
         {
@@ -210,6 +213,7 @@ namespace RedQueenAPI.Controllers
         }
 
         [HttpPost("legacy/password-reset")]
+        [HttpHead("legacy/password-reset")]
         [Authorize]
         public async Task<IActionResult> LegacyResetPassword([FromBody] PasswordResetRequest request)
         {
@@ -249,6 +253,7 @@ namespace RedQueenAPI.Controllers
         }
 
         [HttpPost("legacy/disable")]
+        [HttpHead("legacy/disable")]
         [Authorize]
         public async Task<IActionResult> LegacyEnableLockout([FromBody] ApplicationUser appUser)
         {
@@ -288,6 +293,7 @@ namespace RedQueenAPI.Controllers
         }
 
         [HttpPost("legacy/enable")]
+        [HttpHead("legacy/enable")]
         [Authorize]
         public async Task<IActionResult> LegacyDisableLockout([FromBody] ApplicationUser appUser)
         {
@@ -327,6 +333,7 @@ namespace RedQueenAPI.Controllers
         }
 
         [HttpPost("legacy/update")]
+        [HttpHead("legacy/update")]
         [Authorize]
         public async Task<IActionResult> LegacyUpdateRegistration([FromBody] ApplicationUser appUser)
         {

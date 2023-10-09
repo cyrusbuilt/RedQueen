@@ -17,6 +17,7 @@ namespace RedQueenAPI.Controllers
             _historicalDataService = historicalDataService;
         }
 
+        [HttpHead("messages")]
         [HttpGet("messages")]
         public async Task<IActionResult> GetHistoricalData([FromQuery] int topicId, [FromQuery] int numDays)
         {
