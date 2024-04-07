@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApplicationUser } from 'src/app/core/interfaces/application-user';
+import { User } from 'src/app/core/interfaces/application-user';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { UserService } from 'src/app/core/services/user.service';
   styleUrls: ['./user-management.component.scss']
 })
 export class UserManagementComponent implements OnInit {
-  users: ApplicationUser[];
+  users: User[];
 
   constructor(
     private _userService: UserService,
@@ -28,7 +28,7 @@ export class UserManagementComponent implements OnInit {
     this._router.navigate(['/user-management/add']);
   }
 
-  onManageClick(user: ApplicationUser): void {
+  onManageClick(user: User): void {
     sessionStorage.setItem('manageUser', JSON.stringify(user));
     this._router.navigate(['/user-management/edit']);
   }

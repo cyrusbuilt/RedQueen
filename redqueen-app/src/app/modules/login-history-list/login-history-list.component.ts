@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApplicationUser } from 'src/app/core/interfaces/application-user';
+import { User } from 'src/app/core/interfaces/application-user';
 import { LoginHistory } from 'src/app/core/interfaces/login-history';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -12,8 +12,8 @@ import { UserService } from 'src/app/core/services/user.service';
   styleUrls: ['./login-history-list.component.scss']
 })
 export class LoginHistoryListComponent implements OnInit {
-  users: ApplicationUser[];
-  selectedUser: ApplicationUser | null;
+  users: User[];
+  selectedUser: User | null;
   form: FormGroup;
   historyList: LoginHistory[];
   curPage: number;
@@ -68,7 +68,7 @@ export class LoginHistoryListComponent implements OnInit {
   onSelectUser(): void {
     let selection = this.form.get('userSelection');
     if (selection) {
-      this.selectedUser = selection.value as ApplicationUser;
+      this.selectedUser = selection.value as User;
     }
   }
 
@@ -76,8 +76,10 @@ export class LoginHistoryListComponent implements OnInit {
     const userId = this.form.value.userSelection.id;
     this._userService.getUserLoginHistory(userId, this.pageSize, this.curPage).subscribe({
       next: value => {
-        this.totalEntries = value.contentSize;
+        this.totalEntries = value.recordCount;
         this.historyList = value.items;
+        this.curPage = value.pageNumber;
+        this.pageSize = value.pageSize;
       }
     });
   }

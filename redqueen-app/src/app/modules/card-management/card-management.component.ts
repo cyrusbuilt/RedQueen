@@ -27,8 +27,10 @@ export class CardManagementComponent implements OnInit {
   getCards(): void {
     this._cardService.getCards(this.pageSize, this.curPage).subscribe({
       next: value => {
-        this.totalEntries = value.contentSize;
+        this.totalEntries = value.recordCount;
         this.cards = value.items;
+        this.curPage = value.pageNumber;
+        this.pageSize = value.pageSize;
       }
     });
   }

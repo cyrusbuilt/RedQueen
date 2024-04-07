@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApplicationUser } from 'src/app/core/interfaces/application-user';
+import { User } from 'src/app/core/interfaces/application-user';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 
@@ -15,7 +15,7 @@ export class EditUserComponent implements OnInit {
   form: FormGroup;
   submitted: boolean;
   saved: boolean;
-  user: ApplicationUser | null;
+  user: User | null;
 
   constructor(
     private _fb: FormBuilder,
@@ -29,16 +29,18 @@ export class EditUserComponent implements OnInit {
     this.saved = false;
     this.form = this._fb.group({
       email: ['', [Validators.required, this.customEmailValidator()]],
-      phone: ['']
+      firstName: [''],
+      lastName: [''],
     });
   }
 
   ngOnInit(): void {
     let u = sessionStorage.getItem('manageUser');
     if (u) {
-      this.user = JSON.parse(u) as ApplicationUser;
+      this.user = JSON.parse(u) as User;
       this.form.controls['email'].setValue(this.user.email);
-      this.form.controls['phone'].setValue(this.user.phoneNumber);
+      this.form.controls['firstName'].setValue(this.user.firstName);
+      this.form.controls['lastName'].setValue(this.user.lastName);
     }
   }
 
@@ -78,9 +80,10 @@ export class EditUserComponent implements OnInit {
     }
 
     this.submitted = true;
-
     this.user.email = this.form.value.email;
-    this.user.phoneNumber = this.form.value.phone;
+    this.user.firstName = this.form.value.firstName;
+    this.user.lastName = this.form.value.lastName;
+
     this._authService.updateRegistration(this.user).subscribe({
       next: value => {
         if (value.status === 'Success') {

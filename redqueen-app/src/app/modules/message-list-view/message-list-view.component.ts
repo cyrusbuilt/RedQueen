@@ -26,8 +26,10 @@ export class MessageListViewComponent implements OnInit, OnDestroy {
   getMessages(): void {
     this._telemService.getMessages(this.pageSize, this.curPage).subscribe({
       next: value => {
-        this.totalEntries = value.contentSize;
+        this.totalEntries = value.recordCount;
         this.messages = value.items;
+        this.curPage = value.pageNumber;
+        this.pageSize = value.pageSize;
       }
     });
   }

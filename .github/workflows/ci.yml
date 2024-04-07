@@ -10,8 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: ['18.x']
-        dotnet-version: ['5.0.x']
+        node-version: ['20.x']
     
     steps:
       - uses: actions/checkout@v3
@@ -50,17 +49,23 @@ jobs:
           cd redqueen-app
           npm run lint
       
-      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Instal data API dependencies
+        run: |
+          cd redqueen-backend/redqueen-data
+          npm ci
       
+      - name: Build data API
+        run: |
+          cd redqueen-backend
+          npm run build --workspace @redqueen-backend/redqueen-data
+
       - name: Install BE Dependencies
         run: |
           cd redqueen-backend
-          dotnet restore
+          npm ci
       
-      - name: Build BE
+      - name: Build REST API and Daemon
         run: |
           cd redqueen-backend
-          dotnet build --configuration Debug --no-restore
+          npm run build --workspace @redqueen-backend/redqueen-api
+          npm run build --workspace @redqueen-backend/redqueen

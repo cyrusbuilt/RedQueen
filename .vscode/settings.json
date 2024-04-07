@@ -1,0 +1,8 @@
+{
+    "eslint.workingDirectories": [
+        "./redqueen-app",
+        "./redqueen-backend/redqueen",
+        "./redqueen-backend/redqueen-api",
+        "./redqueen-backend/redqueen-data",
+    ]
+}

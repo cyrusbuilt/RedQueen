@@ -9,7 +9,7 @@
         <div class="form-outline">
           <select name="userSelction" formControlName="userSelection" class="custom-select" (change)="onSelectUser()">
             <option disabled>Select User</option>
-            <option *ngFor="let u of users" [ngValue]="u">{{ u.userName }}</option>
+            <option *ngFor="let u of users" [ngValue]="u">{{ u.email }}</option>
           </select>
           <label class="form-label required mt-2" for="userSelection">User Selection</label>
         </div>
@@ -35,9 +35,8 @@
       <thead class="thead-primary">
         <tr>
           <th scope="col">Id</th>
-          <th scope="col">Username</th>
-          <th scope="col">Timestamp</th>
           <th scope="col">Email</th>
+          <th scope="col">Timestamp</th>
           <th scope="col">User ID</th>
         </tr>
       </thead>
@@ -48,9 +47,8 @@
                         currentPage: curPage,
                         totalItems: totalEntries }">
           <td>{{ login.id }}</td>
-          <td>{{ login.userName }}</td>
-          <td>{{ login.timestamp | date:'medium' }}</td>
           <td>{{ login.email }}</td>
+          <td>{{ login.timestamp | date:'medium' }}</td>
           <td>{{ login.applicationUserId }}</td>
         </tr>
       </tbody>
