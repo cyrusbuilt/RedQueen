@@ -48,6 +48,9 @@ jobs:
         run: |
           cd redqueen-app
           npm run lint
+      
+      - name: Install NestJS
+        run: npm i -g @nestjs/cli
 
       - name: Install data API dependencies
         run: |
