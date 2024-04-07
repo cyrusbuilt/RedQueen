@@ -48,11 +48,6 @@ jobs:
         run: |
           cd redqueen-app
           npm run lint
-      
-      - name: Lint BE
-        run: |
-          cd redqueen-backend
-          npm run format --workspaces
 
       - name: Install data API dependencies
         run: |
@@ -68,6 +63,11 @@ jobs:
         run: |
           cd redqueen-backend
           npm ci
+    
+      - name: Lint BE
+        run: |
+          cd redqueen-backend
+          npm run format --workspaces
       
       - name: Build REST API and Daemon
         run: |
