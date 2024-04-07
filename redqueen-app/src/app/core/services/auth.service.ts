@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserLogin } from '../interfaces/user-login';
@@ -9,7 +9,7 @@ import { AuthenticationResponse } from '../interfaces/authentication-response';
 import { Router } from '@angular/router';
 import { PasswordResetRequest } from '../interfaces/password-reset-request';
 import { take } from 'rxjs/operators';
-import { ApplicationUser } from '../interfaces/application-user';
+import { User } from '../interfaces/application-user';
 import { MqttService } from 'ngx-mqtt';
 
 @Injectable({
@@ -64,7 +64,7 @@ export class AuthService {
       .pipe(take(1))
       .subscribe(
         res => {
-          sessionStorage.setItem('username', login.username);
+          sessionStorage.setItem('username', login.email);
           sessionStorage.setItem('loginResult', JSON.stringify(res));
           this.loginFailed.next(false);
           this.loggedIn.next(true);
@@ -97,15 +97,15 @@ export class AuthService {
     return this.http.put<TokenResponse>(`${this.rootUrl}/auth/password-reset`, request);
   }
 
-  enableLockout(user: ApplicationUser): Observable<AuthenticationResponse> {
+  enableLockout(user: User): Observable<AuthenticationResponse> {
     return this.http.put<AuthenticationResponse>(`${this.rootUrl}/auth/disable`, user);
   }
 
-  disableLockout(user: ApplicationUser): Observable<AuthenticationResponse> {
+  disableLockout(user: User): Observable<AuthenticationResponse> {
     return this.http.put<AuthenticationResponse>(`${this.rootUrl}/auth/enable`, user);
   }
 
-  updateRegistration(user: ApplicationUser): Observable<AuthenticationResponse> {
+  updateRegistration(user: User): Observable<AuthenticationResponse> {
     return this.http.put<AuthenticationResponse>(`${this.rootUrl}/auth/update`, user);
   }
 }

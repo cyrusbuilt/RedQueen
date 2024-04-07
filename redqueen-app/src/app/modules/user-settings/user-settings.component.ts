@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { ApplicationUser } from 'src/app/core/interfaces/application-user';
+import { User } from 'src/app/core/interfaces/application-user';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserService } from 'src/app/core/services/user.service';
 
@@ -11,7 +11,7 @@ import { UserService } from 'src/app/core/services/user.service';
   styleUrls: ['./user-settings.component.scss']
 })
 export class UserSettingsComponent implements OnInit {
-  user: ApplicationUser | null;
+  user: User | null;
 
   constructor(
     public authService: AuthService,

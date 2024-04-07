@@ -31,8 +31,10 @@ export class AccessControlUserManagementComponent implements OnInit {
   getUsers(): void {
     this._cardService.getCardUsers(this.pageSize, this.curPage).subscribe({
       next: value => {
-        this.totalEntries = value.contentSize;
+        this.totalEntries = value.recordCount;
         this.users = value.items;
+        this.curPage = value.pageNumber;
+        this.pageSize = value.pageSize;
       }
     });
   }

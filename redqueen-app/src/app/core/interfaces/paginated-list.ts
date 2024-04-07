@@ -1,4 +1,7 @@
 export interface PaginatedList<T> {
-  contentSize: number,
+  pageSize: number;
+  pageNumber: number;
+  recordCount: number;
+  totalPages: number;
   items: T[]
 }

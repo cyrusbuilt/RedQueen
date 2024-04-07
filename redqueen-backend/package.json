@@ -1,0 +1,4 @@
+{
+    "name": "@redqueen-backend",
+    "workspaces": ["./redqueen-data", "./redqueen-api", "./redqueen"]
+}

@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.isLoading = this.subject.asObservable();
     this.loader$ = this.loaderService.isLoading.subscribe((val: boolean) => this.subject.next(val));
     this.loginForm = this.formBuilder.group({
-      username: ['', [Validators.required]],
+      email: ['', [Validators.required]],
       password: ['', [Validators.required]]
     });
   }

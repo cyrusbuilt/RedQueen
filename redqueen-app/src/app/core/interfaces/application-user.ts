@@ -1,7 +1,13 @@
-export interface ApplicationUser {
+import { UserRoles } from "../enum/user-roles";
+
+export interface User {
   id: string;
-  userName: string;
-  email: string;
-  phoneNumber: string;
+  createdAt: Date;
+  modifiedAt: Date;
+  email: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  passwordHash: string | null;
+  role: UserRoles;
   lockoutEnabled: boolean;
 }

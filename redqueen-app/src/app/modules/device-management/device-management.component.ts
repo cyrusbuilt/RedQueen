@@ -29,8 +29,10 @@ export class DeviceManagementComponent implements OnInit {
   refreshDevices(): void {
     this._deviceService.getDevicesPaginated(this.pageSize, this.curPage).subscribe({
       next: devs => {
-        this.totalEntries = devs.contentSize;
+        this.totalEntries = devs.recordCount;
         this.devices = devs.items;
+        this.curPage = devs.pageNumber;
+        this.pageSize = devs.pageSize;
       }
     });
   }
