@@ -12,13 +12,13 @@ import { HomeComponent } from './modules/home/home.component';
 import { HttpAuthInterceptor } from './core/interceptors/http-auth.interceptor';
 import { MqttModule } from 'ngx-mqtt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { MatGridListModule } from '@angular/material/grid-list';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSliderModule } from '@angular/material/slider';
+import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatLegacySliderModule as MatSliderModule } from '@angular/material/legacy-slider';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ChartModule } from 'primeng/chart';
 

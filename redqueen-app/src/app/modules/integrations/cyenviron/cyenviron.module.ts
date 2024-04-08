@@ -4,7 +4,7 @@ import { CyenvironRoutingModule } from './cyenviron-routing.module';
 import { CyenvironComponent } from './cyenviron.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ChartModule } from 'primeng/chart';
 

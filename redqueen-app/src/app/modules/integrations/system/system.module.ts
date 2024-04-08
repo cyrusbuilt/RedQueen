@@ -4,7 +4,7 @@ import { SystemRoutingModule } from './system-routing.module';
 import { SystemComponent } from './system.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 
 @NgModule({
   declarations: [

@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatLegacySlideToggleChange as MatSlideToggleChange } from '@angular/material/legacy-slide-toggle';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subscription } from 'rxjs';
 import { CylightsControl } from 'src/app/core/interfaces/cylights-control';
