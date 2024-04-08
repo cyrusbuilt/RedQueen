@@ -1,8 +1,8 @@
 name: Angular Github CI
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   ci:
@@ -21,7 +21,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       
       - name: Cache node modules
-        id: cache-nodemodules
+        id: cache-npm
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
@@ -33,8 +33,8 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
       
-      - name: Install FE Dependencies
-        if: steps.cache-nodemodules.output.cache-hit != 'true'
+      - if: ${{ steps.cache-npm.output.cache-hit != 'true' }}
+        name: Install FE Dependencies 
         run: |
           cd redqueen-app
           npm ci

@@ -1,4 +1,10 @@
 {
     "name": "@redqueen-backend",
+    "scripts": {
+        "dockerize:redqueen-api": "docker build -f redqueen-api.Dockerfile -t redqueen-api .",
+        "dockerize:redqueen-daemon": "docker build -f redqueen.Dockerfile -t redqueen-daemon .",
+        "docker:redqueen-api": "docker run --env-file ./redqueen-api/.env -p3000:3000 redqueen-api",
+        "docker:redqueen-daemon": "docker run --env-file ./redqueen/.env redqueen-daemon"
+    },
     "workspaces": ["./redqueen-data", "./redqueen-api", "./redqueen"]
 }
