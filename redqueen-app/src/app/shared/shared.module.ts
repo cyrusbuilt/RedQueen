@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastMessageComponent } from './components/toast-message/toast-message.component';
 import { CoreComponent } from './components/core/core.component';
@@ -30,7 +29,6 @@ import { FriendlyDeviceNamePipe } from '../core/pipes/friendly-device-name.pipe'
     FormsModule,
     RouterModule,
     ReactiveFormsModule,
-    FlexLayoutModule,
     FontAwesomeModule,
     NgxPaginationModule
   ],

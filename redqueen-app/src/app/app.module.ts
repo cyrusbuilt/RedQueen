@@ -19,7 +19,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ChartModule } from 'primeng/chart';
 
 @NgModule({
@@ -39,7 +38,6 @@ import { ChartModule } from 'primeng/chart';
     MatCardModule,
     MatButtonModule,
     MatGridListModule,
-    FlexLayoutModule,
     MatSlideToggleModule,
     MatSelectModule,
     MatButtonToggleModule,
