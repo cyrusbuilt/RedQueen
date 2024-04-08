@@ -6,8 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { AuthGuard } from './core/guards/auth.guard';
-import { LoginGuard } from './core/guards/login.guard';
 import { HomeComponent } from './modules/home/home.component';
 import { HttpAuthInterceptor } from './core/interceptors/http-auth.interceptor';
 import { MqttModule } from 'ngx-mqtt';
@@ -19,7 +17,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ChartModule } from 'primeng/chart';
 
 @NgModule({
@@ -39,7 +36,6 @@ import { ChartModule } from 'primeng/chart';
     MatCardModule,
     MatButtonModule,
     MatGridListModule,
-    FlexLayoutModule,
     MatSlideToggleModule,
     MatSelectModule,
     MatButtonToggleModule,
@@ -47,8 +43,6 @@ import { ChartModule } from 'primeng/chart';
     ChartModule
   ],
   providers: [
-    AuthGuard,
-    LoginGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpAuthInterceptor,

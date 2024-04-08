@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Device } from 'src/app/core/interfaces/device';
 import { DeviceService } from 'src/app/core/services/device.service';
@@ -18,7 +18,7 @@ import { take } from 'rxjs/operators';
 export class EditDeviceComponent implements OnInit {
   submitted: boolean;
   saved: boolean;
-  form: FormGroup;
+  form: UntypedFormGroup;
   device: Device | null;
   brokers: MqttBroker[];
   topics: MqttTopic[];
@@ -29,7 +29,7 @@ export class EditDeviceComponent implements OnInit {
   selectedClass: string | null;
 
   constructor (
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _location: Location,
     private _router: Router,
     private _deviceService: DeviceService,
@@ -101,7 +101,7 @@ export class EditDeviceComponent implements OnInit {
     return !!fld && !fld.valid && fld.touched;
   }
 
-  checkForFormErrors(form: FormGroup): boolean {
+  checkForFormErrors(form: UntypedFormGroup): boolean {
     form.markAllAsTouched();
 
     let returnValue = false;

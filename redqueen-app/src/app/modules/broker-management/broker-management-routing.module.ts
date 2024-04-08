@@ -6,11 +6,6 @@ const routes: Routes = [
   {
     path: '',
     component: BrokerManagementComponent,
-    children: [
-      {
-        path: ''
-      }
-    ]
   }
 ];
 

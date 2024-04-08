@@ -32,9 +32,7 @@
           min="0"
           max="256"
           step="5"
-          [value]="state && state.height"
-          aria-label="Height"
-          (change)="onHeightSetpointChanged($event)">
+          aria-label="Height" #ngSlider><input matSliderThumb [value]="state && state.height" (change)="onHeightSetpointChanged({source: ngSliderThumb, parent: ngSlider, value: ngSliderThumb.value})" #ngSliderThumb="matSliderThumb" />
         </mat-slider><br/>
         <label class="form-label mt-2">Preset Sitting Height: {{state && state.sittingHeight}}&nbsp;&nbsp;</label>
         <button *ngIf="state" type="button" class="btn btn-primary" (click)="onSetSittingHeightClick()">Set</button><br/>

@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/core/interfaces/application-user';
 import { LoginHistory } from 'src/app/core/interfaces/login-history';
 import { ToastService } from 'src/app/core/services/toast.service';
@@ -14,14 +14,14 @@ import { UserService } from 'src/app/core/services/user.service';
 export class LoginHistoryListComponent implements OnInit {
   users: User[];
   selectedUser: User | null;
-  form: FormGroup;
+  form: UntypedFormGroup;
   historyList: LoginHistory[];
   curPage: number;
   pageSize: number;
   totalEntries: number;
 
   constructor(
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _location: Location,
     private _userService: UserService,
     private _toastService: ToastService
@@ -48,7 +48,7 @@ export class LoginHistoryListComponent implements OnInit {
     return !!fld && !fld.valid && fld.touched;
   }
 
-  checkForFormErrors(form: FormGroup): boolean {
+  checkForFormErrors(form: UntypedFormGroup): boolean {
     form.markAllAsTouched();
 
     let returnValue = false;

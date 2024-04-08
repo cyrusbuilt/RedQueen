@@ -57,7 +57,7 @@ export class SystemComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this._telemService.getSystemTelemetry().subscribe({
-      next: value => {
+      next: (value: SystemTelemetry) => {
         if (value) {
           this.sysTelemetry = value;
           this._systemSub = this._mqtt.observe(this.sysTelemetry.daemonStatusTopic)

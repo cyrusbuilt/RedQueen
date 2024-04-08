@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { Device } from 'src/app/core/interfaces/device';
@@ -16,7 +16,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
   styleUrls: ['./add-device.component.scss']
 })
 export class AddDeviceComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   submitted: boolean;
   deviceAdded: boolean;
   brokers: MqttBroker[];
@@ -28,7 +28,7 @@ export class AddDeviceComponent implements OnInit {
   selectedClass: string | null;
 
   constructor(
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _location: Location,
     private _router: Router,
     private _toastService: ToastService,
@@ -73,7 +73,7 @@ export class AddDeviceComponent implements OnInit {
     return !!fld && !fld.valid && fld.touched;
   }
 
-  checkForFormErrors(form: FormGroup): boolean {
+  checkForFormErrors(form: UntypedFormGroup): boolean {
     form.markAllAsTouched();
 
     let returnValue = false;

@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
 import { User } from 'src/app/core/interfaces/application-user';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -12,13 +12,13 @@ import { ToastService } from 'src/app/core/services/toast.service';
   styleUrls: ['./edit-user.component.scss']
 })
 export class EditUserComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   submitted: boolean;
   saved: boolean;
   user: User | null;
 
   constructor(
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _location: Location,
     private _router: Router,
     private _authService: AuthService,
@@ -57,7 +57,7 @@ export class EditUserComponent implements OnInit {
     return !!fld && !fld.valid && fld.touched;
   }
 
-  checkForFormErrors(form: FormGroup): boolean {
+  checkForFormErrors(form: UntypedFormGroup): boolean {
     form.markAllAsTouched();
 
     let returnValue = false;

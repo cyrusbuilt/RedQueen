@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AccessControlUser } from 'src/app/core/interfaces/access-control-user';
@@ -14,14 +14,14 @@ import { ToastService } from 'src/app/core/services/toast.service';
   styleUrls: ['./add-card.component.scss']
 })
 export class AddCardComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   submitted: boolean;
   cardAdded: boolean;
   selectedUser: AccessControlUser | null;
   users: AccessControlUser[];
 
   constructor(
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _location: Location,
     private _router: Router,
     private _toastService: ToastService,
@@ -48,7 +48,7 @@ export class AddCardComponent implements OnInit {
     return !!fld && !fld.valid && fld.touched;
   }
 
-  checkForFormErrors(form: FormGroup): boolean {
+  checkForFormErrors(form: UntypedFormGroup): boolean {
     form.markAllAsTouched();
 
     let returnValue = false;

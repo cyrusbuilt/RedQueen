@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserRegistration } from 'src/app/core/interfaces/user-registration';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -12,14 +12,14 @@ import { ToastService } from 'src/app/core/services/toast.service';
   styleUrls: ['./add-user.component.scss']
 })
 export class AddUserComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
   submitted: boolean;
   registered: boolean;
 
   constructor(
     private _location: Location,
     private _router: Router,
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _toastService: ToastService,
     private _authService: AuthService
   ) {
@@ -46,7 +46,7 @@ export class AddUserComponent {
     return !!fld && !fld.valid && fld.touched;
   }
 
-  checkForFormErrors(form: FormGroup): boolean {
+  checkForFormErrors(form: UntypedFormGroup): boolean {
     form.markAllAsTouched();
 
     let returnValue = false;
