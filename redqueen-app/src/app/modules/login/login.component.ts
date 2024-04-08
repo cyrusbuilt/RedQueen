@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, ValidatorFn } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { UserLogin } from 'src/app/core/interfaces/user-login';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -12,7 +12,7 @@ import { LoaderService } from 'src/app/core/services/loader.service';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   private subject: BehaviorSubject<boolean>;
-  loginForm: FormGroup;
+  loginForm: UntypedFormGroup;
   isLoading: Observable<boolean>;
   loader$: Subscription;
   loginFailed: boolean;
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private loaderService: LoaderService
   ) {
     this.loginFailed = false;

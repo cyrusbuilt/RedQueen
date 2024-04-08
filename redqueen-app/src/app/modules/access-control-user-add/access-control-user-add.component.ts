@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AccessControlUser } from 'src/app/core/interfaces/access-control-user';
@@ -13,14 +13,14 @@ import { ToastService } from 'src/app/core/services/toast.service';
   styleUrls: ['./access-control-user-add.component.scss']
 })
 export class AccessControlUserAddComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
   submitted: boolean;
   userAdded: boolean;
 
   constructor(
     private _location: Location,
     private _router: Router,
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _toastService: ToastService,
     private _cardService: CardService
   ) {
@@ -41,7 +41,7 @@ export class AccessControlUserAddComponent {
     return !!fld && !fld.valid && fld.touched;
   }
 
-  checkForFormErrors(form: FormGroup): boolean {
+  checkForFormErrors(form: UntypedFormGroup): boolean {
     form.markAllAsTouched();
 
     let returnValue = false;

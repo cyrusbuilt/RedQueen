@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { TelemetryService } from 'src/app/core/services/telemetry.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { MqttBroker } from 'src/app/core/interfaces/mqtt-broker';
@@ -13,14 +13,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-broker.component.scss']
 })
 export class AddBrokerComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
   shouldUseTls: boolean = false;
   brokerAdded: boolean = false;
   submitted: boolean = false;
 
   constructor(
     private _telemService: TelemetryService,
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _toastService: ToastService,
     private _location: Location,
     private _router: Router
@@ -42,7 +42,7 @@ export class AddBrokerComponent {
     return !!fld && !fld.valid && fld.touched;
   }
 
-  checkForFormErrors(form: FormGroup): boolean {
+  checkForFormErrors(form: UntypedFormGroup): boolean {
     form.markAllAsTouched();
 
     let returnValue = false;

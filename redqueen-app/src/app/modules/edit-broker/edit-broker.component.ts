@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { MqttBroker } from 'src/app/core/interfaces/mqtt-broker';
@@ -17,10 +17,10 @@ export class EditBrokerComponent implements OnInit {
   saved: boolean;
   submitted: boolean;
   shouldUseTls: boolean;
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   constructor(
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _router: Router,
     private _location: Location,
     private _telemService: TelemetryService,
@@ -62,7 +62,7 @@ export class EditBrokerComponent implements OnInit {
     return !!fld && !fld.valid && fld.touched;
   }
 
-  checkForFormErrors(form: FormGroup): boolean {
+  checkForFormErrors(form: UntypedFormGroup): boolean {
     form.markAllAsTouched();
 
     let returnValue = false;

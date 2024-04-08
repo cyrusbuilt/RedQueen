@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AccessControlUser } from 'src/app/core/interfaces/access-control-user';
@@ -17,12 +17,12 @@ export class ManageCardComponent implements OnInit {
   card: Card | null;
   saved: boolean;
   submitted: boolean;
-  form: FormGroup;
+  form: UntypedFormGroup;
   selectedUser: AccessControlUser | null;
   users: AccessControlUser[];
 
   constructor(
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _location: Location,
     private _router: Router,
     private _cardService: CardService,

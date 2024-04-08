@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { MqttBroker } from 'src/app/core/interfaces/mqtt-broker';
@@ -15,7 +15,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 })
 export class AddTopicComponent implements OnInit {
   brokers: MqttBroker[];
-  form: FormGroup;
+  form: UntypedFormGroup;
   selectedBroker: MqttBroker | null;
   submitted: boolean;
   topicAdded: boolean;
@@ -25,7 +25,7 @@ export class AddTopicComponent implements OnInit {
     private _router: Router,
     private _toastService: ToastService,
     private _telemService: TelemetryService,
-    private _fb: FormBuilder
+    private _fb: UntypedFormBuilder
   ) {
     this.topicAdded = false;
     this.submitted = false;
@@ -57,7 +57,7 @@ export class AddTopicComponent implements OnInit {
     return !!fld && !fld.valid && fld.touched;
   }
 
-  checkForFormErrors(form: FormGroup): boolean {
+  checkForFormErrors(form: UntypedFormGroup): boolean {
     form.markAllAsTouched();
 
     let returnValue = false;

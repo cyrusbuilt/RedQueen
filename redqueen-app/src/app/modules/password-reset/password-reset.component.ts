@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import { PasswordResetRequest } from 'src/app/core/interfaces/password-reset-request';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -12,11 +12,11 @@ import { ToastService } from 'src/app/core/services/toast.service';
   styleUrls: ['./password-reset.component.scss']
 })
 export class PasswordResetComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
   submitted: boolean;
 
   constructor(
-    private _fb: FormBuilder,
+    private _fb: UntypedFormBuilder,
     private _location: Location,
     private _toastService: ToastService,
     private _authService: AuthService,
@@ -36,7 +36,7 @@ export class PasswordResetComponent {
     return !formItem.valid && formItem.touched;
   }
 
-  checkForFormErrors(form: FormGroup): boolean {
+  checkForFormErrors(form: UntypedFormGroup): boolean {
     form.markAllAsTouched();
 
     let returnValue = false;
