@@ -42,7 +42,8 @@ import { FriendlyDeviceNamePipe } from '../core/pipes/friendly-device-name.pipe'
     TemperaturePipe,
     FriendlyDeviceNamePipe,
     NgxPaginationModule,
-    DatePipe
+    DatePipe,
+    CoreComponent,
   ],
   providers: []
 })

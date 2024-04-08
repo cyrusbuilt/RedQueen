@@ -6,11 +6,6 @@ const routes: Routes = [
   {
     path: '',
     component: SystemComponent,
-    children: [
-      {
-        path: ''
-      }
-    ]
   }
 ];
 

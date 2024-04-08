@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
@@ -17,6 +17,7 @@ class PermissionService {
       .pipe(
         take(1),
         map((isLoggedIn: boolean) => {
+          console.log('isLoggedIn:', isLoggedIn);
           if (!isLoggedIn) {
             this.router.navigate(['/login']);
             return false;
