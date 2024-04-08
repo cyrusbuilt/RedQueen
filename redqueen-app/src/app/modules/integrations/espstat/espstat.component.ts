@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
-import { MatLegacySliderChange as MatSliderChange } from '@angular/material/legacy-slider';
+import { MatSliderChange } from '@angular/material/slider';
 import { Chart, ChartData, ChartDataset } from 'chart.js';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subscription } from 'rxjs';

@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
-import { MatLegacySliderChange as MatSliderChange } from '@angular/material/legacy-slider';
+import { MatSliderChange } from '@angular/material/slider';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subscription } from 'rxjs';
 import { ArdudeskControl } from 'src/app/core/interfaces/ardudesk-control';

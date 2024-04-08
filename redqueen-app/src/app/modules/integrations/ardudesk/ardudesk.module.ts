@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ArdudeskRoutingModule } from './ardudesk-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatSelectModule } from '@angular/material/select';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatLegacySliderModule as MatSliderModule } from '@angular/material/legacy-slider';
+import { MatSliderModule } from '@angular/material/slider';
 import { ArdudeskComponent } from './ardudesk.component';
 
 

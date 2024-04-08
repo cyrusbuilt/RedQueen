@@ -4,7 +4,7 @@ import { CylenceRoutingModule } from './cylence-routing.module';
 import { CylenceComponent } from './cylence.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({

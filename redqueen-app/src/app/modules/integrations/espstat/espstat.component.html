@@ -37,8 +37,7 @@
           min="50"
           max="90"
           step="1"
-          [value]="state && state.setpoint"
-          aria-label="setpoint">
+          aria-label="setpoint"><input matSliderThumb [value]="state && state.setpoint" />
         </mat-slider><br/><br/>
         <label class="form-label mt-2">Chart Period:&nbsp;&nbsp;</label>
         <mat-button-toggle-group *ngIf="historicalMessages.length > 0" #group="matButtonToggleGroup" (change)="onChartPeriodSelect($event)">
