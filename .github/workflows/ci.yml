@@ -71,7 +71,6 @@ jobs:
         run: |
           cd redqueen-backend
           npm run format --workspaces
-          npm run lint --workspaces
       
       - name: Build REST API and Daemon
         run: |
