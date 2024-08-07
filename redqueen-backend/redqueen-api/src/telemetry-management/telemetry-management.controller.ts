@@ -16,6 +16,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
@@ -44,6 +45,7 @@ import { Logger } from 'winston';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('telemetry')
+@ApiBearerAuth()
 @Controller('api/telemetry')
 export class TelemetryManagementController {
   constructor(

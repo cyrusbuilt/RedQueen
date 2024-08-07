@@ -30,6 +30,7 @@ async function bootstrap() {
     .setDescription('Provides an API for interracting with RedQueen data')
     .setVersion(version)
     .addTag('redqueen')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/documentation', app, document);
