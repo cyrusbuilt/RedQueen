@@ -42,6 +42,7 @@ import { version } from '../../package.json';
 import Configuration from 'src/configuration';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
+import { ErrorResponseDto } from 'src/model/error-response-dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('telemetry')
@@ -64,7 +65,7 @@ export class TelemetryManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getBrokers(): Promise<MqttBroker[]> {
     try {
@@ -103,7 +104,7 @@ export class TelemetryManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async addBroker(@Body() broker: MqttBrokerDto): Promise<MqttBroker> {
     try {
@@ -153,7 +154,7 @@ export class TelemetryManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async updateBroker(
     @Param('id') id: number,
@@ -194,7 +195,7 @@ export class TelemetryManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async updateBrokerLegacy(
     @Param('id') id: number,
@@ -235,7 +236,7 @@ export class TelemetryManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getBrokerById(@Param('id') id: number): Promise<MqttBroker> {
     try {
@@ -272,7 +273,7 @@ export class TelemetryManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getTopics(): Promise<MqttTopic[]> {
     try {
@@ -311,7 +312,7 @@ export class TelemetryManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async updateTopic(
     @Param('id') id: number,
@@ -349,7 +350,7 @@ export class TelemetryManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async updateTopicLegacy(
     @Param('id') id: number,
@@ -395,7 +396,7 @@ export class TelemetryManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async addTopic(@Body() topic: MqttTopicDto): Promise<MqttTopic> {
     try {
@@ -441,7 +442,7 @@ export class TelemetryManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getTopicsForBroker(
     @Param('brokerId') brokerId: number,
@@ -478,7 +479,7 @@ export class TelemetryManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getMessages(
     @Query('pageSize', new ParseIntPipe()) pageSize: number,

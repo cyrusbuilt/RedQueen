@@ -34,6 +34,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import DeviceClass from 'src/common/device-class';
 import { GeneralResponseDto } from 'src/common/models/general-response.dto';
 import Utils from 'src/common/utils';
+import { ErrorResponseDto } from 'src/model/error-response-dto';
 
 @ApiTags('device')
 @UseGuards(JwtAuthGuard)
@@ -52,7 +53,7 @@ export class DeviceManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getDevices(): Promise<Device[]> {
     try {
@@ -86,7 +87,7 @@ export class DeviceManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getDevicesPaginated(
     @Query('pageSize', new ParseIntPipe()) pageSize: number,
@@ -141,7 +142,7 @@ export class DeviceManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async updateDevice(
     @Param('id') id: number,
@@ -180,7 +181,7 @@ export class DeviceManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async updateDeviceLegacy(
     @Param('id') id: number,
@@ -224,7 +225,7 @@ export class DeviceManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async addDevice(@Body() device: DeviceDto): Promise<Device> {
     try {
