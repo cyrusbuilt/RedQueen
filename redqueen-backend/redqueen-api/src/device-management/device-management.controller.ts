@@ -15,6 +15,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
@@ -36,6 +37,7 @@ import Utils from 'src/common/utils';
 
 @ApiTags('device')
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 @Controller('api/device')
 export class DeviceManagementController {
   constructor(private readonly redQueenDataService: RedqueenService) {}

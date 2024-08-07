@@ -2,9 +2,15 @@
     "name": "@redqueen-backend",
     "scripts": {
         "dockerize:redqueen-api": "docker build -f redqueen-api.Dockerfile -t redqueen-api .",
+        "dockerize:redqueen-api:linux:arm64": "docker build -f redqueen-api.Dockerfile -t redqueen-api-arm64 --platform linux/arm64 .",
+        "dockerize:redqueen-api:linux:amd64": "docker build -f redqueen-api.Dockerfile -t redqueen-api-amd64 --platform linux/amd64 .",
         "dockerize:redqueen-daemon": "docker build -f redqueen.Dockerfile -t redqueen-daemon .",
-        "docker:redqueen-api": "docker run --env-file ./redqueen-api/.env -p3000:3000 redqueen-api",
-        "docker:redqueen-daemon": "docker run --env-file ./redqueen/.env redqueen-daemon"
+        "dockerize:redqueen-daemon:linux:arm64": "docker build -f redqueen.Dockerfile -t redqueen-daemon-arm64 --platform linux/arm64 .",
+        "dockerize:redqueen-daemon:linux:amd64": "docker build -f redqueen.Dockerfile -t redqueen-daemon-amd64 --platform linux/amd64 .",
+        "docker:redqueen-api": "docker run --net=host --env-file ./redqueen-api/.env -p3000:3000 redqueen-api",
+        "docker:redqueen-daemon": "docker run --net=host --env-file ./redqueen/.env redqueen-daemon",
+        "docker:export:redqueen-api:linux:arm64": "docker save -o redqueen-api-docker-arm64.tar redqueen-api-arm64",
+        "docker:export:redqueen-api:linux:amd64": "docker save -o redqueen-api-docker-amd64.tar redqueen-api-amd64"
     },
     "workspaces": ["./redqueen-data", "./redqueen-api", "./redqueen"]
 }

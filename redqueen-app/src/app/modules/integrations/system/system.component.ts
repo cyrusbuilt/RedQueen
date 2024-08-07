@@ -2,13 +2,13 @@ import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subscription } from 'rxjs';
-import { ControlCommand } from 'src/app/core/interfaces/control-command';
-import { RedQueenSystemStatus } from 'src/app/core/interfaces/red-queen-system-status';
-import { TelemetryService } from 'src/app/core/services/telemetry.service';
-import { SystemTelemetry } from 'src/app/core/interfaces/system-telemetry';
-import { environment } from 'src/environments/environment';
-import { RedQueenControlCommand } from 'src/app/core/interfaces/red-queen-control-command';
-import { ToastService } from 'src/app/core/services/toast.service';
+import { ControlCommand } from '../../../../app/core/interfaces/control-command';
+import { RedQueenSystemStatus } from '../../../../app/core/interfaces/red-queen-system-status';
+import { TelemetryService } from '../../../../app/core/services/telemetry.service';
+import { SystemTelemetry } from '../../../../app/core/interfaces/system-telemetry';
+import { environment } from '../../../../environments/environment';
+import { RedQueenControlCommand } from '../../../../app/core/interfaces/red-queen-control-command';
+import { ToastService } from '../../../../app/core/services/toast.service';
 
 enum SystemStatus {
   NORMAL = 0,

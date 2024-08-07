@@ -12,6 +12,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiOperation,
   ApiParam,
   ApiQuery,
@@ -30,6 +31,7 @@ import Utils from 'src/common/utils';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('user')
+@ApiBearerAuth()
 @Controller('api/user')
 export class UserManagementController {
   constructor(private readonly userService: UsersService) {}

@@ -26,7 +26,7 @@ export class Device {
     example: 2,
     type: 'integer',
   })
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ name: 'id', type: 'integer' })
   id: number;
 
   @IsString()

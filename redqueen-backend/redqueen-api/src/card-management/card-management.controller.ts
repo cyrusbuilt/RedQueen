@@ -15,6 +15,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiQuery,
@@ -37,6 +38,7 @@ import { Logger } from 'winston';
 
 @ApiTags('card')
 @UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 @Controller('api/card')
 export class CardManagementController {
   constructor(

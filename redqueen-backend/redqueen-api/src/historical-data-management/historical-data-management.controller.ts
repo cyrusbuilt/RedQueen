@@ -9,7 +9,13 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import {
   HistoricalDataService,
   MqttMessage,
@@ -20,6 +26,7 @@ import Utils from 'src/common/utils';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('historical')
+@ApiBearerAuth()
 @Controller('api/historicalData')
 export class HistoricalDataManagementController {
   constructor(private readonly historicalDataService: HistoricalDataService) {}

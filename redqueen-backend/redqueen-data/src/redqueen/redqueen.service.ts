@@ -277,41 +277,50 @@ export class RedqueenService {
       return null;
     }
 
-    existingDevice.name = Utils.isNullOrWhitespace(device.name)
-      ? device.friendlyName
-      : device.name;
-    existingDevice.friendlyName = Utils.isNullOrWhitespace(device.friendlyName)
-      ? device.name
-      : device.friendlyName;
-    existingDevice.controlTopicId = device.controlTopicId;
-    existingDevice.statusTopicId = device.statusTopicId;
-    existingDevice.isActive = device.isActive;
-    existingDevice.modifiedDate = new Date();
-    existingDevice.class = device.class;
+    const updatedDevice: Partial<Device> = {
+      name: Utils.isNullOrWhitespace(device.name)
+        ? device.friendlyName
+        : device.name,
+      friendlyName: Utils.isNullOrWhitespace(device.friendlyName)
+        ? device.name
+        : device.friendlyName,
+      controlTopicId: device.controlTopicId,
+      statusTopicId: device.statusTopicId,
+      isActive: device.isActive,
+      class: device.class,
+      modifiedDate: new Date(),
+    };
 
-    this.logger.info('Updating device', existingDevice);
-    await this.deviceRepository.save(existingDevice);
+    this.logger.info('Updating device', updatedDevice);
+    await this.deviceRepository.update({ id: deviceId }, updatedDevice);
 
     // Also activate/deactivate any associated topics
-    const statusTopic = await this.getTopicById(existingDevice.statusTopicId);
+    const statusTopic = await this.getTopicById(updatedDevice.statusTopicId);
     if (statusTopic) {
-      statusTopic.isActive = existingDevice.isActive;
-      this.logger.info('Updating topic', statusTopic);
-      await this.topicRepository.save(statusTopic);
-    }
-
-    if (existingDevice.controlTopicId) {
-      const controlTopic = await this.getTopicById(
-        existingDevice.controlTopicId,
-      );
-      if (controlTopic) {
-        controlTopic.isActive = existingDevice.isActive;
-        this.logger.info('Updating topic', controlTopic);
-        await this.topicRepository.save(controlTopic);
+      updatedDevice.statusTopic = statusTopic;
+      if (statusTopic.isActive !== updatedDevice.isActive) {
+        statusTopic.isActive = updatedDevice.isActive;
+        this.logger.info('Updating topic', statusTopic);
+        await this.topicRepository.save(statusTopic);
       }
     }
 
-    return existingDevice;
+    if (updatedDevice.controlTopicId) {
+      const controlTopic = await this.getTopicById(
+        updatedDevice.controlTopicId,
+      );
+      if (controlTopic) {
+        updatedDevice.controlTopic = controlTopic;
+        if (controlTopic.isActive !== updatedDevice.isActive) {
+          controlTopic.isActive = updatedDevice.isActive;
+          this.logger.info('Updating topic', controlTopic);
+          await this.topicRepository.save(controlTopic);
+        }
+      }
+    }
+
+    updatedDevice.id = Number(deviceId);
+    return updatedDevice as Device;
   }
 
   public async addDevice(device: DeviceDto): Promise<Device | null> {

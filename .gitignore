@@ -238,3 +238,5 @@ internal-nlog.txt
 secrets.txt
 
 LogFiles/
+
+*.tar

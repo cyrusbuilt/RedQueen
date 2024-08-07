@@ -9,7 +9,13 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
@@ -146,6 +152,7 @@ export class AuthController {
   @Post('register-admin')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Registers a new admin user' })
+  @ApiBearerAuth()
   @ApiBody({ type: RegisterDto })
   @ApiResponse({
     status: HttpStatus.OK as number,
@@ -199,6 +206,7 @@ export class AuthController {
   @ApiOperation({
     summary: 'HEAD servicer for admin registration endpoint (legacy support)',
   })
+  @ApiBearerAuth()
   @ApiResponse({
     status: HttpStatus.OK as number,
   })
@@ -209,6 +217,7 @@ export class AuthController {
   @Put('password-reset')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Resets a user's password" })
+  @ApiBearerAuth()
   @ApiBody({ type: PasswordResetRequestDto })
   @ApiResponse({
     status: HttpStatus.OK as number,
@@ -248,6 +257,7 @@ export class AuthController {
   @Post('legacy/password-reset')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Resets a user's password (legacy client support)" })
+  @ApiBearerAuth()
   @ApiBody({ type: PasswordResetRequestDto })
   @ApiResponse({
     status: HttpStatus.OK as number,
@@ -271,6 +281,7 @@ export class AuthController {
     summary:
       'HEAD servicer for legacy password reset endpoint (legacy support)',
   })
+  @ApiBearerAuth()
   @ApiResponse({
     status: HttpStatus.OK as number,
   })
@@ -281,6 +292,7 @@ export class AuthController {
   @Put('disable')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Disables a user's account" })
+  @ApiBearerAuth()
   @ApiBody({ type: User })
   @ApiResponse({
     status: HttpStatus.OK as number,
@@ -324,6 +336,7 @@ export class AuthController {
   @Post('legacy/disable')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Disables a user's account (legacy support)." })
+  @ApiBearerAuth()
   @ApiBody({ type: User })
   @ApiResponse({
     status: HttpStatus.OK as number,
@@ -348,6 +361,7 @@ export class AuthController {
     summary:
       'HEAD servicer for legacy lockout enable endpoint (legacy support)',
   })
+  @ApiBearerAuth()
   @ApiResponse({
     status: HttpStatus.OK as number,
   })
@@ -358,6 +372,7 @@ export class AuthController {
   @Put('enable')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Enables a user's account" })
+  @ApiBearerAuth()
   @ApiBody({ type: User })
   @ApiResponse({
     status: HttpStatus.OK as number,
@@ -401,6 +416,7 @@ export class AuthController {
   @Post('legacy/enable')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Enables a user's account (legacy client support)" })
+  @ApiBearerAuth()
   @ApiBody({ type: User })
   @ApiResponse({
     status: HttpStatus.OK as number,
@@ -425,6 +441,7 @@ export class AuthController {
     summary:
       'HEAD servicer for legacy account enablement endpoint (legacy support)',
   })
+  @ApiBearerAuth()
   @ApiResponse({
     status: HttpStatus.OK as number,
   })
@@ -435,6 +452,7 @@ export class AuthController {
   @Put('update')
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: "Updates a user's account registration" })
+  @ApiBearerAuth()
   @ApiBody({ type: User })
   @ApiResponse({
     status: HttpStatus.OK as number,
@@ -479,6 +497,7 @@ export class AuthController {
   @ApiOperation({
     summary: "Updates a user's account registration (legacy client support)",
   })
+  @ApiBearerAuth()
   @ApiBody({ type: User })
   @ApiResponse({
     status: HttpStatus.OK as number,
@@ -503,6 +522,7 @@ export class AuthController {
     summary:
       'HEAD servicer for user account registration update endpoint (legacy support)',
   })
+  @ApiBearerAuth()
   @ApiResponse({
     status: HttpStatus.OK as number,
   })
