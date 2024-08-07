@@ -35,6 +35,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { GeneralResponseDto } from 'src/common/models/general-response.dto';
 import Utils from 'src/common/utils';
 import { Logger } from 'winston';
+import { ErrorResponseDto } from 'src/model/error-response-dto';
 
 @ApiTags('card')
 @UseGuards(JwtAuthGuard)
@@ -59,7 +60,7 @@ export class CardManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getCards(
     @Query('pageSize', new ParseIntPipe()) pageSize: number,
@@ -103,7 +104,7 @@ export class CardManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getActiveUsers(): Promise<AccessControlUser[]> {
     try {
@@ -141,7 +142,7 @@ export class CardManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async updateCard(@Body() card: Partial<Card>): Promise<Card> {
     try {
@@ -173,7 +174,7 @@ export class CardManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async updateCardLegacy(@Body() card: Partial<Card>): Promise<Card> {
     return await this.updateCard(card);
@@ -212,7 +213,7 @@ export class CardManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async addCard(@Body() card: Partial<Card>): Promise<Card> {
     try {
@@ -257,7 +258,7 @@ export class CardManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: 'Error',
+    type: ErrorResponseDto,
   })
   public async getAllCardUsers(
     @Query('pageSize', new ParseIntPipe()) pageSize: number,
@@ -307,7 +308,7 @@ export class CardManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async updateCardUser(
     @Body() user: Partial<AccessControlUser>,
@@ -343,7 +344,7 @@ export class CardManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async updateCardUserLegacy(
     @Body() user: Partial<AccessControlUser>,
@@ -384,7 +385,7 @@ export class CardManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async addCardUser(
     @Body() user: Partial<AccessControlUser>,

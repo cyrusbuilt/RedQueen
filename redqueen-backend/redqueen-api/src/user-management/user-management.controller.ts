@@ -28,6 +28,7 @@ import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { GeneralResponseDto } from 'src/common/models/general-response.dto';
 import Utils from 'src/common/utils';
+import { ErrorResponseDto } from 'src/model/error-response-dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('user')
@@ -52,7 +53,7 @@ export class UserManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getUser(@Query('userId') userId: string): Promise<User> {
     try {
@@ -94,7 +95,7 @@ export class UserManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Success',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getUserList(): Promise<User[]> {
     try {
@@ -132,7 +133,7 @@ export class UserManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getLoginHistory(
     @Param('id') id: string,

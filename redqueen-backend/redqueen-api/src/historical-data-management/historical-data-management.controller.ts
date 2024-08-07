@@ -23,6 +23,7 @@ import {
 import { Response } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import Utils from 'src/common/utils';
+import { ErrorResponseDto } from 'src/model/error-response-dto';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('historical')
@@ -46,7 +47,7 @@ export class HistoricalDataManagementController {
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR as number,
     description: 'Internal Error',
-    type: Error,
+    type: ErrorResponseDto,
   })
   public async getHistoricalData(
     @Query('topicId', new ParseIntPipe()) topicId: number,

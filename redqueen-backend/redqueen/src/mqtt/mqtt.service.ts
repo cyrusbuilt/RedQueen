@@ -61,10 +61,12 @@ export class MqttService extends TypedEventEmitter<MqttServiceEventCallbacks> {
     return opts;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private onPublisherConnected(packet: IConnackPacket): void {
     this._logger.info('Publisher connected');
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private onPublisherDisconnected(packet: IDisconnectPacket): void {
     this._logger.info('Publisher disconnected');
   }
@@ -112,10 +114,12 @@ export class MqttService extends TypedEventEmitter<MqttServiceEventCallbacks> {
     await this._clientPublisher.endAsync();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private onSubscriberConnected(packet: IConnackPacket): void {
     this._logger.info('Subscriber connected');
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private onSubscriberDisconnected(packet: IDisconnectPacket): void {
     this._logger.info('Subscriber disconnected');
   }
