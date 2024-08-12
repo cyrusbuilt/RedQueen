@@ -9,6 +9,7 @@ import { WinstonModule } from 'nest-winston';
 import winston from 'winston';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MqttModule } from './mqtt/mqtt.module';
+import { WeatherModule } from './integrations/weather/weather.module';
 
 const dbContext = new DataContextBuilder()
   .setHost(Configuration.shared.dbHost)
@@ -50,6 +51,7 @@ const dbContext = new DataContextBuilder()
     }),
     RedqueenModule,
     MqttModule,
+    WeatherModule,
   ],
   providers: [AppService],
   //exports: [AppService],
