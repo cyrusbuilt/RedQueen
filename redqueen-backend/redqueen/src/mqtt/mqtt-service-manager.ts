@@ -292,6 +292,15 @@ export class MqttServiceManager {
     this._systemStatus = SystemStatus.Shutdown;
   }
 
+  public async publishPayloadToTopic(
+    payload: any,
+    topic: string,
+  ): Promise<void> {
+    for (const instance of this.instances) {
+      await instance.publishPayloadToTopic(payload, topic);
+    }
+  }
+
   public async startServiceForHost(host: string): Promise<void> {
     const svc = this.instances.find(
       (i) => i.host.toLowerCase() === host.toLowerCase(),

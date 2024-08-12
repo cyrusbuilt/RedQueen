@@ -222,15 +222,23 @@ export class MqttService extends TypedEventEmitter<MqttServiceEventCallbacks> {
     this._autoDiscoverEnabled = false;
   }
 
+  public async publishPayloadToTopic(
+    payload: any,
+    topic: string,
+  ): Promise<void> {
+    const payloadStr = JSON.stringify(payload);
+    this._logger.info(`Publishing payload: ${payload} to topic: ${topic} ...`);
+    await this._clientPublisher.publishAsync(topic, payloadStr, {
+      qos: 2,
+      retain: true,
+    });
+  }
+
   public async publishSystemStatus(
     status: RedqueenSystemStatusDto,
     statusTopic: string,
   ): Promise<void> {
-    const payload = JSON.stringify(status);
-    await this._clientPublisher.publishAsync(statusTopic, payload, {
-      qos: 2,
-      retain: true,
-    });
+    return await this.publishPayloadToTopic(status, statusTopic);
   }
 
   public async subscribeSystemControlTopic(

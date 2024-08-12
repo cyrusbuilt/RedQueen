@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { MqttService } from './mqtt.service';
 import { MqttServiceManager } from './mqtt-service-manager';
 import { RedqueenModule } from '@redqueen-backend/redqueen-data';
 

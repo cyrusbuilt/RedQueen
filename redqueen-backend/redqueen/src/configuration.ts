@@ -10,6 +10,10 @@ export default class Configuration {
   public readonly dbPassword: string;
   public readonly daemonStatusTopic: string;
   public readonly daemonControlTopic: string;
+  public readonly weatherApiUrl: string | null;
+  public readonly weatherTopic: string | null;
+  public readonly weatherLocLat: number;
+  public readonly weatherLocLng: number;
 
   constructor() {
     dotenv.config();
@@ -27,5 +31,12 @@ export default class Configuration {
       process.env.MQTT_STATUS_TOPIC || 'redqueen/system/status';
     this.daemonControlTopic =
       process.env.MQTT_CONTROL_TOPIC || 'redqueen/system/control';
+    this.weatherApiUrl = process.env.WEATHER_API_URL || null;
+    this.weatherTopic = process.env.WEATHER_TOPIC || null;
+
+    if (process.env.WEATHER_LOC_LAT && process.env.WEATHER_LOC_LNG) {
+      this.weatherLocLat = parseInt(process.env.WEATHER_LOC_LAT);
+      this.weatherLocLng = parseInt(process.env.WEATHER_LOC_LNG);
+    }
   }
 }
